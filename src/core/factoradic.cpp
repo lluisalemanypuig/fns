@@ -57,7 +57,6 @@ factoradic& factoradic::operator+= (const factoradic& f) {
 	
 	size_t carry = 0;
 	while (l < radixs.size() and l < f.radixs.size()) {
-		
 		// if the sum of the two digits is greater than the greatest
 		// radix allowed then compute the modulus of the result.
 		// The greatest radix allowed is equal to the index
@@ -80,7 +79,6 @@ factoradic& factoradic::operator+= (const factoradic& f) {
 	// iterated over
 	if (radixs.size() < f.radixs.size()) {
 		for (size_t it = l; it < f.radixs.size(); ++it) {
-			
 			// sum of the currently pointed radix plus the carry
 			size_t sum_dig = size_t(f.radixs[it]) + carry;
 			
@@ -94,13 +92,12 @@ factoradic& factoradic::operator+= (const factoradic& f) {
 	}
 	else if (radixs.size() > f.radixs.size()) {
 		for (size_t it = l; it < radixs.size(); ++it) {
-			
 			// sum of the currently pointed radix plus the carry
 			size_t sum_dig = size_t(radixs[it]) + carry;
 			
 			// new digit
 			size_t mod = sum_dig%(it + 1);
-			radixs[it] = char(mod);
+			radixs[it] = mod;
 			
 			// value of carry
 			carry = (sum_dig - mod)/(it + 1);
@@ -121,7 +118,6 @@ factoradic& factoradic::operator+= (const factoradic& f) {
 				new_digit = carry;
 				carry = 0;
 			}
-			
 			radixs.push_back(new_digit);
 			++l;
 		}
