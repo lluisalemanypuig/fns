@@ -15,7 +15,7 @@ using namespace std;
 
 class factoradic {
 	private:
-		string radixs;
+		vector<ushort> radixs;
 		
 	public:
 		factoradic();
@@ -47,6 +47,10 @@ class factoradic {
 		factoradic operator/ (const factoradic& f) const;
 		factoradic& operator/= (const factoradic& f);
 		
+		/// GETTERS
+		
+		void get_radixs(vector<ushort>& rs, size_t n_digits = 0) const;
+		
 		/// CONVERSIONS
 		
 		void from_decimal(size_t n);
@@ -58,7 +62,10 @@ class factoradic {
 		integer to_decimal() const;
 		void to_decimal(integer& i) const;
 		
-		string to_string() const;
-		void to_string(string& s) const;
+		// use, at least, n_digits to represent this number
+		// n_digits = 0 is interpreted as using the minimum amount of
+		// digits.
+		string to_string(size_t n_digits = 0) const;
+		void to_string(string& s, size_t n_digits = 0) const;
 		
 };

@@ -3,14 +3,20 @@
 /// NON-CLASS
 
 template<class T>
-void __from_decimal(const T& n, string& radixs) {
+inline void __from_decimal(const T& n, vector<ushort>& radixs) {
+	if (n == 0) {
+		radixs = vector<ushort>(1, 0);
+		return;
+	}
+	
 	T copy_n = n;
-	radixs = "";
+	radixs = vector<ushort>();
 	
 	size_t i = 1;
 	while (copy_n > 0) {
-		char d = copy_n%i + '0';
-		radixs += d;
+		ushort d = copy_n%i;
+		radixs.push_back(d);
+		
 		copy_n /= i;
 		++i;
 	}
@@ -47,6 +53,7 @@ factoradic factoradic::operator+ (const factoradic& f) const {
 }
 
 factoradic& factoradic::operator+= (const factoradic& f) {
+	/*
 	size_t l = 0;
 	
 	size_t carry = 0;
@@ -120,6 +127,7 @@ factoradic& factoradic::operator+= (const factoradic& f) {
 			++l;
 		}
 	}
+	*/
 	
 	return *this;
 }
@@ -169,6 +177,18 @@ factoradic& factoradic::operator/= (const factoradic& f) {
 	return *this;
 }
 
+/// GETTERS
+
+void factoradic::get_radixs(vector<ushort>& rs, size_t n_digits) const {
+	rs = radixs;
+	
+	if (n_digits > 0) {
+		while (rs.size() < n_digits) {
+			rs.push_back(0);
+		}
+	}
+}
+
 /// CONVERSIONS
 
 void factoradic::from_decimal(size_t k) {
@@ -180,8 +200,8 @@ void factoradic::from_decimal(const integer& I) {
 }
 
 void factoradic::from_factorial(size_t n) {
-	radixs = string('0', n);
-	radixs.push_back('1');
+	radixs = vector<ushort>(n, 0);
+	radixs.push_back(1);
 }
 
 integer factoradic::to_decimal() const {
@@ -192,22 +212,34 @@ integer factoradic::to_decimal() const {
 
 void factoradic::to_decimal(integer& i) const {
 	i = 0;
-	const size_t L = radixs.length();
-	if (L > 0) {
-		for (size_t l = L - 1; l > 0; --l) {
-			size_t di = radixs[l] - '0';
-			i = (i + di)*l;
-		}
+	const size_t L = radixs.size();
+	
+	for (size_t l = L - 1; l > 0; --l) {
+		ushort di = radixs[l];
+		i = (i + di)*l;
 	}
 }
 
-string factoradic::to_string() const {
+string factoradic::to_string(size_t n_digits) const {
 	string s;
-	to_string(s);
+	to_string(s, n_digits);
 	return s;
 }
 
-void factoradic::to_string(string& s) const {
-	s = radixs;
+void factoradic::to_string(string& s, size_t n_digits) const {
+	s = std::to_string(radixs[0]);
+	for (size_t i = 1; i < radixs.size(); ++i) {
+		s += "," + std::to_string(radixs[i]);
+	}
+	
+	if (n_digits > 0) {
+		size_t actual_length = radixs.size() - 1;
+		while (actual_length < n_digits) {
+			s += ",0";
+			++actual_length;
+		}
+	}
+	
 	reverse(s.begin(), s.end());
 }
+
