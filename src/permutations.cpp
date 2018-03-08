@@ -41,8 +41,8 @@ void kth_permutation(const vector<T>& v, vector<T>& kth_perm, size_t k) {
 int main(int argc, char *argv[]) {
 	if (argc != 3) {
 		cout << "Incorrect number of parameters:" << endl;
-		cout << "N: to calculate all permutations of a list of N elements" << endl;
-		cout << "t: number of threads" << endl;
+		cout << "    N: to calculate all permutations of a list of N elements" << endl;
+		cout << "    t: number of threads" << endl;
 		return 1;
 	}
 	

@@ -52,6 +52,9 @@ class factoradic {
 		void from_decimal(size_t n);
 		void from_decimal(const integer& i);
 		
+		// build the number in factoradic system for the value n!
+		void from_factorial(size_t n);
+		
 		integer to_decimal() const;
 		void to_decimal(integer& i) const;
 		

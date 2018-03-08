@@ -179,6 +179,11 @@ void factoradic::from_decimal(const integer& I) {
 	__from_decimal(I, radixs);
 }
 
+void factoradic::from_factorial(size_t n) {
+	radixs = string('0', n);
+	radixs.push_back('1');
+}
+
 integer factoradic::to_decimal() const {
 	integer i;
 	to_decimal(i);
