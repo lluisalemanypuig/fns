@@ -51,6 +51,8 @@ void small_N(size_t N, size_t n_threads) {
 		v[i] = i + 1;
 	}
 	
+	size_t n_perms_processed = 0;
+	
 	#pragma omp parallel for num_threads(n_threads)
 	for (size_t t = 0; t < n_threads; ++t) {
 		
@@ -64,17 +66,19 @@ void small_N(size_t N, size_t n_threads) {
 		// process all permutations with index [k, k + n_perms_thread]
 		for (size_t p = 0; p < n_perms_thread; ++p) {
 			
-			// 'critical' is used only for printing
 			#pragma omp critical
 			{
 				cout << "thread " << t << " is processing permutation " << endl;
 				cout << "    ";
 				print(ith_perm, t*n_perms_thread + p);
+				++n_perms_processed;
 			}
 			
 			next_permutation(ith_perm.begin(), ith_perm.end());
 		}
 	}
+	
+	cout << "Total amount of permutations processed= " << n_perms_processed << endl;
 }
 
 void large_N(size_t N, size_t n_threads) {
@@ -90,6 +94,8 @@ void large_N(size_t N, size_t n_threads) {
 		v[i] = i + 1;
 	}
 	
+	integer n_perms_processed = 0;
+	
 	#pragma omp parallel for num_threads(n_threads)
 	for (size_t t = 0; t < n_threads; ++t) {
 		
@@ -103,17 +109,19 @@ void large_N(size_t N, size_t n_threads) {
 		// process all permutations with index [k, k + n_perms_thread]
 		for (integer p = 0; p < n_perms_thread; ++p) {
 			
-			// 'critical' is used only for printing
 			#pragma omp critical
 			{
 				cout << "thread " << t << " is processing permutation " << endl;
 				cout << "    ";
 				print(ith_perm, n_perms_thread*t + p);
+				++n_perms_processed;
 			}
 			
 			next_permutation(ith_perm.begin(), ith_perm.end());
 		}
 	}
+	
+	cout << "Total amount of permutations processed= " << n_perms_processed << endl;
 }
 
 int main(int argc, char *argv[]) {
