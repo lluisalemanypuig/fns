@@ -436,9 +436,44 @@ factoradic factoradic::operator* (const factoradic& f) const {
 }
 
 factoradic& factoradic::operator*= (const factoradic& f) {
+	bool res_neg = neg and not f.neg or not neg and f.neg;
 	
-	cout << "Multiplication not implemented" << endl;
+	// 'slow' multiplication agorithm
+	// add b times *this to itself
 	
+	neg = false;
+	factoradic a = *this;
+	
+	integer k;
+	f.to_decimal(k);
+	if (k < 0) {
+		k = -k;
+	}
+	
+	for (integer t = 1; t < k; ++t) {
+		*this += a;
+	}
+	
+	/*
+	// 'fast' multiplication algorithm
+	
+	// if b is even:
+	//     a*b = a*(b/2) + a*(b/2) = 2*(a*(b/2))
+	// if b is odd:
+	//     a*b = a*((b - 1)/2) + a*((b - 1)/2) + 1 = 2*(a*((b - 1)/2))
+	
+	if (b.is_even()) {
+		*this *= (b/2);
+		*this *= 2;
+	}
+	else {
+		*this *= ((b - 1)/2);
+		*this *= 2;
+		*this += 1;
+	}
+	*/
+	
+	neg = res_neg;
 	return *this;
 }
 
