@@ -82,6 +82,10 @@ class factoradic {
 		
 		bool is_negative() const;
 		
+		// returns true if there exists some integer k such that
+		// 2*k = this number
+		bool is_even() const;
+		
 		/// GETTERS
 		
 		void get_radixs(vector<ushort>& rs, size_t n_digits = 0) const;

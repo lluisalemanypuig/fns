@@ -190,29 +190,104 @@ factoradic factoradic::operator+ (const factoradic& f) const {
 }
 
 factoradic& factoradic::operator+= (const factoradic& f) {
+	// a := *this
+	// b := f
+	
 	if (not neg and not f.neg) {
+		// a + b
+		
 		accumulate(f);
 	}
 	else if (not neg and f.neg) {
-		factoradic copy = -f;
+		// a + (-b) = a - b
+		// have to compute 'a - b'
 		
-		if (*this > copy) {
-			substract(copy);
+		factoradic fb = -f;	// copy contains b
+		
+		if (*this >= fb) {
+			// a >= b
+			// call this->substract(x) where
+			//     this contains max(a, b) = a
+			//     x contains min(a, b) = b
+			
+			// this contains a
+			// fb contains b
+			
+			substract(fb); // valid because *this >= copy
+			
+			// after substract
+			// this contains a - b
 		}
 		else {
-			factoradic f1 = *this;
-			*this = copy;
-			substract(f1);
+			// a < b
+			// call this->substract(x) where
+			//     this contains max(a, b) = b
+			//     x contains min(a, b) = a
+			
+			// before swap
+			//     this contains a
+			//     fb contains b
+			
+			swap(*this, fb);
+			
+			// after swap
+			//     this contains b
+			//     fb contains a
+			
+			substract(fb); // valid because *this >= fb
+			
+			// this contains b - a
+			
 			neg = true;
+			
+			// now this contains -(b - a) = a - b
+			// have computed what we wanted
 		}
-		
 	}
 	else if (neg and not f.neg) {
-		factoradic copy = *this;
-		*this = f;
+		// (-a) + b = b - a
+		// have to compute 'b - a'
 		
-		// *new_this = f - *old_this = f - copy
-		substract(copy);
+		neg = false; // this contains a
+		
+		if (*this >= f) {
+			// a >= b
+			// call this->substract(x) where
+			//     this contains max(a, b) = a
+			//     x contains min(a, b) = b
+			
+			substract(f); // valid because *this >= f
+			
+			// this contains a - b
+			
+			neg = true;
+			
+			// this contains -(a - b) = b - a
+			// have computed what we wanted
+		}
+		else {
+			// a < b
+			// call this->substract(x) where
+			//     this contains max(a, b) = b
+			//     x contains min(a, b) = a
+			
+			factoradic fb = f;
+			
+			// before swap
+			//     this contains a
+			//     fb contains b
+			
+			swap(*this, fb);
+			
+			// after swap
+			//     this contains b
+			//     fb contains a
+			
+			substract(fb); // valid because *this >= fb
+			
+			// this contains b - a
+			// have computed what we wanted
+		}
 	}
 	else {
 		// both are negative: (-a) + (-b) = -(a + b)
@@ -246,33 +321,107 @@ factoradic factoradic::operator- (const factoradic& f) const {
 }
 
 factoradic& factoradic::operator-= (const factoradic& f) {
+	// a := *this
+	// b := f
+	
 	if (not neg and not f.neg) {
-		if (*this > f) {
-			substract(f);
+		// a - b
+		// have to compute 'a - b'
+		
+		if (*this >= f) {
+			// a >= b
+			// call this->substract(x) where
+			//     this contains max(a, b) = a
+			//     x contains min(a, b) = b
+			
+			// this contains a
+			
+			substract(f); // valid because *this >= f
+			
+			// have computed what we wanted
 		}
 		else {
-			factoradic f1 = *this;
-			*this = f;
-			substract(f1);
+			// a < b
+			// call this->substract(x) where
+			//     this contains max(a, b) = b
+			//     x contains min(a, b) = a
+			
+			factoradic fb = f;
+			
+			// before swap
+			//     this contains a
+			//     fb contains b
+			
+			swap(*this, fb);
+			
+			// after swap
+			//     this contains b
+			//     fb contains a
+			
+			substract(fb); // valid because *this >= fb
+			
+			// this contains b - a
+			
 			neg = true;
+			
+			// this contains -(b - a) = a - b
+			// have computed what we wanted
 		}
 	}
 	else if (not neg and f.neg) {
+		// a - (-b) = a + b
 		accumulate(f);
 	}
 	else if (neg and not f.neg) {
-		// (-a) - b = -(a + b)
+		// (-a) - b = -a - b = -(a + b)
 		
 		neg = false;	// a = positive *this
 		*this += f;		// *this = a + b
 		neg = true;		// *this = -(a + b)
 	}
 	else {
-		factoradic copy = *this;
-		*this = f;
+		// (-a) - (-b) = -a + b = b - a
+		// have to compute 'b - a'
 		
-		// *new_this = f - *old_this = f - copy
-		substract(copy);
+		neg = false;		// this contains a
+		factoradic fb = -f;	// fb contains b
+		
+		if (*this >= fb) {
+			// a >= b
+			// call this->substract(x) where
+			//     this contains max(a, b) = a
+			//     x contains min(a, b) = b
+			
+			substract(fb); // valid because *this >= f (a >= b)
+			
+			// this contains a - b
+			
+			neg = true;
+			
+			// this contains -(a - b) = b - a
+			// have computed what we wanted
+		}
+		else {
+			// a < b
+			// call this->substract(x) where
+			//     this contains max(a, b) = b
+			//     x contains min(a, b) = a
+			
+			// before swap
+			//     this contains a
+			//     fb contains b
+			
+			swap(*this, fb);
+			
+			// after swap
+			//     this contains b
+			//     fb contains a
+			
+			substract(fb); // valid because *this >= fb
+			
+			// this contains b - a
+			// have computed what we wanted
+		}
 	}
 	
 	return *this;
@@ -459,6 +608,22 @@ bool factoradic::operator<= (const factoradic& k) const	{ return *this < k or *t
 
 bool factoradic::is_negative() const {
 	return neg;
+}
+
+bool factoradic::is_even() const {
+	if (radixs.size() == 1) {
+		// this number is 0
+		return true;
+	}
+	if (radixs[1] == 0) {
+		// since all n!, for values of n=2,3,4..., are even
+		// the only way we can have an odd number is to have
+		// 1*(1!) + sum_{n=2}^{C} n*(n!) for some C integer, C >= 2
+		
+		return radixs[1] != 1;
+	}
+	
+	return false;
 }
 
 /// GETTERS
