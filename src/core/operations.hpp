@@ -23,7 +23,15 @@ namespace operations {
 	op_type sub(const memory& data, const string& var1, const string& var2, factoradic& f1, factoradic& f2, factoradic& sub);
 	op_type mul(const memory& data, const string& var1, const string& var2, factoradic& f1, factoradic& f2, factoradic& mul);
 	op_type div(const memory& data, const string& var1, const string& var2, factoradic& f1, factoradic& f2, factoradic& div);
+	
+	op_type comp_gt(const memory& data, const string& var1, const string& var2, factoradic& f1, factoradic& f2, bool& comp);
+	op_type comp_ge(const memory& data, const string& var1, const string& var2, factoradic& f1, factoradic& f2, bool& comp);
+	op_type comp_eq(const memory& data, const string& var1, const string& var2, factoradic& f1, factoradic& f2, bool& comp);
+	op_type comp_le(const memory& data, const string& var1, const string& var2, factoradic& f1, factoradic& f2, bool& comp);
+	op_type comp_lt(const memory& data, const string& var1, const string& var2, factoradic& f1, factoradic& f2, bool& comp);
+	
 	op_type apply_op(const memory& data, const string& var1, const string& var2, factoradic& f1, factoradic& f2, factoradic& R, const string& op);
+	op_type apply_comp(const memory& data, const string& var1, const string& var2, factoradic& f1, factoradic& f2, factoradic& R, const string& op);
 	
 }
 

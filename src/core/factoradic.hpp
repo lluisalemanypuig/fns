@@ -1,6 +1,7 @@
 #pragma once
 
 /// C includes
+#include <assert.h>
 #include <gmp.h>
 
 /// C++ includes
@@ -16,11 +17,21 @@ using namespace std;
 class factoradic {
 	private:
 		vector<ushort> radixs;
+		// neg = true -> this number is negative
+		// neg = false -> this number is positive
+		bool neg;
+		
+		// accumulate to this positive number the positive number f
+		void accumulate(const factoradic& f);
+		
+		// substract from this positive number the poisitve number f
+		// precondition: *this > f, f >= 0
+		void substract(const factoradic& f);
 		
 	public:
 		factoradic();
 		// converts the number in decimal base d into factorial number system
-		factoradic(size_t d);
+		factoradic(int d);
 		factoradic(const integer& d);
 		factoradic(const string& d);
 		~factoradic();
@@ -38,6 +49,8 @@ class factoradic {
 		factoradic operator+ (const factoradic& f) const;
 		factoradic& operator+= (const factoradic& f);
 		
+		factoradic operator-() const;
+		factoradic& operator-();
 		factoradic operator- (const factoradic& f) const;
 		factoradic& operator-= (const factoradic& f);
 		
@@ -47,13 +60,35 @@ class factoradic {
 		factoradic operator/ (const factoradic& f) const;
 		factoradic& operator/= (const factoradic& f);
 		
+		bool operator== (int k) const;
+		bool operator== (integer k) const;
+		bool operator== (const factoradic& k) const;
+		
+		bool operator> (int k) const;
+		bool operator> (integer k) const;
+		bool operator> (const factoradic& k) const;
+		
+		bool operator>= (int k) const;
+		bool operator>= (integer k) const;
+		bool operator>= (const factoradic& k) const;
+		
+		bool operator< (int k) const;
+		bool operator< (integer k) const;
+		bool operator< (const factoradic& k) const;
+		
+		bool operator<= (int k) const;
+		bool operator<= (integer k) const;
+		bool operator<= (const factoradic& k) const;
+		
+		bool is_negative() const;
+		
 		/// GETTERS
 		
 		void get_radixs(vector<ushort>& rs, size_t n_digits = 0) const;
 		
 		/// CONVERSIONS
 		
-		void from_decimal(size_t n);
+		void from_decimal(int n);
 		void from_decimal(const integer& i);
 		
 		// build the number in factoradic system for the value n!
@@ -69,3 +104,11 @@ class factoradic {
 		void to_string(string& s, size_t n_digits = 0) const;
 		
 };
+
+inline static
+void swap(factoradic& f1, factoradic& f2) {
+	factoradic copy = f1;
+	f1 = f2;
+	f2 = copy;
+}
+

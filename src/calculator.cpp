@@ -10,18 +10,14 @@ using namespace std;
 #include "core/defs.hpp"
 using namespace operations;
 
+// Global variables used only to avoid declaring the same variables
+// over and over again.
+factoradic f1, f2, R;
+string new_var, var1, op, var2;
+
 void define_variable(memory& data) {
-	string new_var, var1, var2, op;
 	cin >> new_var >> var1 >> op >> var2;
 	
-	if (op == "+") {
-		op = " + ";
-	}
-	else if (op == "-") {
-		op = " - ";
-	}
-	
-	factoradic f1, f2, R;
 	apply_op(data, var1, var2, f1, f2, R, op);
 	
 	if (data.find(new_var) == data.end()) {
@@ -39,6 +35,13 @@ void define_variable(memory& data) {
 		 << endl;
 }
 
+void compare_variables(const memory& data) {
+	string var1, op, var2;
+	cin >> var1 >> op >> var2;
+	
+	apply_comp(data, var1, var2, f1, f2, R, op);
+}
+
 void list_all_variables(const memory& data) {
 	cout << endl;
 	for (const auto& P : data) {
@@ -49,9 +52,6 @@ void list_all_variables(const memory& data) {
 
 int main(int argc, char *argv[]) {
 	memory data;
-	
-	factoradic aux1, aux2, aux3;
-	string var1, var2;
 	
 	string option;
 	cout << "> ";
@@ -67,24 +67,15 @@ int main(int argc, char *argv[]) {
 			
 			data.insert( make_pair(varname, factoradic(value)) );
 		}
-		else if (option == "add") {
-			cin >> var1 >> var2;
-			apply_op(data, var1, var2, aux1, aux2, aux3, " + ");
-		}
-		else if (option == "sub") {
-			cin >> var1 >> var2;
-			apply_op(data, var1, var2, aux1, aux2, aux3, " - ");
-		}
-		else if (option == "mul") {
-			cin >> var1 >> var2;
-			apply_op(data, var1, var2, aux1, aux2, aux3, "*");
-		}
-		else if (option == "div") {
-			cin >> var1 >> var2;
-			apply_op(data, var1, var2, aux1, aux2, aux3, "/");
+		else if (option == "op") {
+			cin >> var1 >> op >> var2;
+			apply_op(data, var1, var2, f1, f2, R, op);
 		}
 		else if (option == "def") {
 			define_variable(data);
+		}
+		else if (option == "cmp") {
+			compare_variables(data);
 		}
 		else if (option == "ls") {
 			list_all_variables(data);
