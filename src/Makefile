@@ -17,7 +17,7 @@ CALC_OBJECTS =  $(BIN_DIR)/calculator.o	\
 PROC_PERM_OBJECTS = $(BIN_DIR)/permutations.o \
 					$(OBJECTS)
 
-FLAGS = -O0 -std=c++0x -fopenmp
+FLAGS = -O0 -std=c++0x -fopenmp -Wunused
 LIBS = -lgmp -fopenmp -lpthread
 
 # DEPENDENCIES
