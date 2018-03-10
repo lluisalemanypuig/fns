@@ -60,6 +60,9 @@ class factoradic {
 		factoradic operator/ (const factoradic& f) const;
 		factoradic& operator/= (const factoradic& f);
 		
+		// ad-hoc algorithm for dividing by 2
+		void halve();
+		
 		bool operator== (int k) const;
 		bool operator== (integer k) const;
 		bool operator== (const factoradic& k) const;

@@ -438,6 +438,7 @@ factoradic factoradic::operator* (const factoradic& f) const {
 factoradic& factoradic::operator*= (const factoradic& f) {
 	bool res_neg = neg and not f.neg or not neg and f.neg;
 	
+	/// ----------
 	// 'slow' multiplication agorithm
 	// add b times *this to itself
 	
@@ -453,8 +454,10 @@ factoradic& factoradic::operator*= (const factoradic& f) {
 	for (integer t = 1; t < k; ++t) {
 		*this += a;
 	}
+	/// ----------
 	
 	/*
+	/// ----------
 	// 'fast' multiplication algorithm
 	
 	// if b is even:
@@ -471,6 +474,7 @@ factoradic& factoradic::operator*= (const factoradic& f) {
 		*this *= 2;
 		*this += 1;
 	}
+	/// ----------
 	*/
 	
 	neg = res_neg;
@@ -490,6 +494,35 @@ factoradic& factoradic::operator/= (const factoradic& f) {
 	cout << "Division not implemented" << endl;
 	
 	return *this;
+}
+
+void factoradic::halve() {
+	if (radixs.size() == 1) {
+		// this number is 0 -> no work to do
+		return;
+	}
+	
+	ushort carry = 0;
+	size_t r = radixs.size() - 1;
+	
+	do {
+		ushort pradix = radixs[r];
+		
+		// calculate new r-th radix
+		radixs[r] = (carry + pradix)/2;
+		
+		// calculate carry
+		if ((carry + pradix) & 0x1 == 1) {
+			carry = r;
+		}
+		else {
+			carry = 0;
+		}
+		
+		--r;
+	}
+	while (r > 0);
+	
 }
 
 // COMPARISON
@@ -575,9 +608,6 @@ bool factoradic::operator> (const factoradic& k) const {
 	// consider both numbers positive, and compute the comparison.
 	// *this is greater than k if the first highest-weight non-zero
 	// radix in *this is greater than the corresponding radix in k
-	
-	size_t L = radixs.size();
-	size_t kL = k.radixs.size();
 	
 	// positions of the first non-zero radix for *this and k
 	size_t pnZ_t = radixs.size() - 1;

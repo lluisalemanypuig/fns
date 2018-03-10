@@ -23,11 +23,14 @@ void print_usage() {
 	cout << "      > cmp s1 C s2: compares the contents of s1 and s2 with C." << endl;
 	cout << "            The comparisons supported are >,>=,==,<=,<" << endl;
 	cout << "            s1 and s2 must be either a variable name or a number in base 10" << endl;
+	cout << "      > halve s1: apply ad-hoc algorithm to halve the contents of s1." << endl;
+	cout << "            s1 must be either a variable name or a number in base 10" << endl;
 	cout << "      > def varname s1 X s2: creates a variable with name 'varname'" << endl;
 	cout << "            with contents the result of operating the contents of s1" << endl;
 	cout << "            and s2 with operator X." << endl;
 	cout << "            s1 and s2 must be either a variable name or a number in base 10" << endl;
 	cout << "      > ls: lists all variables and their content" << endl;
+	cout << "      > exit: leave the program ('CTRL + D' is also valid)" << endl;
 	cout << "      > help: print this message" << endl;
 	
 	cout << endl;
@@ -113,6 +116,10 @@ int main(int argc, char *argv[]) {
 		}
 		else if (option == "cmp") {
 			compare_variables(data);
+		}
+		else if (option == "halve") {
+			cin >> var1;
+			halve_value(data, var1, f1, R);
 		}
 		else if (option == "def") {
 			define_variable(data);

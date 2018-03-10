@@ -155,5 +155,28 @@ namespace operations {
 		return T;
 	}
 	
+	void halve_value(const memory& data, const string& var1, factoradic& f1, factoradic& R) {
+		// check whether first string is a variable or not.
+		// If not, convert the string into a number
+		bool is_var1 = false;
+		address avar1 = data.find(var1);
+		if (avar1 == data.end()) {
+			f1 = factoradic(var1);
+		}
+		else {
+			f1 = avar1->second;
+		}
+		
+		R = f1;
+		R.halve();
+		
+		if (is_var1) {
+			cout << "    " << var1 << "/2 = " << "(" << f1 << ")" << "/2 = " << R << " (" << R.to_decimal() << ")" << endl;
+		}
+		else {
+			cout << "    " << "(" << f1 << ")" << "/2 = " << R << " (" << R.to_decimal() << ")" << endl;
+		}
+	}
+	
 }
 

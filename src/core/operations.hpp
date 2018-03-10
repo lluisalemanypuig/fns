@@ -32,6 +32,7 @@ namespace operations {
 	
 	op_type apply_op(const memory& data, const string& var1, const string& var2, factoradic& f1, factoradic& f2, factoradic& R, const string& op);
 	op_type apply_comp(const memory& data, const string& var1, const string& var2, factoradic& f1, factoradic& f2, factoradic& R, const string& op);
+	void halve_value(const memory& data, const string& var1, factoradic& f1, factoradic& R);
 	
 }
 
