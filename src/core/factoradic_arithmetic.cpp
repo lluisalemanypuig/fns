@@ -217,19 +217,21 @@ void factoradic::fast_multiply(const factoradic& f) {
 	//	       = a*(b - 1) + a = a*b
 	
 	if (not f.is_one()) {
-		factoradic fc = f;		// fc := b
+		// fc := b
+		factoradic fc = f;
+		
 		if (fc.is_even()) {
 			fc.div2();
-			*this *= fc;
+			fast_multiply(fc);
 			mult2();
 		}
 		else {
 			factoradic copy = *this;	// copy := a
-			fc.decrement();		// fc := b - 1
-			fc.div2();			// fc := (b - 1)/2
-			*this *= fc;		// this := a*(b - 1)/2
-			mult2();			// this := 2*(a*(b - 1)/2)
-			*this += copy;		// this := 2*(a*(b - 1)/2) + a = a*b
+			fc.decrement();				// fc := b - 1
+			fc.div2();					// fc := (b - 1)/2
+			fast_multiply(fc);			// this := a*(b - 1)/2
+			mult2();					// this := 2*(a*(b - 1)/2)
+			__accumulate(copy);			// this := 2*(a*(b - 1)/2) + a = a*b
 		}
 	}
 }
