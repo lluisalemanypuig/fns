@@ -36,6 +36,9 @@ class factoradic {
 		void __substract(const factoradic& f);
 		template<class T> void substract(const T& f);
 		
+		// fast multiplication algorithm
+		void fast_multiply(const factoradic& f);
+		
 	public:
 		factoradic();
 		// converts the number in decimal base d into factorial number system
