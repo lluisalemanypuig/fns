@@ -21,12 +21,20 @@ class factoradic {
 		// neg = false -> this number is positive
 		bool neg;
 		
+		// convert to factorial number system any number in base 10
+		template<class T> void __from_decimal(const T& x);
+		
+		void increment();	// increment this number by 1
+		void decrement();	// decrement this number by 1
+		
 		// accumulate to this positive number the positive number f
-		void accumulate(const factoradic& f);
+		void __accumulate(const factoradic& f);
+		template<class T> void accumulate(const T& f);
 		
 		// substract from this positive number the poisitve number f
 		// precondition: *this > f, f >= 0
-		void substract(const factoradic& f);
+		void __substract(const factoradic& f);
+		template<class T> void substract(const T& f);
 		
 	public:
 		factoradic();
@@ -46,7 +54,9 @@ class factoradic {
 		
 		factoradic& operator= (const factoradic& f);
 		
+		factoradic operator+ (const integer& k) const;
 		factoradic operator+ (const factoradic& f) const;
+		factoradic& operator+= (const integer& k);
 		factoradic& operator+= (const factoradic& f);
 		
 		factoradic operator-() const;
@@ -60,8 +70,8 @@ class factoradic {
 		factoradic operator/ (const factoradic& f) const;
 		factoradic& operator/= (const factoradic& f);
 		
-		// ad-hoc algorithm for dividing by 2
-		void halve();
+		void mult2();	// ad-hoc algorithm for multiplying by 2
+		void halve();	// ad-hoc algorithm for dividing by 2
 		
 		bool operator== (int k) const;
 		bool operator== (integer k) const;
@@ -83,6 +93,16 @@ class factoradic {
 		bool operator<= (integer k) const;
 		bool operator<= (const factoradic& k) const;
 		
+		factoradic& operator++ ();		// prefix:	++a
+        factoradic operator++ (int);	// postfix:	a++
+        
+        factoradic& operator-- ();		// prefix:	++a
+        factoradic operator-- (int);	// postfix:	a++
+		
+		// returns true if this number is zero
+		bool is_zero() const;
+		
+		// returns true if this number is negative (<0)
 		bool is_negative() const;
 		
 		// returns true if there exists some integer k such that
@@ -119,3 +139,18 @@ void swap(factoradic& f1, factoradic& f2) {
 	f2 = copy;
 }
 
+inline static
+void swap(integer& f1, factoradic& f2) {
+	factoradic F;
+	F.from_decimal(f1);
+	swap(F, f2);
+}
+
+inline static
+void swap(factoradic& f1, integer& f2) {
+	factoradic F;
+	F.from_decimal(f2);
+	swap(f1, F);
+}
+
+#include "factoradic_template.cpp"

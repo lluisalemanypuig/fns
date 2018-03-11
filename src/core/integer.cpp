@@ -232,6 +232,10 @@ int integer::get_sign() const {
 	return mpz_sgn(val);
 }
 
+bool integer::is_negative() const {
+	return get_sign() == -1;
+}
+
 size_t integer::bytes() const {
 	if (not is_initialized()) return 0;
 	return gmp_utils::bytes(val);

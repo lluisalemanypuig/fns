@@ -153,6 +153,7 @@ class integer {
 		
 		bool is_initialized() const;
 		int get_sign() const;
+		bool is_negative() const;
 		
 		size_t bytes() const;
 		const mpz_t& get_raw_value() const;

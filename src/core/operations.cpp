@@ -155,26 +155,103 @@ namespace operations {
 		return T;
 	}
 	
-	void halve_value(const memory& data, const string& var1, factoradic& f1, factoradic& R) {
+	void halve_value(memory& data, const string& var1, factoradic& f1, factoradic& R) {
 		// check whether first string is a variable or not.
 		// If not, convert the string into a number
-		bool is_var1 = false;
+		bool is_var = false;
 		address avar1 = data.find(var1);
 		if (avar1 == data.end()) {
 			f1 = factoradic(var1);
 		}
 		else {
 			f1 = avar1->second;
+			is_var = true;
 		}
 		
 		R = f1;
 		R.halve();
 		
-		if (is_var1) {
+		if (is_var) {
 			cout << "    " << var1 << "/2 = " << "(" << f1 << ")" << "/2 = " << R << " (" << R.to_decimal() << ")" << endl;
+			data.find(var1)->second = R;
 		}
 		else {
 			cout << "    " << "(" << f1 << ")" << "/2 = " << R << " (" << R.to_decimal() << ")" << endl;
+		}
+	}
+	
+	void double_value(memory& data, const string& var1, factoradic& f1, factoradic& R) {
+		// check whether first string is a variable or not.
+		// If not, convert the string into a number
+		bool is_var = false;
+		address avar1 = data.find(var1);
+		if (avar1 == data.end()) {
+			f1 = factoradic(var1);
+		}
+		else {
+			f1 = avar1->second;
+			is_var = true;
+		}
+		
+		R = f1;
+		R.mult2();
+		
+		if (is_var) {
+			cout << "    " << var1 << "*2 = " << "(" << f1 << ")" << "*2 = " << R << " (" << R.to_decimal() << ")" << endl;
+			data.find(var1)->second = R;
+		}
+		else {
+			cout << "    " << "(" << f1 << ")" << "*2 = " << R << " (" << R.to_decimal() << ")" << endl;
+		}
+	}
+	
+	void increment_value(memory& data, const string& var1, factoradic& f1, factoradic& R) {
+		// check whether first string is a variable or not.
+		// If not, convert the string into a number
+		bool is_var = false;
+		address avar1 = data.find(var1);
+		if (avar1 == data.end()) {
+			f1 = factoradic(var1);
+		}
+		else {
+			f1 = avar1->second;
+			is_var = true;
+		}
+		
+		R = f1;
+		++R;
+		
+		if (is_var) {
+			cout << "    " << var1 << " + 1 = " << "(" << f1 << ")" << " + 1 = " << R << " (" << R.to_decimal() << ")" << endl;
+			data.find(var1)->second = R;
+		}
+		else {
+			cout << "    " << "(" << f1 << ")" << " + 1 = " << R << " (" << R.to_decimal() << ")" << endl;
+		}
+	}
+	
+	void decrement_value(memory& data, const string& var1, factoradic& f1, factoradic& R) {
+		// check whether first string is a variable or not.
+		// If not, convert the string into a number
+		bool is_var = false;
+		address avar1 = data.find(var1);
+		if (avar1 == data.end()) {
+			f1 = factoradic(var1);
+		}
+		else {
+			f1 = avar1->second;
+			is_var = true;
+		}
+		
+		R = f1;
+		--R;
+		
+		if (is_var) {
+			cout << "    " << var1 << " - 1 = " << "(" << f1 << ")" << " - 1 = " << R << " (" << R.to_decimal() << ")" << endl;
+			data.find(var1)->second = R;
+		}
+		else {
+			cout << "    " << "(" << f1 << ")" << " - 1 = " << R << " (" << R.to_decimal() << ")" << endl;
 		}
 	}
 	

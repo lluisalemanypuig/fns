@@ -2,37 +2,92 @@
 
 /// NON-CLASS
 
-template<class T>
-inline void __from_decimal(const T& n, vector<ushort>& radixs, bool& neg) {
-	if (n == 0) {
-		radixs = vector<ushort>(1, 0);
+/// PRIVATE
+
+void factoradic::increment() {
+	if (is_zero()) {
+		// this number is 0
+		from_decimal(1);
 		return;
 	}
 	
-	T copy_n = n;
-	if (copy_n < 0) {
-		copy_n = -copy_n;
-		neg = true;
-	}
-	else {
-		neg = false;
+	// let a := *this
+	
+	// if a < 0 then
+	// -a + 1 = -(a - 1)
+	if (neg) {
+		neg = false;	// *this <- a
+		decrement();	// *this <- a - 1
+		neg = true;		// *this <- -(a - 1)
+		return;
 	}
 	
-	radixs = vector<ushort>();
+	// if a > 0 then apply algorithm
 	
-	size_t i = 1;
-	while (copy_n > 0) {
-		ushort d = copy_n%i;
-		radixs.push_back(d);
+	size_t carry = 1;
+	size_t l = 1;
+	
+	while (l < radixs.size() and carry > 0) {
+		size_t sum = size_t(radixs[l]) + carry;
+		size_t mod = sum%(l + 1);
+		radixs[l] = mod;
 		
-		copy_n /= i;
-		++i;
+		carry = (sum - mod)/(l + 1);
+		
+		++l;
+	}
+	
+	while (carry > 0) {
+		
+		size_t mod = carry%(l + 1);
+		radixs.push_back(mod);
+		
+		carry = (l + 1 - mod)/(l + 1);
 	}
 }
 
-/// PRIVATE
+void factoradic::decrement() {
+	if (is_zero()) {
+		// this number is 0
+		from_decimal(-1);
+		return;
+	}
+	
+	// let a := *this
+	
+	// if a < 0 then
+	// (-a) - 1 = -(a + 1)
+	if (neg) {
+		neg = false;	// *this = a
+		increment();	// *this = a + 1
+		neg = true;		// *this = -(a + 1)
+		return;
+	}
+	
+	size_t l = 0;
+	
+	ushort carry = 1;
+	while (l < radixs.size()) {
+		
+		// difference between the pointed radixs
+		int dif = radixs[l] - carry;
+		
+		// normalise
+		if (dif < 0) {
+			dif += l + 1;
+			carry = 1;
+		}
+		else {
+			carry = 0;
+		}
+		
+		radixs[l] = dif;
+		
+		++l;
+	}
+}
 
-void factoradic::accumulate(const factoradic& f) {
+void factoradic::__accumulate(const factoradic& f) {
 	size_t l = 0;
 	
 	size_t carry = 0;
@@ -104,7 +159,7 @@ void factoradic::accumulate(const factoradic& f) {
 	}
 }
 
-void factoradic::substract(const factoradic& f) {
+void factoradic::__substract(const factoradic& f) {
 	size_t l = 0;
 	
 	ushort carry = 0;
@@ -183,121 +238,25 @@ factoradic& factoradic::operator= (const factoradic& f) {
 
 // ADDITION
 
+factoradic factoradic::operator+ (const integer& k) const {
+	factoradic fc = *this;
+	fc += k;
+	return fc;
+}
+
 factoradic factoradic::operator+ (const factoradic& f) const {
 	factoradic fc = *this;
 	fc += f;
 	return fc;
 }
 
+factoradic& factoradic::operator+= (const integer& k) {
+	accumulate(k);
+	return *this;
+}
+
 factoradic& factoradic::operator+= (const factoradic& f) {
-	// a := *this
-	// b := f
-	
-	if (not neg and not f.neg) {
-		// a + b
-		
-		accumulate(f);
-	}
-	else if (not neg and f.neg) {
-		// a + (-b) = a - b
-		// have to compute 'a - b'
-		
-		factoradic fb = -f;	// copy contains b
-		
-		if (*this >= fb) {
-			// a >= b
-			// call this->substract(x) where
-			//     this contains max(a, b) = a
-			//     x contains min(a, b) = b
-			
-			// this contains a
-			// fb contains b
-			
-			substract(fb); // valid because *this >= copy
-			
-			// after substract
-			// this contains a - b
-		}
-		else {
-			// a < b
-			// call this->substract(x) where
-			//     this contains max(a, b) = b
-			//     x contains min(a, b) = a
-			
-			// before swap
-			//     this contains a
-			//     fb contains b
-			
-			swap(*this, fb);
-			
-			// after swap
-			//     this contains b
-			//     fb contains a
-			
-			substract(fb); // valid because *this >= fb
-			
-			// this contains b - a
-			
-			neg = true;
-			
-			// now this contains -(b - a) = a - b
-			// have computed what we wanted
-		}
-	}
-	else if (neg and not f.neg) {
-		// (-a) + b = b - a
-		// have to compute 'b - a'
-		
-		neg = false; // this contains a
-		
-		if (*this >= f) {
-			// a >= b
-			// call this->substract(x) where
-			//     this contains max(a, b) = a
-			//     x contains min(a, b) = b
-			
-			substract(f); // valid because *this >= f
-			
-			// this contains a - b
-			
-			neg = true;
-			
-			// this contains -(a - b) = b - a
-			// have computed what we wanted
-		}
-		else {
-			// a < b
-			// call this->substract(x) where
-			//     this contains max(a, b) = b
-			//     x contains min(a, b) = a
-			
-			factoradic fb = f;
-			
-			// before swap
-			//     this contains a
-			//     fb contains b
-			
-			swap(*this, fb);
-			
-			// after swap
-			//     this contains b
-			//     fb contains a
-			
-			substract(fb); // valid because *this >= fb
-			
-			// this contains b - a
-			// have computed what we wanted
-		}
-	}
-	else {
-		// both are negative: (-a) + (-b) = -(a + b)
-		
-		neg = false;		// *this = a = -(*this)
-		factoradic pf = -f; // pf = b = -f
-		*this += pf;		// *this = a + b
-		neg = true;			// *this = -(a + b)
-	}
-	
+	accumulate(f);
 	return *this;
 }
 
@@ -321,109 +280,7 @@ factoradic factoradic::operator- (const factoradic& f) const {
 }
 
 factoradic& factoradic::operator-= (const factoradic& f) {
-	// a := *this
-	// b := f
-	
-	if (not neg and not f.neg) {
-		// a - b
-		// have to compute 'a - b'
-		
-		if (*this >= f) {
-			// a >= b
-			// call this->substract(x) where
-			//     this contains max(a, b) = a
-			//     x contains min(a, b) = b
-			
-			// this contains a
-			
-			substract(f); // valid because *this >= f
-			
-			// have computed what we wanted
-		}
-		else {
-			// a < b
-			// call this->substract(x) where
-			//     this contains max(a, b) = b
-			//     x contains min(a, b) = a
-			
-			factoradic fb = f;
-			
-			// before swap
-			//     this contains a
-			//     fb contains b
-			
-			swap(*this, fb);
-			
-			// after swap
-			//     this contains b
-			//     fb contains a
-			
-			substract(fb); // valid because *this >= fb
-			
-			// this contains b - a
-			
-			neg = true;
-			
-			// this contains -(b - a) = a - b
-			// have computed what we wanted
-		}
-	}
-	else if (not neg and f.neg) {
-		// a - (-b) = a + b
-		accumulate(f);
-	}
-	else if (neg and not f.neg) {
-		// (-a) - b = -a - b = -(a + b)
-		
-		neg = false;	// a = positive *this
-		*this += f;		// *this = a + b
-		neg = true;		// *this = -(a + b)
-	}
-	else {
-		// (-a) - (-b) = -a + b = b - a
-		// have to compute 'b - a'
-		
-		neg = false;		// this contains a
-		factoradic fb = -f;	// fb contains b
-		
-		if (*this >= fb) {
-			// a >= b
-			// call this->substract(x) where
-			//     this contains max(a, b) = a
-			//     x contains min(a, b) = b
-			
-			substract(fb); // valid because *this >= f (a >= b)
-			
-			// this contains a - b
-			
-			neg = true;
-			
-			// this contains -(a - b) = b - a
-			// have computed what we wanted
-		}
-		else {
-			// a < b
-			// call this->substract(x) where
-			//     this contains max(a, b) = b
-			//     x contains min(a, b) = a
-			
-			// before swap
-			//     this contains a
-			//     fb contains b
-			
-			swap(*this, fb);
-			
-			// after swap
-			//     this contains b
-			//     fb contains a
-			
-			substract(fb); // valid because *this >= fb
-			
-			// this contains b - a
-			// have computed what we wanted
-		}
-	}
-	
+	substract(f);
 	return *this;
 }
 
@@ -438,8 +295,9 @@ factoradic factoradic::operator* (const factoradic& f) const {
 factoradic& factoradic::operator*= (const factoradic& f) {
 	bool res_neg = neg and not f.neg or not neg and f.neg;
 	
+	/*
 	/// ----------
-	// 'slow' multiplication agorithm
+	// 'slow' multiplication algorithm
 	// add b times *this to itself
 	
 	neg = false;
@@ -455,27 +313,42 @@ factoradic& factoradic::operator*= (const factoradic& f) {
 		*this += a;
 	}
 	/// ----------
+	*/
 	
-	/*
+	
 	/// ----------
 	// 'fast' multiplication algorithm
 	
 	// if b is even:
 	//     a*b = a*(b/2) + a*(b/2) = 2*(a*(b/2))
 	// if b is odd:
-	//     a*b = a*((b - 1)/2) + a*((b - 1)/2) + 1 = 2*(a*((b - 1)/2))
+	//     a*b = a*((b - 1)/2) + a*((b - 1)/2) + a = 2*(a*((b - 1)/2)) + a
+	//	       = a*(b - 1) + a = a*b
 	
-	if (b.is_even()) {
-		*this *= (b/2);
-		*this *= 2;
-	}
-	else {
-		*this *= ((b - 1)/2);
-		*this *= 2;
-		*this += 1;
+	if (f > 1) {
+		factoradic fc = f;		// fc := b
+		if (fc.is_even()) {
+			fc.halve();
+			
+			*this *= fc;
+			
+			mult2();
+		}
+		else {
+			factoradic copy = *this;	// copy := a
+			
+			fc.decrement();		// fc := b - 1
+			fc.halve();			// fc := (b - 1)/2
+			
+			*this *= fc;		// this := a*(b - 1)/2
+			
+			mult2();			// this := 2*(a*(b - 1)/2)
+			
+			*this += copy;		// this := 2*(a*(b - 1)/2) + a = a*b
+		}
 	}
 	/// ----------
-	*/
+	
 	
 	neg = res_neg;
 	return *this;
@@ -494,6 +367,16 @@ factoradic& factoradic::operator/= (const factoradic& f) {
 	cout << "Division not implemented" << endl;
 	
 	return *this;
+}
+
+void factoradic::mult2() {
+	if (radixs.size() == 1) {
+		// this number is 0 -> no work to do
+		return;
+	}
+	
+	factoradic tc = *this;
+	*this += tc;
 }
 
 void factoradic::halve() {
@@ -671,6 +554,38 @@ bool factoradic::operator<= (int k) const				{ return *this < k or *this == k; }
 bool factoradic::operator<= (integer k) const			{ return *this < k or *this == k; }
 bool factoradic::operator<= (const factoradic& k) const	{ return *this < k or *this == k; }
 
+factoradic& factoradic::operator++ () {
+	increment();
+	return *this;
+}
+
+factoradic factoradic::operator++ (int) {
+	factoradic copy = *this;
+	increment();
+	return copy;
+}
+
+factoradic& factoradic::operator-- () {
+	decrement();
+	return *this;
+}
+
+factoradic factoradic::operator-- (int) {
+	factoradic copy = *this;
+	decrement();
+	return copy;
+}
+
+bool factoradic::is_zero() const {
+	bool all_zeros = true;
+	size_t r = 0;
+	while (r < radixs.size() and all_zeros) {
+		all_zeros = radixs[r] == 0;
+		++r;
+	}
+	return all_zeros;
+}
+
 bool factoradic::is_negative() const {
 	return neg;
 }
@@ -705,11 +620,11 @@ void factoradic::get_radixs(vector<ushort>& rs, size_t n_digits) const {
 /// CONVERSIONS
 
 void factoradic::from_decimal(int k) {
-	__from_decimal(k, radixs, neg);
+	__from_decimal(k);
 }
 
 void factoradic::from_decimal(const integer& I) {
-	__from_decimal(I, radixs, neg);
+	__from_decimal(I);
 }
 
 void factoradic::from_factorial(size_t n) {

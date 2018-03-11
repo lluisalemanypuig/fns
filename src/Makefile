@@ -4,11 +4,13 @@
 PROJ_DIR = ..
 SRC_DIR = $(PROJ_DIR)/src
 CORE_DIR = $(SRC_DIR)/core
+UTILS_DIR = $(SRC_DIR)/utils
 BIN_DIR = $(PROJ_DIR)/bin
 
 OBJECTS = 	$(BIN_DIR)/factoradic.o		\
 			$(BIN_DIR)/integer.o		\
-			$(BIN_DIR)/gmp_utils.o
+			$(BIN_DIR)/gmp_utils.o		\
+			$(BIN_DIR)/time.o
 
 CALC_OBJECTS =  $(BIN_DIR)/calculator.o	\
 				$(BIN_DIR)/operations.o \
@@ -22,13 +24,14 @@ LIBS = -lgmp -fopenmp -lpthread
 
 # DEPENDENCIES
 
+TIME_DPS = $(UTILS_DIR)/time.hpp
 DEFS_DPS = $(CORE_DIR)/defs.hpp
 GMPUTILS_DPS = $(CORE_DIR)/gmp_utils.hpp
 INTEGER_DPS = $(CORE_DIR)/integer.hpp $(GMPUTILS_DPS)
-FACTORADIC_DPS = $(CORE_DIR)/factoradic.hpp $(INTEGER_DPS)
+FACTORADIC_DPS = $(CORE_DIR)/factoradic.hpp $(CORE_DIR)/factoradic_template.cpp $(INTEGER_DPS)
 OPERATIONS_DPS = $(CORE_DIR)/operations.hpp $(FACTORADIC_DPS) $(INTEGER_DPS)
 
-CALC_DPS = $(INTEGER_DPS) $(FACTORADIC_DPS) $(OPERATIONS_DPS) $(DEFS_DPS)
+CALC_DPS = $(INTEGER_DPS) $(FACTORADIC_DPS) $(OPERATIONS_DPS) $(DEFS_DPS) $(TIME_DPS)
 PROC_PERM_DPS = $(FACTORADIC_DPS)
 
 # RULES
@@ -63,6 +66,9 @@ $(BIN_DIR)/integer.o: $(CORE_DIR)/integer.cpp $(INTEGER_DPS)
 	g++ $(FLAGS) -c $< -o $@
 
 $(BIN_DIR)/gmp_utils.o: $(CORE_DIR)/gmp_utils.cpp $(GMPUTILS_DPS)
+	g++ $(FLAGS) -c $< -o $@
+
+$(BIN_DIR)/time.o: $(UTILS_DIR)/time.cpp $(TIME_DPS)
 	g++ $(FLAGS) -c $< -o $@
 
 ##########

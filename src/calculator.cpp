@@ -8,6 +8,7 @@ using namespace std;
 #include "core/factoradic.hpp"
 #include "core/integer.hpp"
 #include "core/defs.hpp"
+#include "utils/time.hpp"
 using namespace operations;
 
 void print_usage() {
@@ -24,6 +25,12 @@ void print_usage() {
 	cout << "            The comparisons supported are >,>=,==,<=,<" << endl;
 	cout << "            s1 and s2 must be either a variable name or a number in base 10" << endl;
 	cout << "      > halve s1: apply ad-hoc algorithm to halve the contents of s1." << endl;
+	cout << "            s1 must be either a variable name or a number in base 10" << endl;
+	cout << "      > double s1: apply ad-hoc algorithm to double the contents of s1." << endl;
+	cout << "            s1 must be either a variable name or a number in base 10" << endl;
+	cout << "      > inc s1: apply ad-hoc algorithm to increment by 1 the contents of s1." << endl;
+	cout << "            s1 must be either a variable name or a number in base 10" << endl;
+	cout << "      > dec s1: apply ad-hoc algorithm to decrement by 1 the contents of s1." << endl;
 	cout << "            s1 must be either a variable name or a number in base 10" << endl;
 	cout << "      > def varname s1 X s2: creates a variable with name 'varname'" << endl;
 	cout << "            with contents the result of operating the contents of s1" << endl;
@@ -99,7 +106,12 @@ int main(int argc, char *argv[]) {
 	string option;
 	cout << "> ";
 	
+	double begin, end;
+	bool valid_option;
+	
 	while (cin >> option and option != "exit") {
+		valid_option = true;
+		begin = timing::now();
 		
 		if (option == "var") {
 			string varname;
@@ -121,6 +133,18 @@ int main(int argc, char *argv[]) {
 			cin >> var1;
 			halve_value(data, var1, f1, R);
 		}
+		else if (option == "double") {
+			cin >> var1;
+			double_value(data, var1, f1, R);
+		}
+		else if (option == "inc") {
+			cin >> var1;
+			increment_value(data, var1, f1, R);
+		}
+		else if (option == "dec") {
+			cin >> var1;
+			decrement_value(data, var1, f1, R);
+		}
 		else if (option == "def") {
 			define_variable(data);
 		}
@@ -132,6 +156,12 @@ int main(int argc, char *argv[]) {
 		}
 		else {
 			cerr << "Error: unknown command '" << option << "'" << endl;
+			valid_option = false;
+		}
+		
+		end = timing::now();
+		if (valid_option) {
+			cout << "    In " << timing::elapsed_time(begin, end) << " s" << endl;
 		}
 		
 		cout << "> ";
