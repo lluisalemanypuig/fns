@@ -11,9 +11,9 @@ factoradic::factoradic(int n) {
 factoradic::factoradic(const integer& n) {
 	from_decimal(n);
 }
-factoradic::factoradic(const string& n) {
-	integer I(n);
-	from_decimal(n);
+factoradic::factoradic(const string& s) {
+	integer I(s);
+	from_decimal(I);
 }
 factoradic::~factoradic() { }
 
@@ -200,14 +200,6 @@ void factoradic::get_radixs(vector<ushort>& rs, size_t n_digits) const {
 
 /// CONVERSIONS
 
-void factoradic::from_decimal(int k) {
-	__from_decimal(k);
-}
-
-void factoradic::from_decimal(const integer& I) {
-	__from_decimal(I);
-}
-
 void factoradic::from_factorial(size_t n) {
 	radixs = vector<ushort>(n, 0);
 	radixs.push_back(1);
@@ -220,17 +212,13 @@ integer factoradic::to_decimal() const {
 }
 
 void factoradic::to_decimal(integer& i) const {
-	i = 0;
-	const size_t L = radixs.size();
-	
-	for (size_t l = L - 1; l > 0; --l) {
-		ushort di = radixs[l];
-		i = (i + di)*l;
-	}
-	
-	if (neg) {
-		i = -i;
-	}
+	__to_decimal(i);
+}
+
+int factoradic::to_small_decimal() const {
+	int i;
+	__to_decimal(i);
+	return i;
 }
 
 string factoradic::to_string(size_t n_digits) const {

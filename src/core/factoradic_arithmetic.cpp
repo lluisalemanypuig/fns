@@ -28,18 +28,16 @@ void factoradic::increment() {
 	while (l < radixs.size() and carry > 0) {
 		size_t sum = size_t(radixs[l]) + carry;
 		size_t mod = sum%(l + 1);
-		radixs[l] = mod;
 		
+		radixs[l] = mod;
 		carry = (sum - mod)/(l + 1);
 		
 		++l;
 	}
 	
 	while (carry > 0) {
-		
 		size_t mod = carry%(l + 1);
 		radixs.push_back(mod);
-		
 		carry = (l + 1 - mod)/(l + 1);
 	}
 }

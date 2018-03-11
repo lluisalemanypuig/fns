@@ -1,32 +1,6 @@
 #include "factoradic.hpp"
 
-template<class T>
-void factoradic::__from_decimal(const T& n) {
-	if (n == 0) {
-		radixs = vector<ushort>(1, 0);
-		return;
-	}
-	
-	T copy_n = n;
-	if (copy_n < 0) {
-		copy_n = -copy_n;
-		neg = true;
-	}
-	else {
-		neg = false;
-	}
-	
-	radixs = vector<ushort>();
-	
-	size_t i = 1;
-	while (copy_n > 0) {
-		ushort d = copy_n%i;
-		radixs.push_back(d);
-		
-		copy_n /= i;
-		++i;
-	}
-}
+/// PRIVATE
 
 template<class T>
 void factoradic::accumulate(const T& f) {
@@ -241,4 +215,50 @@ void factoradic::substract(const T& f) {
 		}
 	}
 }
+
+template<class T>
+void factoradic::__to_decimal(T& i) const {
+	i = 0;
+	const size_t L = radixs.size();
+	
+	for (size_t l = L - 1; l > 0; --l) {
+		ushort di = radixs[l];
+		i = (i + di)*l;
+	}
+	
+	if (neg) {
+		i = -i;
+	}
+}
+
+/// PUBLIC
+
+template<class T>
+void factoradic::from_decimal(const T& n) {
+	if (n == 0) {
+		radixs = vector<ushort>(1, 0);
+		return;
+	}
+	
+	T copy_n = n;
+	if (copy_n < 0) {
+		copy_n = -copy_n;
+		neg = true;
+	}
+	else {
+		neg = false;
+	}
+	
+	radixs = vector<ushort>();
+	
+	size_t i = 1;
+	while (copy_n > 0) {
+		ushort d = copy_n%i;
+		radixs.push_back(d);
+		
+		copy_n /= i;
+		++i;
+	}
+}
+
 

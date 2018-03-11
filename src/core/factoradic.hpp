@@ -21,9 +21,6 @@ class factoradic {
 		// neg = false -> this number is positive
 		bool neg;
 		
-		// convert to factorial number system any number in base 10
-		template<class T> void __from_decimal(const T& x);
-		
 		void increment();	// increment this number by 1
 		void decrement();	// decrement this number by 1
 		
@@ -38,6 +35,9 @@ class factoradic {
 		
 		// fast multiplication algorithm
 		void fast_multiply(const factoradic& f);
+		
+		// converts this factoradic number to base 10
+		template<class T> void __to_decimal(T& i) const;
 		
 	public:
 		factoradic();
@@ -115,14 +115,15 @@ class factoradic {
 		
 		/// CONVERSIONS
 		
-		void from_decimal(int n);
-		void from_decimal(const integer& i);
+		// convert to factorial number system any number in base 10
+		template<class T> void from_decimal(const T& x);
 		
 		// build the number in factoradic system for the value n!
 		void from_factorial(size_t n);
 		
 		integer to_decimal() const;
 		void to_decimal(integer& i) const;
+		int to_small_decimal() const;
 		
 		// use, at least, n_digits to represent this number
 		// n_digits = 0 is interpreted as using the minimum amount of
