@@ -295,30 +295,6 @@ factoradic factoradic::operator* (const factoradic& f) const {
 factoradic& factoradic::operator*= (const factoradic& f) {
 	bool res_neg = neg and not f.neg or not neg and f.neg;
 	
-	/*
-	/// ----------
-	// 'slow' multiplication algorithm
-	// add b times *this to itself
-	
-	neg = false;
-	factoradic a = *this;
-	
-	integer k;
-	f.to_decimal(k);
-	if (k < 0) {
-		k = -k;
-	}
-	
-	for (integer t = 1; t < k; ++t) {
-		*this += a;
-	}
-	/// ----------
-	*/
-	
-	
-	/// ----------
-	// 'fast' multiplication algorithm
-	
 	// if b is even:
 	//     a*b = a*(b/2) + a*(b/2) = 2*(a*(b/2))
 	// if b is odd:
@@ -329,26 +305,18 @@ factoradic& factoradic::operator*= (const factoradic& f) {
 		factoradic fc = f;		// fc := b
 		if (fc.is_even()) {
 			fc.halve();
-			
 			*this *= fc;
-			
 			mult2();
 		}
 		else {
 			factoradic copy = *this;	// copy := a
-			
 			fc.decrement();		// fc := b - 1
 			fc.halve();			// fc := (b - 1)/2
-			
 			*this *= fc;		// this := a*(b - 1)/2
-			
 			mult2();			// this := 2*(a*(b - 1)/2)
-			
 			*this += copy;		// this := 2*(a*(b - 1)/2) + a = a*b
 		}
 	}
-	/// ----------
-	
 	
 	neg = res_neg;
 	return *this;
