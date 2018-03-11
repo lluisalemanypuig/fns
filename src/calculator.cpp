@@ -16,6 +16,7 @@ void print_usage() {
 	
 	cout << "    Factoradic calculator command description" << endl;
 	cout << endl;
+	
 	cout << "      > var s v: stores in memory a variable with name 's' and contents" << endl;
 	cout << "            'v', where 'v' is a number in decimal notation." << endl;
 	cout << "      > op s1 O s2: operates contents of s1 and s2 with operator X." << endl;
@@ -39,8 +40,8 @@ void print_usage() {
 	cout << "      > ls: lists all variables and their content" << endl;
 	cout << "      > exit: leave the program ('CTRL + D' is also valid)" << endl;
 	cout << "      > help: print this message" << endl;
-	
 	cout << endl;
+	
 	cout << "    For variable names:" << endl;
 	cout << "        When asked for a variable name, the user is allowed to enter" << endl;
 	cout << "        any string. This string is then interpreted: if there is a variable" << endl;
