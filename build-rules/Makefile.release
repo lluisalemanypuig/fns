@@ -1,0 +1,71 @@
+OBJECTS_REL = 	$(REL_BIN_DIR)/factoradic.o				\
+				$(REL_BIN_DIR)/factoradic_arithmetic.o	\
+				$(REL_BIN_DIR)/factoradic_comparison.o	\
+				$(REL_BIN_DIR)/integer.o				\
+				$(REL_BIN_DIR)/gmp_utils.o				\
+				$(REL_BIN_DIR)/time.o
+
+CALC_OBJECTS_REL =  $(REL_BIN_DIR)/calculator.o	\
+					$(REL_BIN_DIR)/operations.o \
+					$(OBJECTS_REL)
+
+PROC_PERM_OBJECTS_REL = $(REL_BIN_DIR)/permutations.o \
+						$(OBJECTS_REL)
+
+###########
+# DIRECTORY
+
+reldirectory: $(REL_BIN_DIR)
+$(REL_BIN_DIR):
+	mkdir -p $(REL_BIN_DIR)
+
+######################
+# PROCESS PERMUTATIONS
+
+$(REL_BIN_DIR)/process_permutations: $(PROC_PERM_OBJECTS_REL)
+	g++ $(REL_FLAGS) -o $(REL_BIN_DIR)/process_permutations $(PROC_PERM_OBJECTS_REL) $(LIBS)
+
+$(REL_BIN_DIR)/permutations.o: $(SRC_DIR)/permutations.cpp $(PROC_PERM_DPS)
+	g++ $(REL_FLAGS) -c $< -o $@
+
+############
+# CALCULATOR
+
+$(REL_BIN_DIR)/calculator: $(CALC_OBJECTS_REL)
+	g++ $(REL_FLAGS) -o $(REL_BIN_DIR)/calculator $(CALC_OBJECTS_REL) $(LIBS)
+
+$(REL_BIN_DIR)/calculator.o: $(SRC_DIR)/calculator.cpp $(CALC_DPS)
+	g++ $(REL_FLAGS) -c $< -o $@
+
+$(REL_BIN_DIR)/operations.o: $(CORE_DIR)/operations.cpp $(FACTORADIC_DPS)
+	g++ $(REL_FLAGS) -c $< -o $@
+
+$(REL_BIN_DIR)/factoradic.o: $(CORE_DIR)/factoradic.cpp $(FACTORADIC_DPS)
+	g++ $(REL_FLAGS) -c $< -o $@
+
+$(REL_BIN_DIR)/factoradic_arithmetic.o: $(CORE_DIR)/factoradic_arithmetic.cpp $(FACTORADIC_DPS)
+	g++ $(REL_FLAGS) -c $< -o $@
+
+$(REL_BIN_DIR)/factoradic_comparison.o: $(CORE_DIR)/factoradic_comparison.cpp $(FACTORADIC_DPS)
+	g++ $(REL_FLAGS) -c $< -o $@
+
+$(REL_BIN_DIR)/integer.o: $(CORE_DIR)/integer.cpp $(INTEGER_DPS)
+	g++ $(REL_FLAGS) -c $< -o $@
+
+$(REL_BIN_DIR)/gmp_utils.o: $(CORE_DIR)/gmp_utils.cpp $(GMPUTILS_DPS)
+	g++ $(REL_FLAGS) -c $< -o $@
+
+$(REL_BIN_DIR)/time.o: $(UTILS_DIR)/time.cpp $(TIME_DPS)
+	g++ $(REL_FLAGS) -c $< -o $@
+
+############
+
+releaseclean:
+	rm -f $(OBJECTS_REL)
+	rm -f $(CALC_OBJECTS_REL)
+	rm -f $(PROC_PERM_OBJECTS_REL)
+
+releasedistclean:
+	make -f $(RULES_DIR)/Makefile releaseclean
+	rm -f $(REL_BIN_DIR)/factoradic
+	rm -f $(REL_BIN_DIR)/process_permutations

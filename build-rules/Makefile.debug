@@ -1,0 +1,71 @@
+OBJECTS_DEB = 	$(DEB_BIN_DIR)/factoradic.o				\
+				$(DEB_BIN_DIR)/factoradic_arithmetic.o	\
+				$(DEB_BIN_DIR)/factoradic_comparison.o	\
+				$(DEB_BIN_DIR)/integer.o				\
+				$(DEB_BIN_DIR)/gmp_utils.o				\
+				$(DEB_BIN_DIR)/time.o
+
+CALC_OBJECTS_DEB =  $(DEB_BIN_DIR)/calculator.o	\
+					$(DEB_BIN_DIR)/operations.o \
+					$(OBJECTS_DEB)
+
+PROC_PERM_OBJECTS_DEB = $(DEB_BIN_DIR)/permutations.o \
+						$(OBJECTS_DEB)
+
+###########
+# DIRECTORY
+
+debdirectory: $(DEB_BIN_DIR)
+$(DEB_BIN_DIR):
+	mkdir -p $(DEB_BIN_DIR)
+
+######################
+# PROCESS PERMUTATIONS
+
+$(DEB_BIN_DIR)/process_permutations: $(PROC_PERM_OBJECTS_DEB)
+	g++ $(DEB_FLAGS) -o $(DEB_BIN_DIR)/process_permutations $(PROC_PERM_OBJECTS_DEB) $(LIBS)
+
+$(DEB_BIN_DIR)/permutations.o: $(SRC_DIR)/permutations.cpp $(PROC_PERM_DPS)
+	g++ $(DEB_FLAGS) -c $< -o $@
+
+############
+# CALCULATOR
+
+$(DEB_BIN_DIR)/calculator: $(CALC_OBJECTS_DEB)
+	g++ $(DEB_FLAGS) -o $(DEB_BIN_DIR)/calculator $(CALC_OBJECTS_DEB) $(LIBS)
+
+$(DEB_BIN_DIR)/calculator.o: $(SRC_DIR)/calculator.cpp $(CALC_DPS)
+	g++ $(DEB_FLAGS) -c $< -o $@
+
+$(DEB_BIN_DIR)/operations.o: $(CORE_DIR)/operations.cpp $(FACTORADIC_DPS)
+	g++ $(DEB_FLAGS) -c $< -o $@
+
+$(DEB_BIN_DIR)/factoradic.o: $(CORE_DIR)/factoradic.cpp $(FACTORADIC_DPS)
+	g++ $(DEB_FLAGS) -c $< -o $@
+
+$(DEB_BIN_DIR)/factoradic_arithmetic.o: $(CORE_DIR)/factoradic_arithmetic.cpp $(FACTORADIC_DPS)
+	g++ $(DEB_FLAGS) -c $< -o $@
+
+$(DEB_BIN_DIR)/factoradic_comparison.o: $(CORE_DIR)/factoradic_comparison.cpp $(FACTORADIC_DPS)
+	g++ $(DEB_FLAGS) -c $< -o $@
+
+$(DEB_BIN_DIR)/integer.o: $(CORE_DIR)/integer.cpp $(INTEGER_DPS)
+	g++ $(DEB_FLAGS) -c $< -o $@
+
+$(DEB_BIN_DIR)/gmp_utils.o: $(CORE_DIR)/gmp_utils.cpp $(GMPUTILS_DPS)
+	g++ $(DEB_FLAGS) -c $< -o $@
+
+$(DEB_BIN_DIR)/time.o: $(UTILS_DIR)/time.cpp $(TIME_DPS)
+	g++ $(DEB_FLAGS) -c $< -o $@
+
+############
+
+debugclean:
+	rm -f $(OBJECTS_DEB)
+	rm -f $(CALC_OBJECTS_DEB)
+	rm -f $(PROC_PERM_OBJECTS_DEB)
+
+debugdistclean:
+	make -f $(RULES_DIR)/Makefile debugclean
+	rm -f $(DEB_BIN_DIR)/factoradic
+	rm -f $(DEB_BIN_DIR)/process_permutations
