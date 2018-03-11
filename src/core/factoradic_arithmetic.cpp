@@ -216,7 +216,7 @@ void factoradic::fast_multiply(const factoradic& f) {
 	//     a*b = a*((b - 1)/2) + a*((b - 1)/2) + a = 2*(a*((b - 1)/2)) + a
 	//	       = a*(b - 1) + a = a*b
 	
-	if (f > 1) {
+	if (not f.is_one()) {
 		factoradic fc = f;		// fc := b
 		if (fc.is_even()) {
 			fc.div2();

@@ -104,17 +104,12 @@ class factoradic {
 		void mult2();	// ad-hoc algorithm for multiplying by 2
 		void div2();	// ad-hoc algorithm for dividing by 2
 		
-		// returns true if this number is zero
-		bool is_zero() const;
-		
-		// returns true if this number is negative (<0)
-		bool is_negative() const;
-		
-		// returns true if there exists some integer k such that
-		// 2*k = this number
-		bool is_even() const;
-		
 		/// GETTERS
+		
+		bool is_one() const;		// returns true if this number is one
+		bool is_zero() const;		// returns true if this number is zero
+		bool is_negative() const;	// returns true if this number is negative (<0)
+		bool is_even() const;		// returns true if there exists some integer k such that 2*k = *this
 		
 		void get_radixs(vector<ushort>& rs, size_t n_digits = 0) const;
 		

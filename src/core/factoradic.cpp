@@ -127,14 +127,46 @@ factoradic factoradic::operator-- (int) {
 	return copy;
 }
 
-bool factoradic::is_zero() const {
-	bool all_zeros = true;
-	size_t r = 0;
-	while (r < radixs.size() and all_zeros) {
-		all_zeros = radixs[r] == 0;
+/// GETTERS
+
+bool factoradic::is_one() const {
+	if (radixs.size() == 1) {
+		return false;
+	}
+	
+	// by construction radixs[0] = 0
+	
+	// radixs.size() >= 2
+	if (radixs[1] == 0) {
+		return false;
+	}
+	
+	// the radix corresponding to 1! is 1. The rest must be zero
+	
+	size_t r = 2;
+	while (r < radixs.size() and radixs[r] == 0) {
 		++r;
 	}
-	return all_zeros;
+	
+	// if 'r' reached the end then all values were 0
+	return r == radixs.size();
+}
+
+bool factoradic::is_zero() const {
+	if (radixs.size() == 1) {
+		// if this number has only one radix, then for sure it is zero
+		return true;
+	}
+	
+	// by construction radixs[0] = 0
+	
+	size_t r = 1;
+	while (r < radixs.size() and radixs[r] == 0) {
+		++r;
+	}
+	
+	// if 'r' reached the end then all values were 0
+	return r == radixs.size();
 }
 
 bool factoradic::is_negative() const {
@@ -156,8 +188,6 @@ bool factoradic::is_even() const {
 	
 	return false;
 }
-
-/// GETTERS
 
 void factoradic::get_radixs(vector<ushort>& rs, size_t n_digits) const {
 	rs = radixs;
