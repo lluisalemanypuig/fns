@@ -4,11 +4,11 @@
 using namespace std;
 
 /// Custom includes
-#include "core/operations.hpp"
 #include "core/factoradic.hpp"
 #include "core/integer.hpp"
-#include "core/defs.hpp"
+#include "utils/operations.hpp"
 #include "utils/time.hpp"
+#include "utils/defs.hpp"
 using namespace operations;
 
 void print_usage() {

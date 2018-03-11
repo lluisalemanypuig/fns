@@ -4,7 +4,7 @@
 #include <map>
 
 /// Custom includes
-#include "factoradic.hpp"
+#include "core/factoradic.hpp"
 
 typedef map<string, factoradic> memory;
 typedef memory::const_iterator address;

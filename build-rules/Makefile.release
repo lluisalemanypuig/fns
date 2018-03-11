@@ -35,28 +35,28 @@ $(REL_BIN_DIR)/calculator: $(CALC_OBJECTS_REL)
 	g++ $(REL_FLAGS) -o $(REL_BIN_DIR)/calculator $(CALC_OBJECTS_REL) $(LIBS)
 
 $(REL_BIN_DIR)/calculator.o: $(SRC_DIR)/calculator.cpp $(CALC_DPS)
-	g++ $(REL_FLAGS) -c $< -o $@
+	g++ $(REL_FLAGS) -c $< -o $@ -I$(INCLUDE)
 
-$(REL_BIN_DIR)/operations.o: $(CORE_DIR)/operations.cpp $(FACTORADIC_DPS)
-	g++ $(REL_FLAGS) -c $< -o $@
+$(REL_BIN_DIR)/operations.o: $(UTILS_DIR)/operations.cpp $(FACTORADIC_DPS)
+	g++ $(REL_FLAGS) -c $< -o $@ -I$(INCLUDE)
 
 $(REL_BIN_DIR)/factoradic.o: $(CORE_DIR)/factoradic.cpp $(FACTORADIC_DPS)
-	g++ $(REL_FLAGS) -c $< -o $@
+	g++ $(REL_FLAGS) -c $< -o $@ -I$(INCLUDE)
 
 $(REL_BIN_DIR)/factoradic_arithmetic.o: $(CORE_DIR)/factoradic_arithmetic.cpp $(FACTORADIC_DPS)
-	g++ $(REL_FLAGS) -c $< -o $@
+	g++ $(REL_FLAGS) -c $< -o $@ -I$(INCLUDE)
 
 $(REL_BIN_DIR)/factoradic_comparison.o: $(CORE_DIR)/factoradic_comparison.cpp $(FACTORADIC_DPS)
-	g++ $(REL_FLAGS) -c $< -o $@
+	g++ $(REL_FLAGS) -c $< -o $@ -I$(INCLUDE)
 
 $(REL_BIN_DIR)/integer.o: $(CORE_DIR)/integer.cpp $(INTEGER_DPS)
-	g++ $(REL_FLAGS) -c $< -o $@
+	g++ $(REL_FLAGS) -c $< -o $@ -I$(INCLUDE)
 
 $(REL_BIN_DIR)/gmp_utils.o: $(CORE_DIR)/gmp_utils.cpp $(GMPUTILS_DPS)
-	g++ $(REL_FLAGS) -c $< -o $@
+	g++ $(REL_FLAGS) -c $< -o $@ -I$(INCLUDE)
 
 $(REL_BIN_DIR)/time.o: $(UTILS_DIR)/time.cpp $(TIME_DPS)
-	g++ $(REL_FLAGS) -c $< -o $@
+	g++ $(REL_FLAGS) -c $< -o $@ -I$(INCLUDE)
 
 ############
 

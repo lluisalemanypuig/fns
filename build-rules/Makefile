@@ -13,16 +13,18 @@ FLAGS = -std=c++0x -fopenmp -Wunused
 DEB_FLAGS = -O0 $(FLAGS)
 REL_FLAGS = -O2 $(FLAGS)
 
+INCLUDE = $(SRC_DIR)
+
 LIBS = -lgmp -fopenmp -lpthread
 
 # DEPENDENCIES
 
 TIME_DPS = $(UTILS_DIR)/time.hpp
-DEFS_DPS = $(CORE_DIR)/defs.hpp
+DEFS_DPS = $(UTILS_DIR)/defs.hpp
 GMPUTILS_DPS = $(CORE_DIR)/gmp_utils.hpp
 INTEGER_DPS = $(CORE_DIR)/integer.hpp $(GMPUTILS_DPS)
 FACTORADIC_DPS = $(CORE_DIR)/factoradic.hpp $(CORE_DIR)/factoradic_template.cpp $(INTEGER_DPS)
-OPERATIONS_DPS = $(CORE_DIR)/operations.hpp $(FACTORADIC_DPS) $(INTEGER_DPS)
+OPERATIONS_DPS = $(UTILS_DIR)/operations.hpp $(FACTORADIC_DPS) $(INTEGER_DPS)
 
 CALC_DPS = $(INTEGER_DPS) $(FACTORADIC_DPS) $(OPERATIONS_DPS) $(DEFS_DPS) $(TIME_DPS)
 PROC_PERM_DPS = $(FACTORADIC_DPS)

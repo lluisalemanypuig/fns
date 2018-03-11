@@ -169,7 +169,7 @@ namespace operations {
 		}
 		
 		R = f1;
-		R.halve();
+		R.div2();
 		
 		if (is_var) {
 			cout << "    " << var1 << "/2 = " << "(" << f1 << ")" << "/2 = " << R << " (" << R.to_decimal() << ")" << endl;

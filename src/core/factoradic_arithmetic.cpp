@@ -219,14 +219,14 @@ void factoradic::fast_multiply(const factoradic& f) {
 	if (f > 1) {
 		factoradic fc = f;		// fc := b
 		if (fc.is_even()) {
-			fc.halve();
+			fc.div2();
 			*this *= fc;
 			mult2();
 		}
 		else {
 			factoradic copy = *this;	// copy := a
 			fc.decrement();		// fc := b - 1
-			fc.halve();			// fc := (b - 1)/2
+			fc.div2();			// fc := (b - 1)/2
 			*this *= fc;		// this := a*(b - 1)/2
 			mult2();			// this := 2*(a*(b - 1)/2)
 			*this += copy;		// this := 2*(a*(b - 1)/2) + a = a*b
@@ -244,7 +244,7 @@ void factoradic::mult2() {
 	*this += tc;
 }
 
-void factoradic::halve() {
+void factoradic::div2() {
 	if (radixs.size() == 1) {
 		// this number is 0 -> no work to do
 		return;

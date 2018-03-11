@@ -7,8 +7,8 @@
 using namespace std;
 
 /// Custom includes
-#include "factoradic.hpp"
-#include "integer.hpp"
+#include "core/factoradic.hpp"
+#include "core/integer.hpp"
 #include "defs.hpp"
 
 namespace operations {

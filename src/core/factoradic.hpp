@@ -73,9 +73,6 @@ class factoradic {
 		factoradic operator/ (const factoradic& f) const;
 		factoradic& operator/= (const factoradic& f);
 		
-		void mult2();	// ad-hoc algorithm for multiplying by 2
-		void halve();	// ad-hoc algorithm for dividing by 2
-		
 		bool operator== (int k) const;
 		bool operator== (integer k) const;
 		bool operator== (const factoradic& k) const;
@@ -101,6 +98,11 @@ class factoradic {
         
         factoradic& operator-- ();		// prefix:	++a
         factoradic operator-- (int);	// postfix:	a++
+		
+		/// MODIFIERS
+		
+		void mult2();	// ad-hoc algorithm for multiplying by 2
+		void div2();	// ad-hoc algorithm for dividing by 2
 		
 		// returns true if this number is zero
 		bool is_zero() const;

@@ -35,28 +35,28 @@ $(DEB_BIN_DIR)/calculator: $(CALC_OBJECTS_DEB)
 	g++ $(DEB_FLAGS) -o $(DEB_BIN_DIR)/calculator $(CALC_OBJECTS_DEB) $(LIBS)
 
 $(DEB_BIN_DIR)/calculator.o: $(SRC_DIR)/calculator.cpp $(CALC_DPS)
-	g++ $(DEB_FLAGS) -c $< -o $@
+	g++ $(DEB_FLAGS) -c $< -o $@ -I$(INCLUDE)
 
-$(DEB_BIN_DIR)/operations.o: $(CORE_DIR)/operations.cpp $(FACTORADIC_DPS)
-	g++ $(DEB_FLAGS) -c $< -o $@
+$(DEB_BIN_DIR)/operations.o: $(UTILS_DIR)/operations.cpp $(FACTORADIC_DPS)
+	g++ $(DEB_FLAGS) -c $< -o $@ -I$(INCLUDE)
 
 $(DEB_BIN_DIR)/factoradic.o: $(CORE_DIR)/factoradic.cpp $(FACTORADIC_DPS)
-	g++ $(DEB_FLAGS) -c $< -o $@
+	g++ $(DEB_FLAGS) -c $< -o $@ -I$(INCLUDE)
 
 $(DEB_BIN_DIR)/factoradic_arithmetic.o: $(CORE_DIR)/factoradic_arithmetic.cpp $(FACTORADIC_DPS)
-	g++ $(DEB_FLAGS) -c $< -o $@
+	g++ $(DEB_FLAGS) -c $< -o $@ -I$(INCLUDE)
 
 $(DEB_BIN_DIR)/factoradic_comparison.o: $(CORE_DIR)/factoradic_comparison.cpp $(FACTORADIC_DPS)
-	g++ $(DEB_FLAGS) -c $< -o $@
+	g++ $(DEB_FLAGS) -c $< -o $@ -I$(INCLUDE)
 
 $(DEB_BIN_DIR)/integer.o: $(CORE_DIR)/integer.cpp $(INTEGER_DPS)
-	g++ $(DEB_FLAGS) -c $< -o $@
+	g++ $(DEB_FLAGS) -c $< -o $@ -I$(INCLUDE)
 
 $(DEB_BIN_DIR)/gmp_utils.o: $(CORE_DIR)/gmp_utils.cpp $(GMPUTILS_DPS)
-	g++ $(DEB_FLAGS) -c $< -o $@
+	g++ $(DEB_FLAGS) -c $< -o $@ -I$(INCLUDE)
 
 $(DEB_BIN_DIR)/time.o: $(UTILS_DIR)/time.cpp $(TIME_DPS)
-	g++ $(DEB_FLAGS) -c $< -o $@
+	g++ $(DEB_FLAGS) -c $< -o $@ -I$(INCLUDE)
 
 ############
 
