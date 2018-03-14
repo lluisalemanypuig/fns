@@ -118,6 +118,10 @@ namespace operations {
 		else if (newop == "/") {
 			T = div(data, var1, var2, f1, f2, R);
 		}
+		else {
+			cerr << "    Operator: '" << op << "' invalid" << endl;
+			T = op_type::none;
+		}
 		
 		cout << "    " << var1 << newop << var2 << " = "
 			 << "(" << f1 << ")" << newop << "(" << f2 << ")"
@@ -128,7 +132,7 @@ namespace operations {
 	
 	op_type apply_comp(const memory& data, const string& var1, const string& var2, factoradic& f1, factoradic& f2, factoradic& R, const string& op) {
 		op_type T;
-		bool comp;
+		bool comp = true;
 		
 		string newop = " " + op + " ";
 		
@@ -147,10 +151,16 @@ namespace operations {
 		else if (newop == " < ") {
 			T = comp_lt(data, var1, var2, f1, f2, comp);
 		}
+		else {
+			cerr << "    Operator: '" << op << "' invalid" << endl;
+			T = op_type::none;
+		}
 		
-		cout << "    " << var1 << newop << var2 << " --> "
-			 << "(" << f1 << ")" << newop << "(" << f2 << ")"
-			 << " --> " << (comp ? "true" : "false") << endl;
+		if (T != op_type::none) {
+			cout << "    " << var1 << newop << var2 << " --> "
+				 << "(" << f1 << ")" << newop << "(" << f2 << ")"
+				 << " --> " << (comp ? "true" : "false") << endl;
+		}
 		
 		return T;
 	}

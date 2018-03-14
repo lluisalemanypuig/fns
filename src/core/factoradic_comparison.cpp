@@ -17,7 +17,7 @@ bool factoradic::operator== (integer k) const {
 }
 
 bool factoradic::operator== (const factoradic& k) const {
-	if (neg and not k.neg or not neg and k.neg) {
+	if ((neg and not k.neg) or (not neg and k.neg)) {
 		return false;
 	}
 	

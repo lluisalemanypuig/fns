@@ -260,7 +260,7 @@ void factoradic::div2() {
 		radixs[r] = (carry + pradix)/2;
 		
 		// calculate carry
-		if ((carry + pradix) & 0x1 == 1) {
+		if (((carry + pradix) & 0x1) == 1) {
 			carry = r;
 		}
 		else {

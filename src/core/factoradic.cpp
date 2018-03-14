@@ -82,7 +82,7 @@ factoradic factoradic::operator* (const factoradic& f) const {
 }
 
 factoradic& factoradic::operator*= (const factoradic& f) {
-	bool res_neg = neg and not f.neg or not neg and f.neg;
+	bool res_neg = (neg and not f.neg) or (not neg and f.neg);
 	
 	fast_multiply(f);
 	
