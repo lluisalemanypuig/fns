@@ -40,6 +40,8 @@ void print_usage() {
 	cout << "            and s2 with operator X." << endl;
 	cout << "            s1 and s2 must be either a variable name or a number in base 10" << endl;
 	cout << "      > del v: delete variable with name 'v'" << endl;
+	cout << "      > even s1: checks if the contents of 's1' is even." << endl;
+	cout << "            s1 must be either a variable name or a number in base 10" << endl;
 	cout << "      > ls: lists all variables and their content" << endl;
 	cout << "      > exit: leave the program ('CTRL + D' is also valid)" << endl;
 	cout << "      > help: print this message" << endl;
@@ -184,7 +186,17 @@ int main(int argc, char *argv[]) {
 			else {
 				data.erase(var_name);
 			}
+		}
+		else if (option == "even") {
+			cin >> var_name;
 			
+			if (data.find(var_name) == data.end()) {
+				factoradic F(var_name);
+				cout << "    " << "Is '" << F << "' even? " << (F.is_even() ? "Yes" : "No") << endl;
+			}
+			else {
+				cout << "    " << "Is '" << data[var_name] << "' even? " << (data[var_name].is_even() ? "Yes" : "No") << endl;
+			}
 		}
 		else if (option == "ls") {
 			list_all_variables(data);
