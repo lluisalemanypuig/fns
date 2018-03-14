@@ -178,15 +178,12 @@ bool factoradic::is_even() const {
 		// this number is 0
 		return true;
 	}
-	if (radixs[1] == 0) {
-		// since all n!, for values of n=2,3,4..., are even
-		// the only way we can have an odd number is to have
-		// 1*(1!) + sum_{n=2}^{C} n*(n!) for some C integer, C >= 2
-		
-		return radixs[1] != 1;
-	}
 	
-	return false;
+	// since all n!, for values of n=2,3,4..., are even
+	// the only way we can have an odd number is to have
+	// 1*(1!) + sum_{n=2}^{C} n*(n!) for some C integer, C >= 2
+	
+	return radixs[1] != 1;
 }
 
 void factoradic::get_radixs(vector<ushort>& rs, size_t n_digits) const {
@@ -232,23 +229,25 @@ void factoradic::to_string(string& s, size_t n_digits) const {
 		s = "";
 	}
 	else {
-		s = std::to_string(radixs[0]);
-		for (size_t i = 1; i < radixs.size(); ++i) {
-			s += "," + std::to_string(radixs[i]);
+		vector<ushort> radixs_copy = radixs;
+		reverse(radixs_copy.begin(), radixs_copy.end());
+		
+		if (neg) {
+			s = "-,";
+		}
+		
+		s += std::to_string(radixs_copy[0]);
+		for (size_t i = 1; i < radixs_copy.size(); ++i) {
+			s += "," + std::to_string(radixs_copy[i]);
 		}
 		
 		if (n_digits > 0) {
-			size_t actual_length = radixs.size() - 1;
+			size_t actual_length = radixs_copy.size() - 1;
 			while (actual_length < n_digits) {
 				s += ",0";
 				++actual_length;
 			}
 		}
-		
-		if (neg) {
-			s += ",-";
-		}
-		reverse(s.begin(), s.end());
 	}
 }
 
