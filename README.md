@@ -15,3 +15,15 @@ is also useful to balance the load among the threads equally (in terms of the am
 ## Dependencies
 
 The [GMP](https://gmplib.org/) library is needed to compile this project. Also, OpenMP library for parallelisation.
+
+## Compiling
+
+There are two modes of compilation: debug and release. Issue the following commands for each mode:
+
+### Debug
+
+$ make -f build-rules/Makefile debug
+
+### Release
+
+$ make -f build-rules/Makefile release
