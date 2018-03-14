@@ -1,3 +1,12 @@
+
+###############
+# RELEASE FLAGS
+
+REL_FLAGS = -O2 $(GEN_FLAGS) -DNDEBUG
+
+#################
+# RELEASE OBJECTS
+
 OBJECTS_REL = 	$(REL_BIN_DIR)/factoradic.o				\
 				$(REL_BIN_DIR)/factoradic_arithmetic.o	\
 				$(REL_BIN_DIR)/factoradic_comparison.o	\
