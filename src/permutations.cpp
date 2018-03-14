@@ -41,7 +41,7 @@ void kth_permutation(const vector<T>& v, vector<T>& kth_perm, const U& k) {
 }
 
 void small_N(size_t N, size_t n_threads) {
-	static const size_t factorials[13] = {1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880, 3628800, 39916800, 479001600};
+	static const size_t factorials[15] = {1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880, 3628800, 39916800, 479001600, 6227020800, 87178291200};
 	
 	// # permutations per thread
 	const size_t n_perms_thread = factorials[N]/n_threads;
@@ -135,7 +135,7 @@ int main(int argc, char *argv[]) {
 	const size_t N = atoi(argv[1]);
 	const size_t n_threads = atoi(argv[2]);
 	
-	if (N <= 12) {
+	if (N <= 14) {
 		small_N(N, n_threads);
 	}
 	else {
