@@ -11,10 +11,12 @@ permutations of a list of N elements only when the number of threads used is a d
 For small values of N (N <= 7) this code is not needed since there are not too many permutations (7! = 5040). For
 all larger values of N (N >= 8), 2^6 = 64 threads is a divisor of N!. Using a divisor of N! as the number of threads
 is also useful to balance the load among the threads equally (in terms of the amount of permutations processed).
+Although it's not likely to be needed, this software also allows arbitrarily large values of N.
 
 ## Dependencies
 
-The [GMP](https://gmplib.org/) library is needed to compile this project. Also, OpenMP library for parallelisation.
+The [GMP](https://gmplib.org/) library is needed to compile this project. Also, the [OpenMP](http://www.openmp.org/)
+library is needed for parallelisation (when processing the permutations in parallel).
 
 ## Compiling
 
