@@ -207,7 +207,7 @@ void factoradic::__substract(const factoradic& f) {
 	assert(carry == 0);
 }
 
-void factoradic::fast_multiply(const factoradic& f) {
+void factoradic::factoradic_fast_multiply(const factoradic& f) {
 	// if b is even:
 	//     a*b = a*(b/2) + a*(b/2) = 2*(a*(b/2))
 	// if b is odd:
@@ -220,16 +220,16 @@ void factoradic::fast_multiply(const factoradic& f) {
 		
 		if (fc.is_even()) {
 			fc.div2();
-			fast_multiply(fc);
+			factoradic_fast_multiply(fc);
 			mult2();
 		}
 		else {
-			factoradic copy = *this;	// copy := a
-			fc.decrement();				// fc := b - 1
-			fc.div2();					// fc := (b - 1)/2
-			fast_multiply(fc);			// this := a*(b - 1)/2
-			mult2();					// this := 2*(a*(b - 1)/2)
-			__accumulate(copy);			// this := 2*(a*(b - 1)/2) + a = a*b
+			factoradic copy = *this;		// copy := a
+			fc.decrement();					// fc := b - 1
+			fc.div2();						// fc := (b - 1)/2
+			factoradic_fast_multiply(fc);	// this := a*(b - 1)/2
+			mult2();						// this := 2*(a*(b - 1)/2)
+			__accumulate(copy);				// this := 2*(a*(b - 1)/2) + a = a*b
 		}
 	}
 }
