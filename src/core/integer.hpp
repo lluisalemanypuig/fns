@@ -134,6 +134,8 @@ class integer {
 		
 		integer& operator++ ();		// prefix:	++a
         integer operator++ (int);	// postfix:	a++
+        integer& operator-- ();		// prefix:	--a
+        integer operator-- (int);	// postfix:	a--
 		
 		inline friend
 		istream& operator>> (istream& is, integer& i) {

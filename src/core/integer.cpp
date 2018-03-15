@@ -215,10 +215,20 @@ integer& integer::operator++ () {
    return *this;
 }
 
-integer integer::operator++ (int)
-{
+integer integer::operator++ (int) {
    integer r(*this);
    ++(*this);
+   return r;
+}
+
+integer& integer::operator-- () {
+   *this -= 1;
+   return *this;
+}
+
+integer integer::operator-- (int) {
+   integer r(*this);
+   --(*this);
    return r;
 }
 
