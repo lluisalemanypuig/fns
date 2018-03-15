@@ -207,6 +207,59 @@ void factoradic::__substract(const factoradic& f) {
 	assert(carry == 0);
 }
 
+void factoradic::fast_multiply(int fc) {
+	// if b is even:
+	//     a*b = a*(b/2) + a*(b/2) = 2*(a*(b/2))
+	// if b is odd:
+	//     a*b = a*((b - 1)/2) + a*((b - 1)/2) + a = 2*(a*((b - 1)/2)) + a
+	//	       = a*(b - 1) + a = a*b
+	
+	if (fc != 1) {
+		// fc := b
+		
+		if (fc%2 == 0) {
+			fc /= 2;
+			fast_multiply(fc);
+			mult2();
+		}
+		else {
+			factoradic copy = *this;	// copy := a
+			--fc;						// fc := b - 1
+			fc /= 2;					// fc := (b - 1)/2
+			fast_multiply(fc);			// this := a*(b - 1)/2
+			mult2();					// this := 2*(a*(b - 1)/2)
+			__accumulate(copy);			// this := 2*(a*(b - 1)/2) + a = a*b
+		}
+	}
+}
+
+void factoradic::fast_multiply(const integer& i) {
+	// if b is even:
+	//     a*b = a*(b/2) + a*(b/2) = 2*(a*(b/2))
+	// if b is odd:
+	//     a*b = a*((b - 1)/2) + a*((b - 1)/2) + a = 2*(a*((b - 1)/2)) + a
+	//	       = a*(b - 1) + a = a*b
+	
+	if (i != 1) {
+		// fc := b
+		integer fc = i;
+		
+		if (fc%2 == 0) {
+			fc /= 2;
+			fast_multiply(fc);
+			mult2();
+		}
+		else {
+			factoradic copy = *this;	// copy := a
+			--fc;						// fc := b - 1
+			fc /= 2;					// fc := (b - 1)/2
+			fast_multiply(fc);			// this := a*(b - 1)/2
+			mult2();					// this := 2*(a*(b - 1)/2)
+			__accumulate(copy);			// this := 2*(a*(b - 1)/2) + a = a*b
+		}
+	}
+}
+
 void factoradic::fast_multiply(const factoradic& f) {
 	// if b is even:
 	//     a*b = a*(b/2) + a*(b/2) = 2*(a*(b/2))

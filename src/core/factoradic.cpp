@@ -27,9 +27,15 @@ factoradic& factoradic::operator= (const factoradic& f) {
 
 // ADDITION
 
-factoradic factoradic::operator+ (const integer& k) const {
+factoradic factoradic::operator+ (int i) const {
 	factoradic fc = *this;
-	fc += k;
+	fc += i;
+	return fc;
+}
+
+factoradic factoradic::operator+ (const integer& i) const {
+	factoradic fc = *this;
+	fc += i;
 	return fc;
 }
 
@@ -39,8 +45,13 @@ factoradic factoradic::operator+ (const factoradic& f) const {
 	return fc;
 }
 
-factoradic& factoradic::operator+= (const integer& k) {
-	accumulate(k);
+factoradic& factoradic::operator+= (int i) {
+	accumulate(integer(i));
+	return *this;
+}
+
+factoradic& factoradic::operator+= (const integer& i) {
+	accumulate(i);
 	return *this;
 }
 
@@ -62,10 +73,32 @@ factoradic& factoradic::operator-() {
 	return *this;
 }
 
+factoradic factoradic::operator- (int i) const {
+	factoradic fc = *this;
+	fc -= i;
+	return fc;
+}
+
+factoradic factoradic::operator- (const integer& i) const {
+	factoradic fc = *this;
+	fc -= i;
+	return fc;
+}
+
 factoradic factoradic::operator- (const factoradic& f) const {
 	factoradic fc = *this;
 	fc -= f;
 	return fc;
+}
+
+factoradic& factoradic::operator-= (int i) {
+	substract(integer(i));
+	return *this;
+}
+
+factoradic& factoradic::operator-= (const integer& i) {
+	substract(i);
+	return *this;
 }
 
 factoradic& factoradic::operator-= (const factoradic& f) {
@@ -75,10 +108,40 @@ factoradic& factoradic::operator-= (const factoradic& f) {
 
 // MULTIPLICATION
 
+factoradic factoradic::operator* (int i) const {
+	factoradic fc = *this;
+	fc *= i;
+	return fc;
+}
+
+factoradic factoradic::operator* (const integer& i) const {
+	factoradic fc = *this;
+	fc *= i;
+	return fc;
+}
+
 factoradic factoradic::operator* (const factoradic& f) const {
 	factoradic fc = *this;
 	fc *= f;
 	return fc;
+}
+
+factoradic& factoradic::operator*= (int i) {
+	bool res_neg = (neg and i >= 0) or (not neg and i < 0);
+	
+	fast_multiply(i);
+	
+	neg = res_neg;
+	return *this;
+}
+
+factoradic& factoradic::operator*= (const integer& i) {
+	bool res_neg = (neg and not i.is_negative()) or (not neg and i.is_negative());
+	
+	fast_multiply(i);
+	
+	neg = res_neg;
+	return *this;
 }
 
 factoradic& factoradic::operator*= (const factoradic& f) {

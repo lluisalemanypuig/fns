@@ -4,25 +4,25 @@
 
 // COMPARISON
 
-bool factoradic::operator== (int k) const {
+bool factoradic::operator== (int i) const {
 	factoradic as_factoradic;
-	as_factoradic.from_decimal(k);
+	as_factoradic.from_decimal(i);
 	return *this == as_factoradic;
 }
 
-bool factoradic::operator== (integer k) const {
+bool factoradic::operator== (const integer& i) const {
 	factoradic as_factoradic;
-	as_factoradic.from_decimal(k);
+	as_factoradic.from_decimal(i);
 	return *this == as_factoradic;
 }
 
-bool factoradic::operator== (const factoradic& k) const {
-	if ((neg and not k.neg) or (not neg and k.neg)) {
+bool factoradic::operator== (const factoradic& f) const {
+	if ((neg and not f.neg) or (not neg and f.neg)) {
 		return false;
 	}
 	
 	size_t L = radixs.size();
-	size_t kL = k.radixs.size();
+	size_t kL = f.radixs.size();
 	
 	// compare the "common radixs". If any is different then
 	// so are the numbers
@@ -33,7 +33,7 @@ bool factoradic::operator== (const factoradic& k) const {
 	bool equal = true;
 	size_t r = 0;
 	while (equal and r < L and r < kL) {
-		if (radixs[r] != k.radixs[r]) {
+		if (radixs[r] != f.radixs[r]) {
 			equal = false;
 		}
 		++r;
@@ -45,7 +45,7 @@ bool factoradic::operator== (const factoradic& k) const {
 	
 	if (L != kL and equal) {
 		// longest radix vector
-		const vector<ushort>& rest = (L < kL ? k.radixs : radixs);
+		const vector<ushort>& rest = (L < kL ? f.radixs : radixs);
 		while (r < rest.size() and rest[r] == 0) {
 			++r;
 		}
@@ -60,24 +60,24 @@ bool factoradic::operator== (const factoradic& k) const {
 	return equal;
 }
 
-bool factoradic::operator> (int k) const {
+bool factoradic::operator> (int i) const {
 	factoradic as_factoradic;
-	as_factoradic.from_decimal(k);
+	as_factoradic.from_decimal(i);
 	return *this > as_factoradic;
 }
 
-bool factoradic::operator> (integer k) const {
+bool factoradic::operator> (const integer& i) const {
 	factoradic as_factoradic;
-	as_factoradic.from_decimal(k);
+	as_factoradic.from_decimal(i);
 	return *this > as_factoradic;
 }
 
-bool factoradic::operator> (const factoradic& k) const {
-	if (neg and not k.neg) {
+bool factoradic::operator> (const factoradic& f) const {
+	if (neg and not f.neg) {
 		// (< 0) >? (> 0) -> No
 		return false;
 	}
-	if (not neg and k.neg) {
+	if (not neg and f.neg) {
 		// (> 0) >? (< 0) -> Yes
 		return true;
 	}
@@ -91,8 +91,8 @@ bool factoradic::operator> (const factoradic& k) const {
 	while (pnZ_t > 0 and radixs[pnZ_t] == 0) {
 		--pnZ_t;
 	}
-	size_t pnZ_k = k.radixs.size() - 1;
-	while (pnZ_k > 0 and k.radixs[pnZ_k] == 0) {
+	size_t pnZ_k = f.radixs.size() - 1;
+	while (pnZ_k > 0 and f.radixs[pnZ_k] == 0) {
 		--pnZ_k;
 	}
 	
@@ -100,7 +100,7 @@ bool factoradic::operator> (const factoradic& k) const {
 	if (pnZ_t != pnZ_k) {
 		
 		// if both are positive:
-		if (not neg and not k.neg) {
+		if (not neg and not f.neg) {
 			return pnZ_t > pnZ_k;
 		}
 		
@@ -111,40 +111,38 @@ bool factoradic::operator> (const factoradic& k) const {
 	// when in the same position, move the pointers to the first 
 	// pair of different radixs
 	
-	while (pnZ_t > 0 and radixs[pnZ_t] == k.radixs[pnZ_t]) {
+	while (pnZ_t > 0 and radixs[pnZ_t] == f.radixs[pnZ_t]) {
 		--pnZ_t;
 	}
 	
 	// if both are positive:
-	if (not neg and not k.neg) {
-		return radixs[pnZ_t] > k.radixs[pnZ_t];
+	if (not neg and not f.neg) {
+		return radixs[pnZ_t] > f.radixs[pnZ_t];
 	}
 	
 	// if both are negative:
-	return radixs[pnZ_t] < k.radixs[pnZ_t];
+	return radixs[pnZ_t] < f.radixs[pnZ_t];
 }
 
-bool factoradic::operator>= (int k) const				{ return *this > k or *this == k; }
-bool factoradic::operator>= (integer k) const			{ return *this > k or *this == k; }
-bool factoradic::operator>= (const factoradic& k) const	{ return *this > k or *this == k; }
+bool factoradic::operator>= (int i) const				{ return *this > i or *this == i; }
+bool factoradic::operator>= (const integer& i) const	{ return *this > i or *this == i; }
+bool factoradic::operator>= (const factoradic& f) const	{ return *this > f or *this == f; }
 
-bool factoradic::operator< (int k) const {
+bool factoradic::operator< (int i) const {
 	factoradic as_factoradic;
-	as_factoradic.from_decimal(k);
+	as_factoradic.from_decimal(i);
 	return as_factoradic > *this;
 }
 
-bool factoradic::operator< (integer k) const {
+bool factoradic::operator< (const integer& i) const {
 	factoradic as_factoradic;
-	as_factoradic.from_decimal(k);
+	as_factoradic.from_decimal(i);
 	return as_factoradic > *this;
 }
 
-bool factoradic::operator< (const factoradic& k) const {
-	return k > *this;
-}
+bool factoradic::operator< (const factoradic& f) const 	{ return f > *this; }
 
 bool factoradic::operator<= (int k) const				{ return *this < k or *this == k; }
-bool factoradic::operator<= (integer k) const			{ return *this < k or *this == k; }
+bool factoradic::operator<= (const integer& i) const	{ return *this < i or *this == i; }
 bool factoradic::operator<= (const factoradic& k) const	{ return *this < k or *this == k; }
 

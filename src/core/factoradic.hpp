@@ -34,6 +34,8 @@ class factoradic {
 		template<class T> void substract(const T& f);
 		
 		// fast multiplication algorithm
+		void fast_multiply(int i);
+		void fast_multiply(const integer& i);
 		void fast_multiply(const factoradic& f);
 		
 		// converts this factoradic number to base 10
@@ -57,41 +59,51 @@ class factoradic {
 		
 		factoradic& operator= (const factoradic& f);
 		
-		factoradic operator+ (const integer& k) const;
+		factoradic operator+ (int i) const;
+		factoradic operator+ (const integer& i) const;
 		factoradic operator+ (const factoradic& f) const;
-		factoradic& operator+= (const integer& k);
+		factoradic& operator+= (int i);
+		factoradic& operator+= (const integer& i);
 		factoradic& operator+= (const factoradic& f);
 		
 		factoradic operator-() const;
 		factoradic& operator-();
+		factoradic operator- (int i) const;
+		factoradic operator- (const integer& i) const;
 		factoradic operator- (const factoradic& f) const;
+		factoradic& operator-= (int i);
+		factoradic& operator-= (const integer& i);
 		factoradic& operator-= (const factoradic& f);
 		
+		factoradic operator* (int i) const;
+		factoradic operator* (const integer& i) const;
 		factoradic operator* (const factoradic& f) const;
+		factoradic& operator*= (int i);
+		factoradic& operator*= (const integer& i);
 		factoradic& operator*= (const factoradic& f);
 		
 		factoradic operator/ (const factoradic& f) const;
 		factoradic& operator/= (const factoradic& f);
 		
-		bool operator== (int k) const;
-		bool operator== (integer k) const;
-		bool operator== (const factoradic& k) const;
+		bool operator== (int i) const;
+		bool operator== (const integer& i) const;
+		bool operator== (const factoradic& f) const;
 		
-		bool operator> (int k) const;
-		bool operator> (integer k) const;
-		bool operator> (const factoradic& k) const;
+		bool operator> (int i) const;
+		bool operator> (const integer& i) const;
+		bool operator> (const factoradic& f) const;
 		
-		bool operator>= (int k) const;
-		bool operator>= (integer k) const;
-		bool operator>= (const factoradic& k) const;
+		bool operator>= (int i) const;
+		bool operator>= (const integer& i) const;
+		bool operator>= (const factoradic& f) const;
 		
-		bool operator< (int k) const;
-		bool operator< (integer k) const;
-		bool operator< (const factoradic& k) const;
+		bool operator< (int i) const;
+		bool operator< (const integer& i) const;
+		bool operator< (const factoradic& f) const;
 		
-		bool operator<= (int k) const;
-		bool operator<= (integer k) const;
-		bool operator<= (const factoradic& k) const;
+		bool operator<= (int i) const;
+		bool operator<= (const integer& i) const;
+		bool operator<= (const factoradic& f) const;
 		
 		factoradic& operator++ ();		// prefix:	++a
         factoradic operator++ (int);	// postfix:	a++
