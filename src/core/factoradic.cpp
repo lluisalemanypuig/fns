@@ -129,7 +129,7 @@ factoradic factoradic::operator* (const factoradic& f) const {
 factoradic& factoradic::operator*= (int i) {
 	bool res_neg = (neg and i >= 0) or (not neg and i < 0);
 	
-	fast_multiply(i);
+	integer_fast_multiply(i);
 	
 	neg = res_neg;
 	return *this;
@@ -138,7 +138,7 @@ factoradic& factoradic::operator*= (int i) {
 factoradic& factoradic::operator*= (const integer& i) {
 	bool res_neg = (neg and not i.is_negative()) or (not neg and i.is_negative());
 	
-	fast_multiply(i);
+	integer_fast_multiply(i);
 	
 	neg = res_neg;
 	return *this;

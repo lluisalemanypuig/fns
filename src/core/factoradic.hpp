@@ -34,8 +34,7 @@ class factoradic {
 		template<class T> void substract(const T& f);
 		
 		// fast multiplication algorithm
-		void fast_multiply(int i);
-		void fast_multiply(const integer& i);
+		template<class T> void integer_fast_multiply(const T& i);
 		void fast_multiply(const factoradic& f);
 		
 		// converts this factoradic number to base 10
