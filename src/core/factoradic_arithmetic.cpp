@@ -2,26 +2,7 @@
 
 /// PRIVATE
 
-void factoradic::increment() {
-	if (is_zero()) {
-		// this number is 0
-		from_decimal(1);
-		return;
-	}
-	
-	// let a := *this
-	
-	// if a < 0 then
-	// -a + 1 = -(a - 1)
-	if (neg) {
-		neg = false;	// *this <- a
-		decrement();	// *this <- a - 1
-		neg = true;		// *this <- -(a - 1)
-		return;
-	}
-	
-	// if a > 0 then apply algorithm
-	
+void factoradic::__increment() {
 	size_t carry = 1;
 	size_t l = 1;
 	
@@ -42,28 +23,11 @@ void factoradic::increment() {
 	}
 }
 
-void factoradic::decrement() {
-	if (is_zero()) {
-		// this number is 0
-		from_decimal(-1);
-		return;
-	}
-	
-	// let a := *this
-	
-	// if a < 0 then
-	// (-a) - 1 = -(a + 1)
-	if (neg) {
-		neg = false;	// *this = a
-		increment();	// *this = a + 1
-		neg = true;		// *this = -(a + 1)
-		return;
-	}
-	
+void factoradic::__decrement() {
 	size_t l = 0;
 	
 	ushort carry = 1;
-	while (l < radixs.size()) {
+	while (l < radixs.size() and carry > 0) {
 		
 		// difference between the pointed radixs
 		int dif = radixs[l] - carry;
@@ -81,6 +45,52 @@ void factoradic::decrement() {
 		
 		++l;
 	}
+	
+	// the algorithm ensures that carry is 0 at the end of the while loop.
+	assert(carry == 0);
+}
+
+void factoradic::increment() {
+	if (is_zero()) {
+		// this number is 0
+		from_decimal(1);
+		return;
+	}
+	
+	// let a := *this
+	
+	// if a < 0 then
+	// -a + 1 = -(a - 1)
+	if (neg) {
+		neg = false;	// *this := a
+		__decrement();	// *this := a - 1
+		neg = true;		// *this := -(a - 1)
+		return;
+	}
+	
+	// if a > 0 then apply algorithm
+	__increment();
+}
+
+void factoradic::decrement() {
+	if (is_zero()) {
+		// this number is 0
+		from_decimal(-1);
+		return;
+	}
+	
+	// let a := *this
+	
+	// if a < 0 then
+	// (-a) - 1 = -(a + 1)
+	if (neg) {
+		neg = false;	// *this := a
+		__increment();	// *this := a + 1
+		neg = true;		// *this := -(a + 1)
+		return;
+	}
+	
+	__decrement();
 }
 
 void factoradic::__accumulate(const factoradic& f) {
@@ -198,7 +208,11 @@ void factoradic::__substract(const factoradic& f) {
 		// even if this was true, since we are calling this function
 		// assuming that (*this > f) this implies that the extra
 		// radixs in f are all 0s
+		// -->
+		// if I'm wrong then this assertion will make the program
+		// terminate its execution
 		
+		assert( false );
 	}
 	
 	// claim: carry cannot be different from 0 because we are calling

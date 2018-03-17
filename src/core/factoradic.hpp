@@ -21,6 +21,9 @@ class factoradic {
 		// neg = false -> this number is positive
 		bool neg;
 		
+		void __increment();	// increment by 1 a positive number
+		void __decrement();	// decrement by 1 a positive number
+		
 		void increment();	// increment this number by 1
 		void decrement();	// decrement this number by 1
 		

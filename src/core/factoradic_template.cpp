@@ -234,12 +234,12 @@ void factoradic::integer_fast_multiply(const T& i) {
 			mult2();
 		}
 		else {
-			factoradic copy = *this;	// copy := a
-			--fc;						// fc := b - 1
-			fc /= 2;					// fc := (b - 1)/2
-			factoradic_fast_multiply(fc);			// this := a*(b - 1)/2
-			mult2();					// this := 2*(a*(b - 1)/2)
-			__accumulate(copy);			// this := 2*(a*(b - 1)/2) + a = a*b
+			factoradic copy = *this;		// copy := a
+			--fc;							// fc := b - 1
+			fc /= 2;						// fc := (b - 1)/2
+			factoradic_fast_multiply(fc);	// this := a*(b - 1)/2
+			mult2();						// this := 2*(a*(b - 1)/2)
+			__accumulate(copy);				// this := 2*(a*(b - 1)/2) + a = a*b
 		}
 	}
 }

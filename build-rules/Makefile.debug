@@ -16,6 +16,7 @@ OBJECTS_DEB = 	$(DEB_BIN_DIR)/factoradic.o				\
 
 CALC_OBJECTS_DEB =  $(DEB_BIN_DIR)/calculator.o	\
 					$(DEB_BIN_DIR)/operations.o \
+					$(DEB_BIN_DIR)/command.o \
 					$(OBJECTS_DEB)
 
 PROC_PERM_OBJECTS_DEB = $(DEB_BIN_DIR)/permutations.o \
@@ -44,6 +45,9 @@ $(DEB_BIN_DIR)/calculator: $(CALC_OBJECTS_DEB)
 	g++ $(DEB_FLAGS) -o $(DEB_BIN_DIR)/calculator $(CALC_OBJECTS_DEB) $(LIBS)
 
 $(DEB_BIN_DIR)/calculator.o: $(SRC_DIR)/calculator.cpp $(CALC_DPS)
+	g++ $(DEB_FLAGS) -c $< -o $@ -I$(INCLUDE)
+
+$(DEB_BIN_DIR)/command.o: $(UTILS_DIR)/command.cpp $(COMMAND_DPS)
 	g++ $(DEB_FLAGS) -c $< -o $@ -I$(INCLUDE)
 
 $(DEB_BIN_DIR)/operations.o: $(UTILS_DIR)/operations.cpp $(FACTORADIC_DPS)

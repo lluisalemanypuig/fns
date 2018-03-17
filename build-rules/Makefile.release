@@ -16,6 +16,7 @@ OBJECTS_REL = 	$(REL_BIN_DIR)/factoradic.o				\
 
 CALC_OBJECTS_REL =  $(REL_BIN_DIR)/calculator.o	\
 					$(REL_BIN_DIR)/operations.o \
+					$(REL_BIN_DIR)/command.o \
 					$(OBJECTS_REL)
 
 PROC_PERM_OBJECTS_REL = $(REL_BIN_DIR)/permutations.o \
@@ -44,6 +45,9 @@ $(REL_BIN_DIR)/calculator: $(CALC_OBJECTS_REL)
 	g++ $(REL_FLAGS) -o $(REL_BIN_DIR)/calculator $(CALC_OBJECTS_REL) $(LIBS)
 
 $(REL_BIN_DIR)/calculator.o: $(SRC_DIR)/calculator.cpp $(CALC_DPS)
+	g++ $(REL_FLAGS) -c $< -o $@ -I$(INCLUDE)
+
+$(REL_BIN_DIR)/command.o: $(UTILS_DIR)/command.cpp $(COMMAND_DPS)
 	g++ $(REL_FLAGS) -c $< -o $@ -I$(INCLUDE)
 
 $(REL_BIN_DIR)/operations.o: $(UTILS_DIR)/operations.cpp $(FACTORADIC_DPS)

@@ -7,6 +7,7 @@ using namespace std;
 #include "core/factoradic.hpp"
 #include "core/integer.hpp"
 #include "utils/operations.hpp"
+#include "utils/command.hpp"
 #include "utils/time.hpp"
 #include "utils/defs.hpp"
 using namespace operations;
@@ -66,39 +67,13 @@ void print_usage() {
 	cout << endl;
 }
 
-// Global variables used only to avoid declaring the same variables
-// over and over again.
-factoradic f1, f2, R;
-string var_name, var1, op, var2;
+/// <GLOBAL VARIABLES>
+// *Some* Global variables. Only used here
+memory data;
+bool print_time;
+/// </GLOBAL VARIABLES>
 
-void define_variable(memory& data) {
-	cin >> var_name >> var1 >> op >> var2;
-	
-	apply_op(data, var1, var2, f1, f2, R, op);
-	
-	if (data.find(var_name) == data.end()) {
-		data.insert( make_pair(var_name, R) );
-	}
-	else {
-		data[var_name] = R;
-	}
-	
-	cout << "    "
-		 << var_name << " := "
-		 << var1 << op << var2 << " = "
-		 << f1 << op << f2 << " = "
-		 << R << " (" << R.to_decimal() << ")"
-		 << endl;
-}
-
-void compare_variables(const memory& data) {
-	string var1, op, var2;
-	cin >> var1 >> op >> var2;
-	
-	apply_comp(data, var1, var2, f1, f2, R, op);
-}
-
-void list_all_variables(const memory& data) {
+void list_all_variables() {
 	cout << endl;
 	for (const auto& P : data) {
 		cout << "    " << P.first << " = " << P.second << " (" << P.second.to_decimal() << ")" << endl;
@@ -106,112 +81,121 @@ void list_all_variables(const memory& data) {
 	cout << endl;
 }
 
-int main(int argc, char *argv[]) {
-	memory data;
+inline
+bool execute_command(const command& c) {
+	factoradic f1, f2, R;
 	
-	string option;
-	cout << "> ";
-	
-	double begin, end;
-	bool print_time;
-	
-	while (cin >> option and option != "exit") {
-		print_time = true;
-		begin = timing::now();
-		
-		if (option == "var") {
-			cin >> var_name;
-			
-			integer value;
-			cin >> value;
-			
-			if (data.find(var_name) == data.end()) {
-				data.insert( make_pair(var_name, factoradic(value)) );
-			}
-			else {
-				data[var_name] = factoradic(value);
-			}
-		}
-		else if (option == "op") {
-			cin >> var1 >> op >> var2;
-			apply_op(data, var1, var2, f1, f2, R, op);
-		}
-		else if (option == "cmp") {
-			compare_variables(data);
-		}
-		else if (option == "halve") {
-			cin >> var1;
-			halve_value(data, var1, f1, R);
-		}
-		else if (option == "double") {
-			cin >> var1;
-			double_value(data, var1, f1, R);
-		}
-		else if (option == "inc") {
-			cin >> var1;
-			increment_value(data, var1, f1, R);
-		}
-		else if (option == "dec") {
-			cin >> var1;
-			decrement_value(data, var1, f1, R);
-		}
-		else if (option == "ff") {
-			cin >> var_name;
-			
-			size_t fact;
-			cin >> fact;
-			
-			factoradic F;
-			F.from_factorial(fact);
-			
-			if (data.find(var_name) == data.end()) {
-				data.insert( make_pair(var_name, F) );
-			}
-			else {
-				data[var_name] = F;
-			}
-		}
-		else if (option == "def") {
-			define_variable(data);
-		}
-		else if (option == "del") {
-			cin >> var_name;
-			
-			if (data.find(var_name) == data.end()) {
-				cout << endl;
-				cout << "    Warning: variable '" << var_name << "' does not exist" << endl;
-				cout << endl;
-				print_time = false;
-			}
-			else {
-				data.erase(var_name);
-			}
-		}
-		else if (option == "even") {
-			cin >> var_name;
-			
-			if (data.find(var_name) == data.end()) {
-				factoradic F(var_name);
-				cout << "    " << "Is '" << F << "' even? " << (F.is_even() ? "Yes" : "No") << endl;
-			}
-			else {
-				cout << "    " << "Is '" << data[var_name] << "' even? " << (data[var_name].is_even() ? "Yes" : "No") << endl;
-			}
-		}
-		else if (option == "ls") {
-			list_all_variables(data);
-		}
-		else if (option == "help") {
-			print_usage();
+	if (c.action == "var") {
+		if (data.find(c.new_var) == data.end()) {
+			data.insert( make_pair(c.new_var, factoradic(c.big_value)) );
 		}
 		else {
-			cerr << endl;
-			cerr << "Error: unknown command '" << option << "'" << endl;
-			cerr << endl;
-			print_time = false;
+			data[c.new_var] = factoradic(c.big_value);
+		}
+	}
+	else if (c.action == "op") {
+		apply_op(data, c.var1, c.var2, f1, f2, R, c.op);
+	}
+	else if (c.action == "cmp") {
+		apply_comp(data, c.var1, c.var2, f1, f2, R, c.op);
+	}
+	else if (c.action == "halve") {
+		halve_value(data, c.var1, f1, R);
+	}
+	else if (c.action == "double") {
+		double_value(data, c.var1, f1, R);
+	}
+	else if (c.action == "inc") {
+		increment_value(data, c.var1, f1, R);
+	}
+	else if (c.action == "dec") {
+		decrement_value(data, c.var1, f1, R);
+	}
+	else if (c.action == "ff") {
+		factoradic F;
+		F.from_factorial(c.small_value);
+		
+		if (data.find(c.new_var) == data.end()) {
+			data.insert( make_pair(c.new_var, F) );
+		}
+		else {
+			data[c.new_var] = F;
+		}
+	}
+	else if (c.action == "def") {
+		apply_op(data, c.var1, c.var2, f1, f2, R, c.op);
+	
+		if (data.find(c.new_var) == data.end()) {
+			data.insert( make_pair(c.new_var, R) );
+		}
+		else {
+			data[c.new_var] = R;
 		}
 		
-		end = timing::now();
+		cout << "    "
+			 << c.new_var << " := "
+			 << c.var1 << c.op << c.var2 << " = "
+			 << f1 << c.op << f2 << " = "
+			 << R << " (" << R.to_decimal() << ")"
+			 << endl;
+	}
+	else if (c.action == "del") {
+		memory::iterator it;
+		if ((it = data.find(c.var1)) != data.end()) {
+			data.erase(it);
+		}
+		else {
+			cout << "    Error: variable '" << c.var1 << "' does not exist" << endl;
+			print_time = false;
+		}
+	}
+	else if (c.action == "even") {
+		memory::iterator it;
+		if ((it = data.find(c.var1)) != data.end()) {
+			const factoradic& F = it->second;
+			cout << "    Is '" << F << " (" << F.to_decimal() << ") even? ";
+			cout << (F.is_even() ? "Yes" : "No") << endl;
+		}
+		else {
+			cout << "Error: variable '" << c.var1 << "' does not exist" << endl;
+			print_time = false;
+		}
+	}
+	else if (c.action == "ls") {
+		list_all_variables();
+	}
+	else if (c.action == "help") {
+		print_usage();
+	}
+	else if (c.action == "repeat") {
+		bool exit_calc = false;
+		
+		for (size_t i = 0; i < c.small_value and not exit_calc; ++i) {
+			exit_calc = execute_command(*c.sub_command);
+		}
+		
+		return exit_calc;
+	}
+	else if (c.action == "exit") {
+		return true;
+	}
+	
+	return false;
+}
+
+int main(int argc, char *argv[]) {
+	
+	command main_command;
+	cout << "> ";
+	bool exit_calc = false;
+	
+	while (not exit_calc and cin >> main_command) {
+		print_time = true;
+		double begin = timing::now();
+		
+		exit_calc = execute_command(main_command);
+		
+		double end = timing::now();
 		if (print_time) {
 			cout << "    In " << timing::elapsed_time(begin, end) << " s" << endl;
 		}
@@ -219,5 +203,6 @@ int main(int argc, char *argv[]) {
 		cout << "> ";
 	}
 	
+	main_command.clear();
 }
 
