@@ -43,6 +43,8 @@ void print_usage() {
 	cout << "      > del v: delete variable with name 'v'" << endl;
 	cout << "      > even s1: checks if the contents of 's1' is even." << endl;
 	cout << "            s1 must be either a variable name or a number in base 10" << endl;
+	cout << "      > repeat n OPTION: repeats the given OPTION n times." << endl;
+	cout << "            n must be a number in base 10" << endl;
 	cout << "      > ls: lists all variables and their content" << endl;
 	cout << "      > exit: leave the program ('CTRL + D' is also valid)" << endl;
 	cout << "      > help: print this message" << endl;
