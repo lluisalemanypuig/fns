@@ -58,13 +58,27 @@ namespace operations {
 
 	op_type mul(const memory& data, const string& var1, const string& var2, factoradic& f1, factoradic& f2, factoradic& mul) {
 		op_type T = read(data, var1, var2, f1, f2);
-		mul = f1*f2;
+		
+		if (f2 < 10000) {
+			mul = f1 * (f2.to_decimal().to_int());
+		}
+		else {
+			mul = f1*f2;
+		}
+		
 		return T;
 	}
 
 	op_type div(const memory& data, const string& var1, const string& var2, factoradic& f1, factoradic& f2, factoradic& div) {
 		op_type T = read(data, var1, var2, f1, f2);
-		div = f1/f2;
+		
+		if (f2 < 10000) {
+			div = f1/ (f2.to_decimal().to_int());
+		}
+		else {
+			div = f1/f2;
+		}
+		
 		return T;
 	}
 	
