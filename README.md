@@ -18,14 +18,32 @@ Although it's not likely to be needed, this software also allows arbitrarily lar
 The [GMP](https://gmplib.org/) library is needed to compile this project. Also, the [OpenMP](http://www.openmp.org/)
 library is needed for parallelisation (when processing the permutations in parallel).
 
-## Compiling
+## Compilation and execution
+
+### Compilation
 
 There are two modes of compilation: debug and release. Issue the following commands for each mode:
 
-### Debug
+#### Debug
 
 $ make -f build-rules/Makefile debug
 
-### Release
+#### Release
 
 $ make -f build-rules/Makefile release
+
+### Execution
+
+Two executable files will be generated after all the code has been compiled. In order to use the calculator issue the
+following command:
+
+$ ./calculator
+
+If one wants to run the demo to process the permutations of a list in parallel issue the following command:
+
+$ ./process_permutations N t
+
+where N is the length of the list of elements to be permuted, and t is the number threads. For example, in order to
+process all permutations of a list of N=10 elements with t=8 threads issue the following command:
+
+$ ./process_permutations 10 8
