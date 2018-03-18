@@ -248,6 +248,79 @@ void factoradic::factoradic_fast_multiply(const factoradic& f) {
 	}
 }
 
+void factoradic::int_divide(uint i) {
+	if (radixs.size() == 1) {
+		// this number is 0 -> no work to do
+		return;
+	}
+	
+	ushort carry = 0;
+	size_t r = radixs.size() - 1;
+	
+	do {
+		ushort radix = radixs[r];
+		size_t s = radix + carry;
+		
+		cout << "r= " << r << endl;
+		cout << "radixs[" << r << "]= " << radixs[r] << endl;
+		cout << "carry= " << carry << endl;
+		cout << "s= " << s << endl;
+		
+		// i is a divisor of s
+		if (s%i == 0) {
+			cout << "    perfect division: s=" << s << ". i=" << i << endl;
+			
+			size_t d = s/i;
+			cout << "    d= " << d << endl;
+			
+			radixs[r] = d%(r + 1);
+			carry = d - d%r;
+		}
+		else {
+			
+			if (s < i) {
+				cout << "    s(" << s << ") < i(" << i << ")" << endl;
+				
+				radixs[r] = 0;
+				carry = s*r;
+			}
+			else {
+				cout << "    s(" << s << ") > i(" << i << ")" << endl;
+				
+				// radix + carry > i
+				radixs[r] = s/i;
+				carry = (s%i)*r;
+			}
+		}
+		
+		cout << "radixs[" << r << "]= " << radixs[r] << endl;
+		cout << "carry= " << carry << endl;
+		cout << "---------" << endl;
+		
+		/*
+		// calculate carry
+		if ((carry + pradix)%i == i - 1) {
+			carry = r;
+		}
+		else {
+			carry = 0;
+		}
+		*/
+		
+		--r;
+	}
+	while (r > 0);
+	
+	if (carry > 0) {
+		// there is still some carry
+		cout << "************" << endl;
+		cout << "carry left: " << carry << endl;
+	}
+}
+
+void factoradic::integer_divide(const integer& i) {
+}
+
 void factoradic::mult2() {
 	if (radixs.size() == 1) {
 		// this number is 0 -> no work to do
@@ -268,13 +341,13 @@ void factoradic::div2() {
 	size_t r = radixs.size() - 1;
 	
 	do {
-		ushort pradix = radixs[r];
+		ushort radix = radixs[r];
 		
 		// calculate new r-th radix
-		radixs[r] = (carry + pradix)/2;
+		radixs[r] = (carry + radix)/2;
 		
 		// calculate carry
-		if (((carry + pradix) & 0x1) == 1) {
+		if (((carry + radix) & 0x1) == 1) {
 			carry = r;
 		}
 		else {

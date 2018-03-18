@@ -21,24 +21,28 @@ class factoradic {
 		// neg = false -> this number is positive
 		bool neg;
 		
-		void __increment();	// increment by 1 a positive number
-		void __decrement();	// decrement by 1 a positive number
+		void __increment();	// increment by 1 a positive number (> 0)
+		void __decrement();	// decrement by 1 a positive number (> 0)
 		
 		void increment();	// increment this number by 1
 		void decrement();	// decrement this number by 1
 		
 		// accumulate to this positive number the positive number f
+		template<class T> void accumulate(const T& i); // i: decimal
 		void __accumulate(const factoradic& f);
-		template<class T> void accumulate(const T& f);
 		
 		// substract from this positive number the poisitve number f
 		// precondition: *this > f, f >= 0
+		template<class T> void substract(const T& i); // i: decimal
 		void __substract(const factoradic& f);
-		template<class T> void substract(const T& f);
 		
 		// fast multiplication algorithm
-		template<class T> void integer_fast_multiply(const T& i);
+		template<class T> void integer_fast_multiply(const T& i); // i: decimal
 		void factoradic_fast_multiply(const factoradic& f);
+		
+		// divides this number by 'i' (decimal number)
+		void int_divide(uint i);
+		void integer_divide(const integer& i);
 		
 		// converts this factoradic number to base 10
 		template<class T> void __to_decimal(T& i) const;
@@ -84,7 +88,11 @@ class factoradic {
 		factoradic& operator*= (const integer& i);
 		factoradic& operator*= (const factoradic& f);
 		
+		factoradic operator/ (int i) const;
+		factoradic operator/ (const integer& i) const;
 		factoradic operator/ (const factoradic& f) const;
+		factoradic& operator/= (int i);
+		factoradic& operator/= (const integer& i);
 		factoradic& operator/= (const factoradic& f);
 		
 		bool operator== (int i) const;

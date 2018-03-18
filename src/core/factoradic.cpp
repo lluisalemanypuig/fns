@@ -155,16 +155,51 @@ factoradic& factoradic::operator*= (const factoradic& f) {
 
 // DIVISION
 
+factoradic factoradic::operator/ (int i) const {
+	factoradic fc = *this;
+	fc /= i;
+	return fc;
+}
+
+factoradic factoradic::operator/ (const integer& i) const {
+	factoradic fc = *this;
+	fc /= i;
+	return fc;
+}
+
 factoradic factoradic::operator/ (const factoradic& f) const {
 	factoradic fc = *this;
 	fc /= f;
 	return fc;
 }
 
+factoradic& factoradic::operator/= (int i) {
+	bool res_neg = (neg and i >= 0) or (not neg and i < 0);
+	
+	int_divide( (i < 0 ? -i : i) );
+	
+	neg = res_neg;
+	return *this;
+}
+
+factoradic& factoradic::operator/= (const integer& i) {
+	bool res_neg = (neg and not i.is_negative()) or (not neg and i.is_negative());
+	
+	integer_divide(i);
+	
+	neg = res_neg;
+	return *this;
+}
+
 factoradic& factoradic::operator/= (const factoradic& f) {
+	integer i;
+	f.to_decimal(i);
 	
-	cout << "Division not implemented" << endl;
+	bool res_neg = (neg and not f.neg) or (not neg and f.neg);
 	
+	integer_divide(i);
+	
+	neg = res_neg;
 	return *this;
 }
 
