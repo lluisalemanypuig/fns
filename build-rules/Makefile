@@ -9,7 +9,7 @@ RULES_DIR = $(PROJ_DIR)/build-rules
 DEB_BIN_DIR = $(PROJ_DIR)/bin-debug
 REL_BIN_DIR = $(PROJ_DIR)/bin-release
 
-GEN_FLAGS = -std=c++0x -fopenmp -Wunused -Wall
+GEN_FLAGS = -std=c++0x -fopenmp -Wunused -Wall -Wconversion
 
 INCLUDE = $(SRC_DIR)
 
