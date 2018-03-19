@@ -15,8 +15,7 @@ factoradic::factoradic(const integer& i) {
 	from_integer(i);
 }
 factoradic::factoradic(const string& i) {
-	integer I(i);
-	from_integer(I);
+	from_integer(integer(i));
 }
 factoradic::~factoradic() { }
 
@@ -49,12 +48,12 @@ factoradic factoradic::operator+ (const factoradic& f) const {
 }
 
 factoradic& factoradic::operator+= (int i) {
-	accumulate(integer(i));
+	accumulate(factoradic(i));
 	return *this;
 }
 
 factoradic& factoradic::operator+= (const integer& i) {
-	accumulate(i);
+	accumulate(factoradic(i));
 	return *this;
 }
 
@@ -95,12 +94,12 @@ factoradic factoradic::operator- (const factoradic& f) const {
 }
 
 factoradic& factoradic::operator-= (int i) {
-	substract(integer(i));
+	substract(factoradic(i));
 	return *this;
 }
 
 factoradic& factoradic::operator-= (const integer& i) {
-	substract(i);
+	substract(factoradic(i));
 	return *this;
 }
 

@@ -21,32 +21,36 @@ class factoradic {
 		// neg = false -> this number is positive
 		bool neg;
 		
+		/// SINGLE INCREMENTS/DECREMENTS
 		void __increment();	// increment by 1 a positive number (> 0)
 		void __decrement();	// decrement by 1 a positive number (> 0)
-		
 		void increment();	// increment this number by 1
 		void decrement();	// decrement this number by 1
 		
+		/// ACCUMULATE
 		// accumulate to this positive number the positive number f
-		template<class T> void accumulate(const T& i); // i: decimal
 		void __accumulate(const factoradic& f);
+		void accumulate(const factoradic& f);
 		
+		/// SUBSTRACT
 		// substract from this positive number the poisitve number f
 		// precondition: *this > f, f >= 0
-		template<class T> void substract(const T& i); // i: decimal
 		void __substract(const factoradic& f);
+		void substract(const factoradic& i);
 		
+		/// MULTIPLY
 		// fast multiplication algorithm
 		template<class T> void integer_fast_multiply(const T& i); // i: decimal
 		void factoradic_fast_multiply(const factoradic& f);
 		
+		/// DIVIDE
 		// divides this number by 'i' (decimal number)
 		void int_divide(size_t i);
 		void integer_divide(const integer& i);
 		
+		/// FROM/TO BASE-10 CONVERSIONS
 		// converts this factoradic number to base 10
 		template<class T> void __to_integer(T& i) const;
-		
 		// convert into factorial number system any positive number in base 10
 		template<class T> void __from_decimal(const T& i);
 		
