@@ -29,7 +29,7 @@ class integer {
 		
 		void init();
 		void init_si(int i);
-		void init_ui(unsigned int i);
+		void init_ui(size_t i);
 		void init(const char *s, int base = 10);
 		void init(const string& s, int base = 10);
 		void init(const integer& i);
@@ -39,7 +39,7 @@ class integer {
 		/// SET VALUE
 		
 		void set_si(int i);
-		void set_ui(unsigned int i);
+		void set_ui(size_t i);
 		void set(const char *s, int base = 10);
 		void set(const string& v, int base = 10);
 		void set(const integer& i);
@@ -47,90 +47,101 @@ class integer {
 		/// OPERATORS
 		
 		integer& operator= (int i);
+		integer& operator= (size_t i);
 		integer& operator= (const char *s);
 		integer& operator= (const string& v);
 		integer& operator= (const integer& i);
 		
 		bool operator== (int i) const;
+		bool operator== (size_t i) const;
 		bool operator== (const char *s) const;
 		bool operator== (const string& s) const;
 		bool operator== (const integer& i) const;
 		
 		bool operator!= (int i) const;
+		bool operator!= (size_t i) const;
 		bool operator!= (const char *s) const;
 		bool operator!= (const string& s) const;
 		bool operator!= (const integer& i) const;
 		
 		bool operator< (int i) const;
+		bool operator< (size_t i) const;
 		bool operator< (const char *s) const;
 		bool operator< (const string& s) const;
 		bool operator< (const integer& i) const;
 		
 		bool operator<= (int i) const;
+		bool operator<= (size_t i) const;
 		bool operator<= (const char *s) const;
 		bool operator<= (const string& s) const;
 		bool operator<= (const integer& i) const;
 		
 		bool operator> (int i) const;
+		bool operator> (size_t i) const;
 		bool operator> (const char *s) const;
 		bool operator> (const string& s) const;
 		bool operator> (const integer& i) const;
 		
 		bool operator>= (int i) const;
+		bool operator>= (size_t i) const;
 		bool operator>= (const char *s) const;
 		bool operator>= (const string& s) const;
 		bool operator>= (const integer& i) const;
 		
-		integer operator+ (unsigned int i) const;
+		integer operator+ (size_t i) const;
 		integer operator+ (const char *s) const;
 		integer operator+ (const string& s) const;
 		integer operator+ (const integer& i) const;
 		
-		integer& operator+= (unsigned int i);
+		integer& operator+= (size_t i);
 		integer& operator+= (const char *s);
 		integer& operator+= (const string& s);
 		integer& operator+= (const integer& i);
 		
 		integer operator- () const;
-		integer operator- (unsigned int i) const;
+		integer operator- (size_t i) const;
 		integer operator- (const char *s) const;
 		integer operator- (const string& s) const;
 		integer operator- (const integer& i) const;
 		
 		integer& operator- ();
-		integer& operator-= (unsigned int i);
+		integer& operator-= (size_t i);
 		integer& operator-= (const char *s);
 		integer& operator-= (const string& s);
 		integer& operator-= (const integer& i);
 		
 		integer operator* (int i) const;
+		integer operator* (size_t i) const;
 		integer operator* (const char *s) const;
 		integer operator* (const string& s) const;
 		integer operator* (const integer& i) const;
 		
 		integer& operator*= (int i);
+		integer& operator*= (size_t i);
 		integer& operator*= (const char *s);
 		integer& operator*= (const string& s);
 		integer& operator*= (const integer& i);
 		
 		integer operator/ (int i) const;
+		integer operator/ (size_t i) const;
 		integer operator/ (const char *s) const;
 		integer operator/ (const string& s) const;
 		integer operator/ (const integer& i) const;
 		
 		integer& operator/= (int i);
+		integer& operator/= (size_t i);
 		integer& operator/= (const char *s);
 		integer& operator/= (const string& s);
 		integer& operator/= (const integer& i);
 		
-		integer operator^ (unsigned int i) const;
+		integer operator^ (size_t i) const;
 		integer operator^ (const integer& i) const;
 		
-		integer& operator^= (unsigned int i);
+		integer& operator^= (size_t i);
 		integer& operator^= (const integer& i);
 		
 		integer operator% (const integer& i) const;
-		unsigned int operator% (unsigned int i) const;
+		long unsigned int operator% (size_t i) const;
 		
 		integer& operator++ ();		// prefix:	++a
         integer operator++ (int);	// postfix:	a++
@@ -160,7 +171,8 @@ class integer {
 		size_t bytes() const;
 		const mpz_t& get_raw_value() const;
 		int to_int() const;
-		unsigned int to_uint() const;
+		long int to_long_int() const;
+		long unsigned int to_uint() const;
 		
 		/// CONVERTERS
 		

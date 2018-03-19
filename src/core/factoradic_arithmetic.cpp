@@ -26,22 +26,17 @@ void factoradic::__increment() {
 void factoradic::__decrement() {
 	size_t l = 0;
 	
-	ushort carry = 1;
+	size_t carry = 1;
 	while (l < radixs.size() and carry > 0) {
 		
-		// difference between the pointed radixs
-		int dif = radixs[l] - carry;
-		
-		// normalise
-		if (dif < 0) {
-			dif += l + 1;
+		if (radixs[l] < carry) {
+			radixs[l] = radixs[l] + l + 1 - carry;
 			carry = 1;
 		}
 		else {
+			radixs[l] = radixs[l] - carry;
 			carry = 0;
 		}
-		
-		radixs[l] = dif;
 		
 		++l;
 	}
@@ -53,7 +48,7 @@ void factoradic::__decrement() {
 void factoradic::increment() {
 	if (is_zero()) {
 		// this number is 0
-		from_decimal(1);
+		from_uint(1);
 		return;
 	}
 	
@@ -75,7 +70,7 @@ void factoradic::increment() {
 void factoradic::decrement() {
 	if (is_zero()) {
 		// this number is 0
-		from_decimal(-1);
+		from_int(-1);
 		return;
 	}
 	
@@ -168,13 +163,12 @@ void factoradic::__accumulate(const factoradic& f) {
 void factoradic::__substract(const factoradic& f) {
 	size_t l = 0;
 	
-	ushort carry = 0;
+	size_t carry = 0;
 	while (l < radixs.size() and l < f.radixs.size()) {
 		
+		/*
 		// difference between the pointed radixs
 		int dif = radixs[l] - (f.radixs[l] + carry);
-		
-		// normalise
 		if (dif < 0) {
 			dif += l + 1;
 			carry = 1;
@@ -182,25 +176,35 @@ void factoradic::__substract(const factoradic& f) {
 		else {
 			carry = 0;
 		}
-		
 		radixs[l] = dif;
+		*/
+		
+		if (radixs[l] < f.radixs[l] + carry) {
+			radixs[l] = radixs[l] + l + 1 - (f.radixs[l] + carry);
+			carry = 1;
+		}
+		else {
+			radixs[l] = radixs[l] - (f.radixs[l] + carry);
+			carry = 0;
+		}
 		
 		++l;
 	}
 	
-	// likewise in the accumulate algorithm, there are
+	// likewise in the accumulate algorithm, there are still
 	// more radixs to deal with
 	if (radixs.size() > f.radixs.size()) {
 		for (; l < radixs.size(); ++l) {
-			int dif = radixs[l] - carry;
-			if (dif < 0) {
+			
+			if (radixs[l] < carry) {
+				radixs[l] = radixs[l] + l + 1 - carry;
 				carry = 1;
-				dif += l + 1;
 			}
 			else {
+				radixs[l] = radixs[l] - carry;
 				carry = 0;
 			}
-			radixs[l] = dif;
+			
 		}
 	}
 	else if (radixs.size() < f.radixs.size()) {
@@ -248,17 +252,17 @@ void factoradic::factoradic_fast_multiply(const factoradic& f) {
 	}
 }
 
-void factoradic::int_divide(uint i) {
+void factoradic::int_divide(size_t i) {
 	if (radixs.size() == 1) {
 		// this number is 0 -> no work to do
 		return;
 	}
 	
-	ushort carry = 0;
+	size_t carry = 0;
 	size_t r = radixs.size() - 1;
 	
 	do {
-		ushort radix = radixs[r];
+		size_t radix = radixs[r];
 		size_t s = radix + carry;
 		
 		cout << "r= " << r << endl;
@@ -337,11 +341,11 @@ void factoradic::div2() {
 		return;
 	}
 	
-	ushort carry = 0;
+	size_t carry = 0;
 	size_t r = radixs.size() - 1;
 	
 	do {
-		ushort radix = radixs[r];
+		size_t radix = radixs[r];
 		
 		// calculate new r-th radix
 		radixs[r] = (carry + radix)/2;

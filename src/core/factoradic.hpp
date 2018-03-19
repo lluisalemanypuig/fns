@@ -16,7 +16,7 @@ using namespace std;
 
 class factoradic {
 	private:
-		vector<ushort> radixs;
+		vector<size_t> radixs;
 		// neg = true -> this number is negative
 		// neg = false -> this number is positive
 		bool neg;
@@ -41,18 +41,21 @@ class factoradic {
 		void factoradic_fast_multiply(const factoradic& f);
 		
 		// divides this number by 'i' (decimal number)
-		void int_divide(uint i);
+		void int_divide(size_t i);
 		void integer_divide(const integer& i);
 		
 		// converts this factoradic number to base 10
-		template<class T> void __to_decimal(T& i) const;
+		template<class T> void __to_integer(T& i) const;
+		
+		// convert into factorial number system any positive number in base 10
+		template<class T> void __from_decimal(const T& i);
 		
 	public:
 		factoradic();
-		// converts the number in decimal base d into factorial number system
-		factoradic(int d);
-		factoradic(const integer& d);
-		factoradic(const string& d);
+		factoradic(int i);
+		factoradic(size_t i);
+		factoradic(const integer& i);
+		factoradic(const string& i);
 		~factoradic();
 		
 		/// OPERATORS
@@ -133,19 +136,22 @@ class factoradic {
 		bool is_negative() const;	// returns true if this number is negative (<0)
 		bool is_even() const;		// returns true if there exists some integer k such that 2*k = *this
 		
-		void get_radixs(vector<ushort>& rs, size_t n_digits = 0) const;
+		void get_radixs(vector<size_t>& rs, size_t n_digits = 0) const;
 		
 		/// CONVERSIONS
 		
-		// convert to factorial number system any number in base 10
-		template<class T> void from_decimal(const T& x);
+		// convert a base-10 number into factoradic number system
+		void from_int(int i);
+		void from_uint(size_t i);
+		void from_integer(const integer& i);
 		
 		// build the number in factoradic system for the value n!
 		void from_factorial(size_t n);
 		
-		integer to_decimal() const;
-		void to_decimal(integer& i) const;
-		int to_small_decimal() const;
+		integer to_integer() const;
+		void to_integer(integer& i) const;
+		int to_int() const;
+		size_t to_uint() const;
 		
 		// use, at least, n_digits to represent this number
 		// n_digits = 0 is interpreted as using the minimum amount of
@@ -165,14 +171,14 @@ void swap(factoradic& f1, factoradic& f2) {
 inline static
 void swap(integer& f1, factoradic& f2) {
 	factoradic F;
-	F.from_decimal(f1);
+	F.from_integer(f1);
 	swap(F, f2);
 }
 
 inline static
 void swap(factoradic& f1, integer& f2) {
 	factoradic F;
-	F.from_decimal(f2);
+	F.from_integer(f2);
 	swap(f1, F);
 }
 

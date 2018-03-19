@@ -78,7 +78,7 @@ bool print_time;
 void list_all_variables() {
 	cout << endl;
 	for (const auto& P : data) {
-		cout << "    " << P.first << " = " << P.second << " (" << P.second.to_decimal() << ")" << endl;
+		cout << "    " << P.first << " = " << P.second << " (" << P.second.to_integer() << ")" << endl;
 	}
 	cout << endl;
 }
@@ -138,7 +138,7 @@ bool execute_command(const command& c) {
 			 << c.new_var << " := "
 			 << c.var1 << c.op << c.var2 << " = "
 			 << f1 << c.op << f2 << " = "
-			 << R << " (" << R.to_decimal() << ")"
+			 << R << " (" << R.to_integer() << ")"
 			 << endl;
 	}
 	else if (c.action == "del") {
@@ -155,7 +155,7 @@ bool execute_command(const command& c) {
 		memory::iterator it;
 		if ((it = data.find(c.var1)) != data.end()) {
 			const factoradic& F = it->second;
-			cout << "    Is '" << F << " (" << F.to_decimal() << ") even? ";
+			cout << "    Is '" << F << " (" << F.to_integer() << ") even? ";
 			cout << (F.is_even() ? "Yes" : "No") << endl;
 		}
 		else {
@@ -179,6 +179,7 @@ bool execute_command(const command& c) {
 		return exit_calc;
 	}
 	else if (c.action == "exit") {
+		print_time = false;
 		return true;
 	}
 	
@@ -202,7 +203,9 @@ int main(int argc, char *argv[]) {
 			cout << "    In " << timing::elapsed_time(begin, end) << " s" << endl;
 		}
 		
-		cout << "> ";
+		if (not exit_calc) {
+			cout << "> ";
+		}
 	}
 	
 	main_command.clear();

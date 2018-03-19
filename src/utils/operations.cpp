@@ -60,7 +60,7 @@ namespace operations {
 		op_type T = read(data, var1, var2, f1, f2);
 		
 		if (f2 < 10000) {
-			mul = f1 * (f2.to_decimal().to_int());
+			mul = f1 * (f2.to_integer().to_int());
 		}
 		else {
 			mul = f1*f2;
@@ -73,7 +73,7 @@ namespace operations {
 		op_type T = read(data, var1, var2, f1, f2);
 		
 		if (f2 < 10000) {
-			div = f1/ (f2.to_decimal().to_int());
+			div = f1/ (f2.to_integer().to_int());
 		}
 		else {
 			div = f1/f2;
@@ -139,7 +139,7 @@ namespace operations {
 		
 		cout << "    " << var1 << newop << var2 << " = "
 			 << "(" << f1 << ")" << newop << "(" << f2 << ")"
-			 << " = " << R << " (" << R.to_decimal() << ")" << endl;
+			 << " = " << R << " (" << R.to_integer() << ")" << endl;
 		
 		return T;
 	}
@@ -196,11 +196,11 @@ namespace operations {
 		R.div2();
 		
 		if (is_var) {
-			cout << "    " << var1 << "/2 = " << "(" << f1 << ")" << "/2 = " << R << " (" << R.to_decimal() << ")" << endl;
+			cout << "    " << var1 << "/2 = " << "(" << f1 << ")" << "/2 = " << R << " (" << R.to_integer() << ")" << endl;
 			data.find(var1)->second = R;
 		}
 		else {
-			cout << "    " << "(" << f1 << ")" << "/2 = " << R << " (" << R.to_decimal() << ")" << endl;
+			cout << "    " << "(" << f1 << ")" << "/2 = " << R << " (" << R.to_integer() << ")" << endl;
 		}
 	}
 	
@@ -221,11 +221,11 @@ namespace operations {
 		R.mult2();
 		
 		if (is_var) {
-			cout << "    " << var1 << "*2 = " << "(" << f1 << ")" << "*2 = " << R << " (" << R.to_decimal() << ")" << endl;
+			cout << "    " << var1 << "*2 = " << "(" << f1 << ")" << "*2 = " << R << " (" << R.to_integer() << ")" << endl;
 			data.find(var1)->second = R;
 		}
 		else {
-			cout << "    " << "(" << f1 << ")" << "*2 = " << R << " (" << R.to_decimal() << ")" << endl;
+			cout << "    " << "(" << f1 << ")" << "*2 = " << R << " (" << R.to_integer() << ")" << endl;
 		}
 	}
 	
@@ -246,11 +246,11 @@ namespace operations {
 		++R;
 		
 		if (is_var) {
-			cout << "    " << var1 << " + 1 = " << "(" << f1 << ")" << " + 1 = " << R << " (" << R.to_decimal() << ")" << endl;
+			cout << "    " << var1 << " + 1 = " << "(" << f1 << ")" << " + 1 = " << R << " (" << R.to_integer() << ")" << endl;
 			data.find(var1)->second = R;
 		}
 		else {
-			cout << "    " << "(" << f1 << ")" << " + 1 = " << R << " (" << R.to_decimal() << ")" << endl;
+			cout << "    " << "(" << f1 << ")" << " + 1 = " << R << " (" << R.to_integer() << ")" << endl;
 		}
 	}
 	
@@ -271,11 +271,11 @@ namespace operations {
 		--R;
 		
 		if (is_var) {
-			cout << "    " << var1 << " - 1 = " << "(" << f1 << ")" << " - 1 = " << R << " (" << R.to_decimal() << ")" << endl;
+			cout << "    " << var1 << " - 1 = " << "(" << f1 << ")" << " - 1 = " << R << " (" << R.to_integer() << ")" << endl;
 			data.find(var1)->second = R;
 		}
 		else {
-			cout << "    " << "(" << f1 << ")" << " - 1 = " << R << " (" << R.to_decimal() << ")" << endl;
+			cout << "    " << "(" << f1 << ")" << " - 1 = " << R << " (" << R.to_integer() << ")" << endl;
 		}
 	}
 	

@@ -6,13 +6,13 @@
 
 bool factoradic::operator== (int i) const {
 	factoradic as_factoradic;
-	as_factoradic.from_decimal(i);
+	as_factoradic.from_int(i);
 	return *this == as_factoradic;
 }
 
 bool factoradic::operator== (const integer& i) const {
 	factoradic as_factoradic;
-	as_factoradic.from_decimal(i);
+	as_factoradic.from_integer(i);
 	return *this == as_factoradic;
 }
 
@@ -45,7 +45,7 @@ bool factoradic::operator== (const factoradic& f) const {
 	
 	if (L != kL and equal) {
 		// longest radix vector
-		const vector<ushort>& rest = (L < kL ? f.radixs : radixs);
+		const vector<size_t>& rest = (L < kL ? f.radixs : radixs);
 		while (r < rest.size() and rest[r] == 0) {
 			++r;
 		}
@@ -62,13 +62,13 @@ bool factoradic::operator== (const factoradic& f) const {
 
 bool factoradic::operator> (int i) const {
 	factoradic as_factoradic;
-	as_factoradic.from_decimal(i);
+	as_factoradic.from_int(i);
 	return *this > as_factoradic;
 }
 
 bool factoradic::operator> (const integer& i) const {
 	factoradic as_factoradic;
-	as_factoradic.from_decimal(i);
+	as_factoradic.from_integer(i);
 	return *this > as_factoradic;
 }
 
@@ -130,13 +130,13 @@ bool factoradic::operator>= (const factoradic& f) const	{ return *this > f or *t
 
 bool factoradic::operator< (int i) const {
 	factoradic as_factoradic;
-	as_factoradic.from_decimal(i);
+	as_factoradic.from_int(i);
 	return as_factoradic > *this;
 }
 
 bool factoradic::operator< (const integer& i) const {
 	factoradic as_factoradic;
-	as_factoradic.from_decimal(i);
+	as_factoradic.from_integer(i);
 	return as_factoradic > *this;
 }
 
