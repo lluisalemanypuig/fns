@@ -245,15 +245,16 @@ void factoradic::integer_fast_multiply(const T& i) {
 }
 
 template<class T>
-void factoradic::__to_decimal(T& i) const {
-	i = 0;
+void factoradic::__to_integer(T& i) const {
+	size_t pos_dec = 0;
 	const size_t L = radixs.size();
 	
 	for (size_t l = L - 1; l > 0; --l) {
-		ushort di = radixs[l];
-		i = (i + di)*l;
+		size_t di = radixs[l];
+		pos_dec = (pos_dec + di)*l;
 	}
 	
+	i = pos_dec;
 	if (neg) {
 		i = -i;
 	}
@@ -262,26 +263,18 @@ void factoradic::__to_decimal(T& i) const {
 /// PUBLIC
 
 template<class T>
-void factoradic::from_decimal(const T& n) {
+void factoradic::__from_decimal(const T& n) {
 	if (n == 0) {
-		radixs = vector<ushort>(1, 0);
+		radixs = vector<size_t>(1, 0);
 		return;
 	}
 	
 	T copy_n = n;
-	if (copy_n < 0) {
-		copy_n = -copy_n;
-		neg = true;
-	}
-	else {
-		neg = false;
-	}
-	
-	radixs = vector<ushort>();
+	radixs = vector<size_t>();
 	
 	size_t i = 1;
 	while (copy_n > 0) {
-		ushort d = copy_n%i;
+		size_t d = copy_n%i;
 		radixs.push_back(d);
 		
 		copy_n /= i;

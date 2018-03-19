@@ -5,15 +5,18 @@
 factoradic::factoradic() {
 	neg = false;
 }
-factoradic::factoradic(int n) {
-	from_decimal(n);
+factoradic::factoradic(int i) {
+	from_int(i);
 }
-factoradic::factoradic(const integer& n) {
-	from_decimal(n);
+factoradic::factoradic(size_t i) {
+	from_uint(i);
 }
-factoradic::factoradic(const string& s) {
-	integer I(s);
-	from_decimal(I);
+factoradic::factoradic(const integer& i) {
+	from_integer(i);
+}
+factoradic::factoradic(const string& i) {
+	integer I(i);
+	from_integer(I);
 }
 factoradic::~factoradic() { }
 
@@ -193,7 +196,7 @@ factoradic& factoradic::operator/= (const integer& i) {
 
 factoradic& factoradic::operator/= (const factoradic& f) {
 	integer i;
-	f.to_decimal(i);
+	f.to_integer(i);
 	
 	bool res_neg = (neg and not f.neg) or (not neg and f.neg);
 	
@@ -284,7 +287,7 @@ bool factoradic::is_even() const {
 	return radixs[1] != 1;
 }
 
-void factoradic::get_radixs(vector<ushort>& rs, size_t n_digits) const {
+void factoradic::get_radixs(vector<size_t>& rs, size_t n_digits) const {
 	rs = radixs;
 	if (n_digits > 0) {
 		while (rs.size() < n_digits) {
@@ -295,24 +298,70 @@ void factoradic::get_radixs(vector<ushort>& rs, size_t n_digits) const {
 
 /// CONVERSIONS
 
-void factoradic::from_factorial(size_t n) {
-	radixs = vector<ushort>(n, 0);
+void factoradic::from_int(int i) {
+	size_t copy_i;
+	if (i < 0) {
+		copy_i = -i;
+		neg = true;
+	}
+	else {
+		neg = false;
+		copy_i = i;
+	}
+	__from_decimal(copy_i);
+}
+
+void factoradic::from_uint(size_t i) {
+	__from_decimal(i);
+}
+
+void factoradic::from_integer(const integer& i) {
+	integer copy_i;
+	if (i < 0) {
+		copy_i = -i;
+		neg = true;
+	}
+	else {
+		neg = false;
+		copy_i = i;
+	}
+	__from_decimal(copy_i);
+}
+
+void factoradic::from_factorial(size_t i) {
+	radixs = vector<size_t>(i, 0);
 	radixs.push_back(1);
 }
 
-integer factoradic::to_decimal() const {
+integer factoradic::to_integer() const {
 	integer i;
-	to_decimal(i);
+	to_integer(i);
 	return i;
 }
 
-void factoradic::to_decimal(integer& i) const {
-	__to_decimal(i);
+void factoradic::to_integer(integer& i) const {
+	__to_integer(i);
 }
 
-int factoradic::to_small_decimal() const {
-	int i;
-	__to_decimal(i);
+int factoradic::to_int() const {
+	size_t i;
+	__to_integer(i);
+	
+	// although this gives a warning:
+	// "conversion to ‘int’ from ‘size_t {aka long unsigned int}’ may alter its value"
+	// take this into account: this is only called when the value in
+	// base 10 fits in an 'int' value
+	int r = i;
+	if (neg) {
+		r = -r;
+	}
+	
+	return r;
+}
+
+size_t factoradic::to_uint() const {
+	size_t i;
+	__to_integer(i);
 	return i;
 }
 
@@ -327,7 +376,7 @@ void factoradic::to_string(string& s, size_t n_digits) const {
 		s = "";
 	}
 	else {
-		vector<ushort> radixs_copy = radixs;
+		vector<size_t> radixs_copy = radixs;
 		reverse(radixs_copy.begin(), radixs_copy.end());
 		
 		if (neg) {
