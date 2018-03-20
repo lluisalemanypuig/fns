@@ -59,7 +59,7 @@ class command {
 				is >> c.var1;
 			}
 			else if (c.action == "ff") {
-				is >> c.var1;
+				is >> c.new_var;
 				is >> c.small_value;
 			}
 			else if (c.action == "def") {
@@ -72,6 +72,10 @@ class command {
 				is >> c.var1;
 			}
 			else if (c.action == "ls") { }
+			else if (c.action == "ls-dec") { }
+			else if (c.action == "print" or c.action == "print-dec") {
+				is >> c.var1;
+			}
 			else if (c.action == "help") { }
 			else if (c.action == "repeat") {
 				is >> c.small_value;

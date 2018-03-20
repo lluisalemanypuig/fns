@@ -32,7 +32,7 @@ void factoradic::integer_fast_multiply(const T& i) {
 
 template<class T>
 void factoradic::__to_integer(T& i) const {
-	size_t pos_dec = 0;
+	T pos_dec = 0;
 	const size_t L = radixs.size();
 	
 	for (size_t l = L - 1; l > 0; --l) {

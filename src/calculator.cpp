@@ -45,7 +45,10 @@ void print_usage() {
 	cout << "            s1 must be either a variable name or a number in base 10" << endl;
 	cout << "      > repeat n OPTION: repeats the given OPTION n times." << endl;
 	cout << "            n must be a number in base 10" << endl;
-	cout << "      > ls: lists all variables and their content" << endl;
+	cout << "      > ls: lists all variables and their content (in factorial base)" << endl;
+	cout << "      > ls-dec: lists all variables and their content (in base 10)" << endl;
+	cout << "      > print v: prints the contets of variable v (in factorial base)" << endl;
+	cout << "      > print-dec v: prints the contents of v (in base 10)" << endl;
 	cout << "      > exit: leave the program ('CTRL + D' is also valid)" << endl;
 	cout << "      > help: print this message" << endl;
 	cout << endl;
@@ -75,10 +78,45 @@ memory data;
 bool print_time;
 /// </GLOBAL VARIABLES>
 
-void list_all_variables() {
+void print_variable(const string& name, const factoradic& f) {
+	cout << "    " << name << " = ";
+	cout << f << endl;
+}
+
+void print_variable(const string& name, const integer& i) {
+	cout << "    " << name << " = ";
+	cout << i << endl;
+}
+
+void print_variable(const string& name, bool fact) {
+	
+	memory::const_iterator it;
+	if ((it = data.find(name)) == data.end()) {
+		cout << endl;
+		cerr << "    Error: variable with name '" << name << "' does not exist." << endl;
+		cout << endl;
+		return;
+	}
+	
+	cout << endl;
+	if (fact) {
+		print_variable(name, it->second);
+	}
+	else {
+		print_variable(name, it->second.to_integer());
+	}
+	cout << endl;
+}
+
+void list_all_variables(bool fact) {
 	cout << endl;
 	for (const auto& P : data) {
-		cout << "    " << P.first << " = " << P.second << " (" << P.second.to_integer() << ")" << endl;
+		if (fact) {
+			print_variable(P.first, P.second);
+		}
+		else {
+			print_variable(P.first, P.second.to_integer());
+		}
 	}
 	cout << endl;
 }
@@ -164,7 +202,20 @@ bool execute_command(const command& c) {
 		}
 	}
 	else if (c.action == "ls") {
-		list_all_variables();
+		list_all_variables(true);
+		print_time = false;
+	}
+	else if (c.action == "ls-dec") {
+		list_all_variables(false);
+		print_time = false;
+	}
+	else if (c.action == "print") {
+		print_variable(c.var1, true);
+		print_time = false;
+	}
+	else if (c.action == "print-dec") {
+		print_variable(c.var1, false);
+		print_time = false;
 	}
 	else if (c.action == "help") {
 		print_usage();
@@ -187,6 +238,12 @@ bool execute_command(const command& c) {
 }
 
 int main(int argc, char *argv[]) {
+	cout << "Welcome to the factoradic-base number calculator." << endl;
+	cout << "Type 'help' to see the available options." << endl;
+	cout << endl;
+	
+	// set cout properties
+	cout.setf(ios::unitbuf); // unbuffered
 	
 	command main_command;
 	cout << "> ";
