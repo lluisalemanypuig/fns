@@ -48,7 +48,10 @@ void print_usage() {
 	cout << "            s1 must be either a variable name or a number in base 10" << endl;
 	cout << "      > repeat n OPTION: repeats the given OPTION n times." << endl;
 	cout << "            n must be a number in base 10" << endl;
+	cout << "      > { OPTION_1 OPTION_2 ... OPTION_N }: allows defining a block of instructions." << endl;
+	cout << "            This can be useful to repeat a list of options in block" << endl;
 	cout << "      > shrink: removes all leading zeros from all variables in order to save space" << endl;
+	cout << "      > flush: removes all all variables" << endl;
 	cout << "      > ls: lists all variables and their content (in factorial base)" << endl;
 	cout << "      > ls-dec: lists all variables and their content (in base 10)" << endl;
 	cout << "      > print v: prints the contets of variable v (in factorial base)" << endl;
@@ -197,6 +200,9 @@ bool execute_command(const command& c) {
 			cout << "Error: variable '" << c.var1 << "' does not exist" << endl;
 			print_time = false;
 		}
+	}
+	else if (c.action == "flush") {
+		data.clear();
 	}
 	else if (c.action == "shrink") {
 		for (address it = data.begin(); it != data.end(); ++it) {

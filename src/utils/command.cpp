@@ -38,6 +38,7 @@ istream& command::read_partial_command(istream& is) {
 	else if (action == "even") {
 		is >> var1;
 	}
+	else if (action == "flush") { }
 	else if (action == "shrink") { }
 	else if (action == "ls") { }
 	else if (action == "ls-dec") { }
