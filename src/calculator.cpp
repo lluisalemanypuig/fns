@@ -46,9 +46,9 @@ void print_usage() {
 	cout << "      > del v: delete variable with name 'v'" << endl;
 	cout << "      > even s1: checks if the contents of 's1' is even." << endl;
 	cout << "            s1 must be either a variable name or a number in base 10" << endl;
-	cout << "      > repeat n OPTION: repeats the given OPTION n times." << endl;
+	cout << "      > repeat n OPTION: repeats the given COMMAND n times." << endl;
 	cout << "            n must be a number in base 10" << endl;
-	cout << "      > { OPTION_1 OPTION_2 ... OPTION_N }: allows defining a block of instructions." << endl;
+	cout << "      > { COMMAND_1 COMMAND_2 ... COMMAND_N }: allows defining a block of instructions." << endl;
 	cout << "            This can be useful to repeat a list of options in block" << endl;
 	cout << "      > shrink: removes all leading zeros from all variables in order to save space" << endl;
 	cout << "      > flush: removes all all variables" << endl;
