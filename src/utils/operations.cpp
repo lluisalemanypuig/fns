@@ -2,14 +2,31 @@
 
 namespace operations {
 	
-	op_type read(const memory& data, const string& var1, const string& var2, factoradic& f1, factoradic& f2) {
+	string op_type_to_string(const op_type& t) {
+		string s = "none";
+		if (t == op_type::var_var) {
+			s = "var_var";
+		}
+		else if (t == op_type::var_num) {
+			s = "var_num";
+		}
+		else if (t == op_type::num_var) {
+			s = "num_var";
+		}
+		else if (t == op_type::num_num) {
+			s = "num_num";
+		}
+		return s;
+	}
+	
+	op_type read(const memory& data, const string& var1, const string& var2, factoradic& f1, integer& i1, factoradic& f2, integer& i2) {
 		// check whether first string is a variable or not.
 		// If not, convert the string into a number
-		bool is_var1 = false;
+		bool is_var1 = true;
 		address avar1 = data.find(var1);
 		if (avar1 == data.end()) {
 			is_var1 = false;
-			f1 = factoradic(var1);
+			i1 = integer(var1);
 		}
 		else {
 			f1 = avar1->second;
@@ -17,11 +34,11 @@ namespace operations {
 		
 		// check whether second string is a variable or not.
 		// If not, convert the string into a number
-		bool is_var2 = false;
+		bool is_var2 = true;
 		address avar2 = data.find(var2);
 		if (avar2 == data.end()) {
-			f2 = factoradic(var2);
 			is_var2 = false;
+			i2 = integer(var2);
 		}
 		else {
 			f2 = avar2->second;
@@ -44,75 +61,162 @@ namespace operations {
 		return T;
 	}
 
-	op_type add(const memory& data, const string& var1, const string& var2, factoradic& f1, factoradic& f2, factoradic& sum) {
-		op_type T = read(data, var1, var2, f1, f2);
-		sum = f1 + f2;
+	op_type add(const memory& data, const string& var1, const string& var2, factoradic& f1, integer& i1, factoradic& f2, integer& i2, factoradic& sum) {
+		op_type T = read(data, var1, var2, f1, i1, f2, i2);
+		if (T == var_var) {
+			sum = f1 + f2;
+		}
+		else if (T == var_num) {
+			sum = f1 + i2;
+		}
+		else if (T == num_var) {
+			sum = f2 + i1;
+		}
+		else if (T == num_num) {
+			sum = i1 + i2;
+		}
 		return T;
 	}
 
-	op_type sub(const memory& data, const string& var1, const string& var2, factoradic& f1, factoradic& f2, factoradic& sub) {
-		op_type T = read(data, var1, var2, f1, f2);
-		sub = f1 - f2;
+	op_type sub(const memory& data, const string& var1, const string& var2, factoradic& f1, integer& i1, factoradic& f2, integer& i2, factoradic& sub) {
+		op_type T = read(data, var1, var2, f1, i1, f2, i2);
+		if (T == var_var) {
+			sub = f1 - f2;
+		}
+		else if (T == var_num) {
+			sub = f1 - i2;
+		}
+		else if (T == num_var) {
+			sub = f2 - i1;
+		}
+		else if (T == num_num) {
+			sub = i1 - i2;
+		}
 		return T;
 	}
 
-	op_type mul(const memory& data, const string& var1, const string& var2, factoradic& f1, factoradic& f2, factoradic& mul) {
-		op_type T = read(data, var1, var2, f1, f2);
-		
-		if (f2 < 10000) {
-			mul = f1 * (f2.to_integer().to_int());
+	op_type mul(const memory& data, const string& var1, const string& var2, factoradic& f1, integer& i1, factoradic& f2, integer& i2, factoradic& mul) {
+		op_type T = read(data, var1, var2, f1, i1, f2, i2);
+		if (T == var_var) {
+			mul = f1 * f2;
 		}
-		else {
-			mul = f1*f2;
+		else if (T == var_num) {
+			mul = f1 * i2;
 		}
-		
+		else if (T == num_var) {
+			mul = f2 * i1;
+		}
+		else if (T == num_num) {
+			mul = i1 * i2;
+		}
 		return T;
 	}
 
-	op_type div(const memory& data, const string& var1, const string& var2, factoradic& f1, factoradic& f2, factoradic& div) {
-		op_type T = read(data, var1, var2, f1, f2);
-		
-		if (f2 < 10000) {
-			div = f1/ (f2.to_integer().to_int());
+	op_type div(const memory& data, const string& var1, const string& var2, factoradic& f1, integer& i1, factoradic& f2, integer& i2, factoradic& div) {
+		op_type T = read(data, var1, var2, f1, i1, f2, i2);
+		if (T == var_var) {
+			div = f1 / f2;
 		}
-		else {
-			div = f1/f2;
+		else if (T == var_num) {
+			div = f1 / i2;
 		}
-		
+		else if (T == num_var) {
+			div = f2 / i1;
+		}
+		else if (T == num_num) {
+			div = i1 / i2;
+		}
 		return T;
 	}
 	
-	op_type comp_gt(const memory& data, const string& var1, const string& var2, factoradic& f1, factoradic& f2, bool& comp) {
-		op_type T = read(data, var1, var2, f1, f2);
-		comp = (f1 > f2);
+	op_type comp_gt(const memory& data, const string& var1, const string& var2, factoradic& f1, integer& i1, factoradic& f2, integer& i2, bool& comp) {
+		op_type T = read(data, var1, var2, f1, i1, f2, i2);
+		if (T == var_var) {
+			comp = f1 > f2;
+		}
+		else if (T == var_num) {
+			comp = f1 > i2;
+		}
+		else if (T == num_var) {
+			comp = f2 > i1;
+		}
+		else if (T == num_num) {
+			comp = i1 > i2;
+		}
 		return T;
 	}
 	
-	op_type comp_ge(const memory& data, const string& var1, const string& var2, factoradic& f1, factoradic& f2, bool& comp) {
-		op_type T = read(data, var1, var2, f1, f2);
-		comp = (f1 >=f2);
+	op_type comp_ge(const memory& data, const string& var1, const string& var2, factoradic& f1, integer& i1, factoradic& f2, integer& i2, bool& comp) {
+		op_type T = read(data, var1, var2, f1, i1, f2, i2);
+		if (T == var_var) {
+			comp = f1 >= f2;
+		}
+		else if (T == var_num) {
+			comp = f1 >= i2;
+		}
+		else if (T == num_var) {
+			comp = f2 >= i1;
+		}
+		else if (T == num_num) {
+			comp = i1 >= i2;
+		}
 		return T;
 	}
 	
-	op_type comp_eq(const memory& data, const string& var1, const string& var2, factoradic& f1, factoradic& f2, bool& comp) {
-		op_type T = read(data, var1, var2, f1, f2);
-		comp = (f1 == f2);
+	op_type comp_eq(const memory& data, const string& var1, const string& var2, factoradic& f1, integer& i1, factoradic& f2, integer& i2, bool& comp) {
+		op_type T = read(data, var1, var2, f1, i1, f2, i2);
+		if (T == var_var) {
+			comp = f1 == f2;
+		}
+		else if (T == var_num) {
+			comp = f1 == i2;
+		}
+		else if (T == num_var) {
+			comp = f2 == i1;
+		}
+		else if (T == num_num) {
+			comp = i1 == i2;
+		}
 		return T;
 	}
 	
-	op_type comp_le(const memory& data, const string& var1, const string& var2, factoradic& f1, factoradic& f2, bool& comp) {
-		op_type T = read(data, var1, var2, f1, f2);
-		comp = (f1 <= f2);
+	op_type comp_le(const memory& data, const string& var1, const string& var2, factoradic& f1, integer& i1, factoradic& f2, integer& i2, bool& comp) {
+		op_type T = read(data, var1, var2, f1, i1, f2, i2);
+		if (T <= var_var) {
+			comp = f1 <= f2;
+		}
+		else if (T <= var_num) {
+			comp = f1 <= i2;
+		}
+		else if (T <= num_var) {
+			comp = f2 <= i1;
+		}
+		else if (T <= num_num) {
+			comp = i1 <= i2;
+		}
 		return T;
 	}
 	
-	op_type comp_lt(const memory& data, const string& var1, const string& var2, factoradic& f1, factoradic& f2, bool& comp) {
-		op_type T = read(data, var1, var2, f1, f2);
-		comp = (f1 < f2);
+	op_type comp_lt(const memory& data, const string& var1, const string& var2, factoradic& f1, integer& i1, factoradic& f2, integer& i2, bool& comp) {
+		op_type T = read(data, var1, var2, f1, i1, f2, i2);
+		if (T < var_var) {
+			comp = f1 < f2;
+		}
+		else if (T < var_num) {
+			comp = f1 < i2;
+		}
+		else if (T < num_var) {
+			comp = f2 < i1;
+		}
+		else if (T < num_num) {
+			comp = i1 < i2;
+		}
 		return T;
 	}
 	
-	op_type apply_op(const memory& data, const string& var1, const string& var2, factoradic& f1, factoradic& f2, factoradic& R, const string& op) {
+	void apply_op(const memory& data, const string& var1, const string& var2, const string& op, factoradic& R) {
+		factoradic f1, f2;
+		integer i1, i2;
 		op_type T;
 		
 		string newop = op;
@@ -121,65 +225,97 @@ namespace operations {
 		}
 		
 		if (newop == " + ") {
-			T = add(data, var1, var2, f1, f2, R);
+			T = add(data, var1, var2, f1, i1, f2, i2, R);
 		}
 		else if (newop == " - ") {
-			T = sub(data, var1, var2, f1, f2, R);
+			T = sub(data, var1, var2, f1, i1, f2, i2, R);
 		}
 		else if (newop == "*") {
-			T = mul(data, var1, var2, f1, f2, R);
+			T = mul(data, var1, var2, f1, i1, f2, i2, R);
 		}
 		else if (newop == "/") {
-			T = div(data, var1, var2, f1, f2, R);
+			T = div(data, var1, var2, f1, i1, f2, i2, R);
 		}
 		else {
 			cerr << "    Operator: '" << op << "' invalid" << endl;
 			T = op_type::none;
 		}
 		
-		cout << "    " << var1 << newop << var2 << " = "
-			 << "(" << f1 << ")" << newop << "(" << f2 << ")"
-			 << " = " << R << " (" << R.to_integer() << ")" << endl;
-		
-		return T;
+		if (T == op_type::var_var) {
+			cout << "    " << var1 << newop << var2 << " = "
+				 << "(" << f1 << ")" << newop << "(" << f2 << ")"
+				 << " = " << R << " (" << R.to_integer() << ")" << endl;
+		}
+		else if (T == op_type::var_num) {
+			cout << "    " << var1 << newop << var2 << " = "
+				 << "(" << f1 << ")" << newop << i2
+				 << " = " << R << " (" << R.to_integer() << ")" << endl;
+		}
+		else if (T == op_type::num_var) {
+			cout << "    " << var1 << newop << var2 << " = "
+				 << i1 << newop << "(" << f2 << ")"
+				 << " = " << R << " (" << R.to_integer() << ")" << endl;
+		}
+		else if (T == op_type::num_num) {
+			cout << "    " << var1 << newop << var2 << " = "
+				 << i1 << newop << i2
+				 << " = " << R << " (" << R.to_integer() << ")" << endl;
+		}
 	}
 	
-	op_type apply_comp(const memory& data, const string& var1, const string& var2, factoradic& f1, factoradic& f2, factoradic& R, const string& op) {
+	void apply_comp(const memory& data, const string& var1, const string& var2, const string& op) {
+		factoradic f1, f2;
+		integer i1, i2;
 		op_type T;
 		bool comp = true;
 		
 		string newop = " " + op + " ";
 		
 		if (newop == " > ") {
-			T = comp_gt(data, var1, var2, f1, f2, comp);
+			T = comp_gt(data, var1, var2, f1, i1, f2, i2, comp);
 		}
 		else if (newop == " >= ") {
-			T = comp_ge(data, var1, var2, f1, f2, comp);
+			T = comp_ge(data, var1, var2, f1, i1, f2, i2, comp);
 		}
 		else if (newop == " == ") {
-			T = comp_eq(data, var1, var2, f1, f2, comp);
+			T = comp_eq(data, var1, var2, f1, i1, f2, i2, comp);
 		}
 		else if (newop == " <= ") {
-			T = comp_le(data, var1, var2, f1, f2, comp);
+			T = comp_le(data, var1, var2, f1, i1, f2, i2, comp);
 		}
 		else if (newop == " < ") {
-			T = comp_lt(data, var1, var2, f1, f2, comp);
+			T = comp_lt(data, var1, var2, f1, i1, f2, i2, comp);
 		}
 		else {
 			cerr << "    Operator: '" << op << "' invalid" << endl;
 			T = op_type::none;
 		}
 		
-		if (T != op_type::none) {
+		if (T == op_type::var_var) {
 			cout << "    " << var1 << newop << var2 << " --> "
 				 << "(" << f1 << ")" << newop << "(" << f2 << ")"
 				 << " --> " << (comp ? "true" : "false") << endl;
 		}
-		
-		return T;
+		else if (T == op_type::var_num) {
+			cout << "    " << var1 << newop << var2 << " --> "
+				 << "(" << f1 << ")" << newop << "(" << i2 << ")"
+				 << " --> " << (comp ? "true" : "false") << endl;
+		}
+		else if (T == op_type::num_var) {
+			cout << "    " << var1 << newop << var2 << " --> "
+				 << "(" << i1 << ")" << newop << "(" << f2 << ")"
+				 << " --> " << (comp ? "true" : "false") << endl;
+		}
+		else if (T == op_type::num_num) {
+			cout << "    " << var1 << newop << var2 << " --> "
+				 << "(" << i1 << ")" << newop << "(" << i2 << ")"
+				 << " --> " << (comp ? "true" : "false") << endl;
+		}
 	}
 	
-	void halve_value(memory& data, const string& var1, factoradic& f1, factoradic& R) {
+	void halve_value(memory& data, const string& var1) {
+		factoradic f1, R;
+		
 		// check whether first string is a variable or not.
 		// If not, convert the string into a number
 		bool is_var = false;
@@ -204,7 +340,9 @@ namespace operations {
 		}
 	}
 	
-	void double_value(memory& data, const string& var1, factoradic& f1, factoradic& R) {
+	void double_value(memory& data, const string& var1) {
+		factoradic f1, R;
+		
 		// check whether first string is a variable or not.
 		// If not, convert the string into a number
 		bool is_var = false;
@@ -229,7 +367,9 @@ namespace operations {
 		}
 	}
 	
-	void increment_value(memory& data, const string& var1, factoradic& f1, factoradic& R) {
+	void increment_value(memory& data, const string& var1) {
+		factoradic f1, R;
+		
 		// check whether first string is a variable or not.
 		// If not, convert the string into a number
 		bool is_var = false;
@@ -254,7 +394,9 @@ namespace operations {
 		}
 	}
 	
-	void decrement_value(memory& data, const string& var1, factoradic& f1, factoradic& R) {
+	void decrement_value(memory& data, const string& var1) {
+		factoradic f1, R;
+		
 		// check whether first string is a variable or not.
 		// If not, convert the string into a number
 		bool is_var = false;

@@ -90,7 +90,7 @@ void print_variable(const string& name, const integer& i) {
 
 void print_variable(const string& name, bool fact) {
 	
-	memory::const_iterator it;
+	address it;
 	if ((it = data.find(name)) == data.end()) {
 		cout << endl;
 		cerr << "    Error: variable with name '" << name << "' does not exist." << endl;
@@ -123,7 +123,7 @@ void list_all_variables(bool fact) {
 
 inline
 bool execute_command(const command& c) {
-	factoradic f1, f2, R;
+	factoradic R;
 	
 	if (c.action == "var") {
 		if (data.find(c.new_var) == data.end()) {
@@ -134,22 +134,22 @@ bool execute_command(const command& c) {
 		}
 	}
 	else if (c.action == "op") {
-		apply_op(data, c.var1, c.var2, f1, f2, R, c.op);
+		apply_op(data, c.var1, c.var2, c.op, R);
 	}
 	else if (c.action == "cmp") {
-		apply_comp(data, c.var1, c.var2, f1, f2, R, c.op);
+		apply_comp(data, c.var1, c.var2, c.op);
 	}
 	else if (c.action == "halve") {
-		halve_value(data, c.var1, f1, R);
+		halve_value(data, c.var1);
 	}
 	else if (c.action == "double") {
-		double_value(data, c.var1, f1, R);
+		double_value(data, c.var1);
 	}
 	else if (c.action == "inc") {
-		increment_value(data, c.var1, f1, R);
+		increment_value(data, c.var1);
 	}
 	else if (c.action == "dec") {
-		decrement_value(data, c.var1, f1, R);
+		decrement_value(data, c.var1);
 	}
 	else if (c.action == "ff") {
 		factoradic F;
@@ -163,21 +163,14 @@ bool execute_command(const command& c) {
 		}
 	}
 	else if (c.action == "def") {
-		apply_op(data, c.var1, c.var2, f1, f2, R, c.op);
-	
+		apply_op(data, c.var1, c.var2, c.op, R);
+		
 		if (data.find(c.new_var) == data.end()) {
 			data.insert( make_pair(c.new_var, R) );
 		}
 		else {
 			data[c.new_var] = R;
 		}
-		
-		cout << "    "
-			 << c.new_var << " := "
-			 << c.var1 << c.op << c.var2 << " = "
-			 << f1 << c.op << f2 << " = "
-			 << R << " (" << R.to_integer() << ")"
-			 << endl;
 	}
 	else if (c.action == "del") {
 		memory::iterator it;
