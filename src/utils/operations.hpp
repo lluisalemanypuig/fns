@@ -18,6 +18,8 @@ namespace operations {
 		var_var, var_num, num_var, num_num
 	};
 	
+	string op_type_to_string(const op_type& t);
+	
 	void apply_op(const memory& data, const string& var1, const string& var2, const string& op, factoradic& R);
 	void apply_comp(const memory& data, const string& var1, const string& var2, const string& op);
 	
