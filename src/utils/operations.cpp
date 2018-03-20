@@ -23,7 +23,7 @@ namespace operations {
 		// check whether first string is a variable or not.
 		// If not, convert the string into a number
 		bool is_var1 = true;
-		address avar1 = data.find(var1);
+		caddress avar1 = data.find(var1);
 		if (avar1 == data.end()) {
 			is_var1 = false;
 			i1 = integer(var1);
@@ -35,7 +35,7 @@ namespace operations {
 		// check whether second string is a variable or not.
 		// If not, convert the string into a number
 		bool is_var2 = true;
-		address avar2 = data.find(var2);
+		caddress avar2 = data.find(var2);
 		if (avar2 == data.end()) {
 			is_var2 = false;
 			i2 = integer(var2);
@@ -319,7 +319,7 @@ namespace operations {
 		// check whether first string is a variable or not.
 		// If not, convert the string into a number
 		bool is_var = false;
-		address avar1 = data.find(var1);
+		caddress avar1 = data.find(var1);
 		if (avar1 == data.end()) {
 			f1 = factoradic(var1);
 		}
@@ -346,7 +346,7 @@ namespace operations {
 		// check whether first string is a variable or not.
 		// If not, convert the string into a number
 		bool is_var = false;
-		address avar1 = data.find(var1);
+		caddress avar1 = data.find(var1);
 		if (avar1 == data.end()) {
 			f1 = factoradic(var1);
 		}
@@ -373,7 +373,7 @@ namespace operations {
 		// check whether first string is a variable or not.
 		// If not, convert the string into a number
 		bool is_var = false;
-		address avar1 = data.find(var1);
+		caddress avar1 = data.find(var1);
 		if (avar1 == data.end()) {
 			f1 = factoradic(var1);
 		}
@@ -400,7 +400,7 @@ namespace operations {
 		// check whether first string is a variable or not.
 		// If not, convert the string into a number
 		bool is_var = false;
-		address avar1 = data.find(var1);
+		caddress avar1 = data.find(var1);
 		if (avar1 == data.end()) {
 			f1 = factoradic(var1);
 		}
