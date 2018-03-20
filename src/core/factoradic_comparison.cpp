@@ -142,7 +142,7 @@ bool factoradic::operator< (const integer& i) const {
 
 bool factoradic::operator< (const factoradic& f) const 	{ return f > *this; }
 
-bool factoradic::operator<= (int k) const				{ return *this < k or *this == k; }
+bool factoradic::operator<= (int i) const				{ return *this < i or *this == i; }
 bool factoradic::operator<= (const integer& i) const	{ return *this < i or *this == i; }
-bool factoradic::operator<= (const factoradic& k) const	{ return *this < k or *this == k; }
+bool factoradic::operator<= (const factoradic& f) const	{ return *this < f or *this == f; }
 

@@ -182,16 +182,16 @@ namespace operations {
 	
 	op_type comp_le(const memory& data, const string& var1, const string& var2, factoradic& f1, integer& i1, factoradic& f2, integer& i2, bool& comp) {
 		op_type T = read(data, var1, var2, f1, i1, f2, i2);
-		if (T <= var_var) {
+		if (T == var_var) {
 			comp = f1 <= f2;
 		}
-		else if (T <= var_num) {
+		else if (T == var_num) {
 			comp = f1 <= i2;
 		}
-		else if (T <= num_var) {
+		else if (T == num_var) {
 			comp = f2 <= i1;
 		}
-		else if (T <= num_num) {
+		else if (T == num_num) {
 			comp = i1 <= i2;
 		}
 		return T;
@@ -199,22 +199,22 @@ namespace operations {
 	
 	op_type comp_lt(const memory& data, const string& var1, const string& var2, factoradic& f1, integer& i1, factoradic& f2, integer& i2, bool& comp) {
 		op_type T = read(data, var1, var2, f1, i1, f2, i2);
-		if (T < var_var) {
+		if (T == var_var) {
 			comp = f1 < f2;
 		}
-		else if (T < var_num) {
+		else if (T == var_num) {
 			comp = f1 < i2;
 		}
-		else if (T < num_var) {
+		else if (T == num_var) {
 			comp = f2 < i1;
 		}
-		else if (T < num_num) {
+		else if (T == num_num) {
 			comp = i1 < i2;
 		}
 		return T;
 	}
 	
-	void apply_op(const memory& data, const string& var1, const string& var2, const string& op, factoradic& R) {
+	void apply_op(const memory& data, const string& var1, const string& var2, const string& op, factoradic& R, bool print) {
 		factoradic f1, f2;
 		integer i1, i2;
 		op_type T;
@@ -241,25 +241,27 @@ namespace operations {
 			T = op_type::none;
 		}
 		
-		if (T == op_type::var_var) {
-			cout << "    " << var1 << newop << var2 << " = "
-				 << "(" << f1 << ")" << newop << "(" << f2 << ")"
-				 << " = " << R << " (" << R.to_integer() << ")" << endl;
-		}
-		else if (T == op_type::var_num) {
-			cout << "    " << var1 << newop << var2 << " = "
-				 << "(" << f1 << ")" << newop << i2
-				 << " = " << R << " (" << R.to_integer() << ")" << endl;
-		}
-		else if (T == op_type::num_var) {
-			cout << "    " << var1 << newop << var2 << " = "
-				 << i1 << newop << "(" << f2 << ")"
-				 << " = " << R << " (" << R.to_integer() << ")" << endl;
-		}
-		else if (T == op_type::num_num) {
-			cout << "    " << var1 << newop << var2 << " = "
-				 << i1 << newop << i2
-				 << " = " << R << " (" << R.to_integer() << ")" << endl;
+		if (print) {
+			if (T == op_type::var_var) {
+				cout << "    " << var1 << newop << var2 << " = "
+					 << "(" << f1 << ")" << newop << "(" << f2 << ")"
+					 << " = " << R << " (" << R.to_integer() << ")" << endl;
+			}
+			else if (T == op_type::var_num) {
+				cout << "    " << var1 << newop << var2 << " = "
+					 << "(" << f1 << ")" << newop << i2
+					 << " = " << R << " (" << R.to_integer() << ")" << endl;
+			}
+			else if (T == op_type::num_var) {
+				cout << "    " << var1 << newop << var2 << " = "
+					 << i1 << newop << "(" << f2 << ")"
+					 << " = " << R << " (" << R.to_integer() << ")" << endl;
+			}
+			else if (T == op_type::num_num) {
+				cout << "    " << var1 << newop << var2 << " = "
+					 << i1 << newop << i2
+					 << " = " << R << " (" << R.to_integer() << ")" << endl;
+			}
 		}
 	}
 	
@@ -292,23 +294,19 @@ namespace operations {
 		}
 		
 		if (T == op_type::var_var) {
-			cout << "    " << var1 << newop << var2 << " --> "
-				 << "(" << f1 << ")" << newop << "(" << f2 << ")"
+			cout << "    " << var1 << newop << var2
 				 << " --> " << (comp ? "true" : "false") << endl;
 		}
 		else if (T == op_type::var_num) {
-			cout << "    " << var1 << newop << var2 << " --> "
-				 << "(" << f1 << ")" << newop << "(" << i2 << ")"
+			cout << "    " << var1 << newop << i2
 				 << " --> " << (comp ? "true" : "false") << endl;
 		}
 		else if (T == op_type::num_var) {
-			cout << "    " << var1 << newop << var2 << " --> "
-				 << "(" << i1 << ")" << newop << "(" << f2 << ")"
+			cout << "    " << i1 << newop << var2
 				 << " --> " << (comp ? "true" : "false") << endl;
 		}
 		else if (T == op_type::num_num) {
-			cout << "    " << var1 << newop << var2 << " --> "
-				 << "(" << i1 << ")" << newop << "(" << i2 << ")"
+			cout << "    " << i1 << newop << i2
 				 << " --> " << (comp ? "true" : "false") << endl;
 		}
 	}

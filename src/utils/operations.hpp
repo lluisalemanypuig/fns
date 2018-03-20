@@ -20,7 +20,7 @@ namespace operations {
 	
 	string op_type_to_string(const op_type& t);
 	
-	void apply_op(const memory& data, const string& var1, const string& var2, const string& op, factoradic& R);
+	void apply_op(const memory& data, const string& var1, const string& var2, const string& op, factoradic& R, bool print = true);
 	void apply_comp(const memory& data, const string& var1, const string& var2, const string& op);
 	
 	void halve_value(memory& data, const string& var1);

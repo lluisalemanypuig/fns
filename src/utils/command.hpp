@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <list>
 #include <map>
 using namespace std;
 
@@ -23,10 +24,17 @@ class command {
 		integer big_value;
 		size_t small_value;
 		
-		command *sub_command;
-	
+		list<command> sub_command;
+		
+		// assume the command to have its action assigned
+		istream& read_partial_command(istream& is);
+		
+		// reads the action and the partial command
+		istream& read_full_command(istream& is);
+		
 	public:
 		command();
+		command(const string& a);
 		~command();
 		
 		void clear();
@@ -35,58 +43,7 @@ class command {
 		
 		inline friend
 		istream& operator>> (istream& is, command& c) {
-			is >> c.action;
-			if (c.action == "var") {
-				is >> c.new_var;
-				is >> c.big_value;
-			}
-			else if (c.action == "op") {
-				is >> c.var1 >> c.op >> c.var2;
-			}
-			else if (c.action == "cmp") {
-				is >> c.var1 >> c.op >> c.var2;
-			}
-			else if (c.action == "halve") {
-				is >> c.var1;
-			}
-			else if (c.action == "double") {
-				is >> c.var1;
-			}
-			else if (c.action == "inc") {
-				is >> c.var1;
-			}
-			else if (c.action == "dec") {
-				is >> c.var1;
-			}
-			else if (c.action == "ff") {
-				is >> c.new_var;
-				is >> c.small_value;
-			}
-			else if (c.action == "def") {
-				is >> c.new_var >> c.var1 >> c.op >> c.var2;
-			}
-			else if (c.action == "del") {
-				is >> c.var1;
-			}
-			else if (c.action == "even") {
-				is >> c.var1;
-			}
-			else if (c.action == "shrink") { }
-			else if (c.action == "ls") { }
-			else if (c.action == "ls-dec") { }
-			else if (c.action == "print" or c.action == "print-dec") {
-				is >> c.var1;
-			}
-			else if (c.action == "help") { }
-			else if (c.action == "repeat") {
-				is >> c.small_value;
-				if (c.sub_command != nullptr) {
-					c.clear();
-				}
-				
-				c.sub_command = new command();
-				is >> (*(c.sub_command));
-			}
+			c.read_full_command(is);
 			return is;
 		}
 };

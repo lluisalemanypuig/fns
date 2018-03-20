@@ -167,7 +167,7 @@ bool execute_command(const command& c) {
 		}
 	}
 	else if (c.action == "def") {
-		apply_op(data, c.var1, c.var2, c.op, R);
+		apply_op(data, c.var1, c.var2, c.op, R, false);
 		
 		if (data.find(c.new_var) == data.end()) {
 			data.insert( make_pair(c.new_var, R) );
@@ -226,7 +226,17 @@ bool execute_command(const command& c) {
 		bool exit_calc = false;
 		
 		for (size_t i = 0; i < c.small_value and not exit_calc; ++i) {
-			exit_calc = execute_command(*c.sub_command);
+			exit_calc = execute_command(*c.sub_command.begin());
+		}
+		
+		return exit_calc;
+	}
+	else if (c.action == "{") {
+		bool exit_calc = false;
+		
+		for (auto it = c.sub_command.begin(); it != c.sub_command.end() and not exit_calc; ++it) {
+			
+			exit_calc = execute_command(*it);
 		}
 		
 		return exit_calc;
@@ -234,6 +244,12 @@ bool execute_command(const command& c) {
 	else if (c.action == "exit") {
 		print_time = false;
 		return true;
+	}
+	else {
+		cout << endl;
+		cout << "    Error: option '" << c.action << "' not recognised" << endl;
+		cout << endl;
+		print_time = false;
 	}
 	
 	return false;
