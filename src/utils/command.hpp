@@ -71,6 +71,7 @@ class command {
 			else if (c.action == "even") {
 				is >> c.var1;
 			}
+			else if (c.action == "shrink") { }
 			else if (c.action == "ls") { }
 			else if (c.action == "ls-dec") { }
 			else if (c.action == "print" or c.action == "print-dec") {

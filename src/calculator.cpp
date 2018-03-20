@@ -1,3 +1,6 @@
+/// C includes
+#include <string.h>
+
 /// C++ includes
 #include <iostream>
 #include <map>
@@ -45,6 +48,7 @@ void print_usage() {
 	cout << "            s1 must be either a variable name or a number in base 10" << endl;
 	cout << "      > repeat n OPTION: repeats the given OPTION n times." << endl;
 	cout << "            n must be a number in base 10" << endl;
+	cout << "      > shrink: removes all leading zeros from all variables in order to save space" << endl;
 	cout << "      > ls: lists all variables and their content (in factorial base)" << endl;
 	cout << "      > ls-dec: lists all variables and their content (in base 10)" << endl;
 	cout << "      > print v: prints the contets of variable v (in factorial base)" << endl;
@@ -90,7 +94,7 @@ void print_variable(const string& name, const integer& i) {
 
 void print_variable(const string& name, bool fact) {
 	
-	address it;
+	caddress it;
 	if ((it = data.find(name)) == data.end()) {
 		cout << endl;
 		cerr << "    Error: variable with name '" << name << "' does not exist." << endl;
@@ -194,6 +198,11 @@ bool execute_command(const command& c) {
 			print_time = false;
 		}
 	}
+	else if (c.action == "shrink") {
+		for (address it = data.begin(); it != data.end(); ++it) {
+			it->second.shrink();
+		}
+	}
 	else if (c.action == "ls") {
 		list_all_variables(true);
 		print_time = false;
@@ -230,7 +239,7 @@ bool execute_command(const command& c) {
 	return false;
 }
 
-int main(int argc, char *argv[]) {
+void interactive() {
 	cout << "Welcome to the factoradic-base number calculator." << endl;
 	cout << "Type 'help' to see the available options." << endl;
 	cout << endl;
@@ -259,5 +268,33 @@ int main(int argc, char *argv[]) {
 	}
 	
 	main_command.clear();
+}
+
+void execute_program(const string& program_file) {
+}
+
+int main(int argc, char *argv[]) {
+	if (argc < 2) {
+		cerr << "Error: you must specify a mode of execution:" << endl;
+		cerr << "    -i: interactive" << endl;
+		cerr << "    -l: load a program. Must specify also the name of the" << endl;
+		cerr << "        containing the instructions" << endl;
+		return 1;
+	}
+	
+	if (strcmp(argv[1], "-i") == 0) {
+		interactive();
+	}
+	else {
+		
+		if (argc == 2) {
+			cerr << "    Error: the name of the file containing the instructions" << endl;
+			cerr << "           must be specified" << endl;
+			return 1;
+		}
+		
+		string program_file = string(argv[2]);
+		execute_program(program_file);
+	}
 }
 

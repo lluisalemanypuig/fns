@@ -152,6 +152,7 @@ class factoradic {
 		// build the number in factoradic system for the value n!
 		void from_factorial(size_t n);
 		
+		// convert to a base-10 integer
 		integer to_integer() const;
 		void to_integer(integer& i) const;
 		int to_int() const;
@@ -162,6 +163,11 @@ class factoradic {
 		// digits.
 		string to_string(size_t n_digits = 0) const;
 		void to_string(string& s, size_t n_digits = 0) const;
+		
+		/// OTHERS
+		
+		// removes all leading zeros
+		void shrink();
 		
 };
 

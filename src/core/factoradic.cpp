@@ -397,3 +397,14 @@ void factoradic::to_string(string& s, size_t n_digits) const {
 	}
 }
 
+void factoradic::shrink() {
+	size_t r = radixs.size() - 1;
+	while (radixs[r] == 0) {
+		--r;
+	}
+	
+	if (r < radixs.size() - 1) {
+		radixs.resize(r + 1);
+	}
+}
+
