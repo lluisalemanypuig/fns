@@ -61,12 +61,12 @@ istream& command::read_partial_command(istream& is) {
 		
 		// read list of commands
 		string ac;
-		cin >> ac;
+		is >> ac;
 		command new_command(ac);
 		new_command.read_partial_command(is);
 		sub_command.insert( sub_command.end(), new_command );
 		
-		while (cin >> ac and ac != "}") {
+		while (is >> ac and ac != "}") {
 			command new_command(ac);
 			new_command.read_partial_command(is);
 			sub_command.insert( sub_command.end(), new_command );
