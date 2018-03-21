@@ -15,6 +15,12 @@ class command {
 	private:
 		map<string, size_t> stats;
 		
+		// assume the command to have its action assigned
+		istream& read_partial_command(istream& is);
+		
+		// reads the action and the partial command
+		istream& read_full_command(istream& is);
+		
 	public:
 		string action;
 		string new_var;
@@ -25,12 +31,6 @@ class command {
 		size_t small_value;
 		
 		list<command> sub_command;
-		
-		// assume the command to have its action assigned
-		istream& read_partial_command(istream& is);
-		
-		// reads the action and the partial command
-		istream& read_full_command(istream& is);
 		
 	public:
 		command();
