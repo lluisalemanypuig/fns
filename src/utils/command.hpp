@@ -43,8 +43,7 @@ class command {
 		
 		inline friend
 		istream& operator>> (istream& is, command& c) {
-			c.read_full_command(is);
-			return is;
+			return c.read_full_command(is);
 		}
 };
 
