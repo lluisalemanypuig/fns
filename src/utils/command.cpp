@@ -47,7 +47,7 @@ istream& command::read_partial_command(istream& is) {
 	}
 	else if (action == "help") { }
 	else if (action == "repeat") {
-		is >> small_value;
+		is >> var1;
 		
 		if (sub_command.size() > 0) {
 			clear();

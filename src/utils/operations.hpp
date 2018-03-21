@@ -20,6 +20,11 @@ namespace operations {
 	
 	string op_type_to_string(const op_type& t);
 	
+	// If 'var' contains a variable's name stored in data, store the
+	// contents in 'f' and return true. Otherwise, interpret the string
+	// as a base-10 integer number, store the value in 'i' and return false
+	bool read_var(const memory& data, const string& var, factoradic& f, integer& i);
+	
 	void apply_op(const memory& data, const string& var1, const string& var2, const string& op, factoradic& R, bool print = true);
 	void apply_comp(const memory& data, const string& var1, const string& var2, const string& op);
 	

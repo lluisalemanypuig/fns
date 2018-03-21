@@ -19,30 +19,27 @@ namespace operations {
 		return s;
 	}
 	
+	bool read_var(const memory& data, const string& var, factoradic& f, integer& i) {
+		bool is_var = true;
+		caddress avar1 = data.find(var);
+		if (avar1 == data.end()) {
+			is_var = false;
+			i = integer(var);
+		}
+		else {
+			f = avar1->second;
+		}
+		return is_var;
+	}
+	
 	op_type read(const memory& data, const string& var1, const string& var2, factoradic& f1, integer& i1, factoradic& f2, integer& i2) {
 		// check whether first string is a variable or not.
 		// If not, convert the string into a number
-		bool is_var1 = true;
-		caddress avar1 = data.find(var1);
-		if (avar1 == data.end()) {
-			is_var1 = false;
-			i1 = integer(var1);
-		}
-		else {
-			f1 = avar1->second;
-		}
+		bool is_var1 = read_var(data, var1, f1, i1);
 		
 		// check whether second string is a variable or not.
 		// If not, convert the string into a number
-		bool is_var2 = true;
-		caddress avar2 = data.find(var2);
-		if (avar2 == data.end()) {
-			is_var2 = false;
-			i2 = integer(var2);
-		}
-		else {
-			f2 = avar2->second;
-		}
+		bool is_var2 = read_var(data, var2, f2, i2);
 		
 		op_type T;
 		if (is_var1 and is_var2) {
@@ -330,11 +327,7 @@ namespace operations {
 		R.div2();
 		
 		if (is_var) {
-			cout << "    " << var1 << "/2 = " << "(" << f1 << ")" << "/2 = " << R << " (" << R.to_integer() << ")" << endl;
 			data.find(var1)->second = R;
-		}
-		else {
-			cout << "    " << "(" << f1 << ")" << "/2 = " << R << " (" << R.to_integer() << ")" << endl;
 		}
 	}
 	
@@ -357,11 +350,7 @@ namespace operations {
 		R.mult2();
 		
 		if (is_var) {
-			cout << "    " << var1 << "*2 = " << "(" << f1 << ")" << "*2 = " << R << " (" << R.to_integer() << ")" << endl;
 			data.find(var1)->second = R;
-		}
-		else {
-			cout << "    " << "(" << f1 << ")" << "*2 = " << R << " (" << R.to_integer() << ")" << endl;
 		}
 	}
 	
@@ -384,11 +373,7 @@ namespace operations {
 		++R;
 		
 		if (is_var) {
-			cout << "    " << var1 << " + 1 = " << "(" << f1 << ")" << " + 1 = " << R << " (" << R.to_integer() << ")" << endl;
 			data.find(var1)->second = R;
-		}
-		else {
-			cout << "    " << "(" << f1 << ")" << " + 1 = " << R << " (" << R.to_integer() << ")" << endl;
 		}
 	}
 	
@@ -411,11 +396,7 @@ namespace operations {
 		--R;
 		
 		if (is_var) {
-			cout << "    " << var1 << " - 1 = " << "(" << f1 << ")" << " - 1 = " << R << " (" << R.to_integer() << ")" << endl;
 			data.find(var1)->second = R;
-		}
-		else {
-			cout << "    " << "(" << f1 << ")" << " - 1 = " << R << " (" << R.to_integer() << ")" << endl;
 		}
 	}
 	

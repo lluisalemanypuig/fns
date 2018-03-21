@@ -232,7 +232,15 @@ bool execute_command(const command& c) {
 	else if (c.action == "repeat") {
 		bool exit_calc = false;
 		
-		for (size_t i = 0; i < c.small_value and not exit_calc; ++i) {
+		factoradic f;
+		integer I;
+		bool is_var = read_var(data, c.var1, f, I);
+		
+		if (is_var) {
+			f.to_integer(I);
+		}
+		
+		for (integer i = 0; i < I and not exit_calc; ++i) {
 			exit_calc = execute_command(*c.sub_command.begin());
 		}
 		
@@ -298,6 +306,8 @@ void execute_program(const string& program_file) {
 		return;
 	}
 	
+	double begin = timing::now();
+	
 	command main_command;
 	bool exit_calc = false;
 	
@@ -305,8 +315,12 @@ void execute_program(const string& program_file) {
 		exit_calc = execute_command(main_command);
 	}
 	
+	double end = timing::now();
+	
 	main_command.clear();
 	fin.close();
+	
+	cout << "    In " << timing::elapsed_time(begin, end) << " s" << endl;
 }
 
 int main(int argc, char *argv[]) {
