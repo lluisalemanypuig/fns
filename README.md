@@ -34,10 +34,18 @@ $ make -f build-rules/Makefile release
 
 ### Execution
 
-Two executable files will be generated after all the code has been compiled. In order to use the calculator issue the
-following command:
+Two executable files will be generated after all the code has been compiled. The calculator has an interactive mode and
+another that allows the loading and execution of a program.
 
-$ ./calculator
+In order to use the interactive mode, issue the command:
+
+$ ./calculator -i
+
+If the other mode is preferred then issue the following command:
+
+$ ./calculator -l /path/to/dir/file_name
+
+where /path/to/dir/file_name contains the path (absolute or relative) and the name to the file that is to be executed.
 
 If one wants to run the demo to process the permutations of a list in parallel issue the following command:
 
