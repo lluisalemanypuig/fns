@@ -41,7 +41,7 @@ namespace operations {
 		// If not, convert the string into a number
 		bool is_var2 = read_var(data, var2, f2, i2);
 		
-		op_type T;
+		op_type T = op_type::none;
 		if (is_var1 and is_var2) {
 			T = var_var;
 		}
@@ -214,7 +214,7 @@ namespace operations {
 	void apply_op(const memory& data, const string& var1, const string& var2, const string& op, factoradic& R, bool print) {
 		factoradic f1, f2;
 		integer i1, i2;
-		op_type T;
+		op_type T = op_type::none;
 		
 		string newop = op;
 		if (newop == "+" or newop == "-") {
@@ -235,7 +235,6 @@ namespace operations {
 		}
 		else {
 			cerr << "    Operator: '" << op << "' invalid" << endl;
-			T = op_type::none;
 		}
 		
 		if (print) {
@@ -265,7 +264,7 @@ namespace operations {
 	void apply_comp(const memory& data, const string& var1, const string& var2, const string& op) {
 		factoradic f1, f2;
 		integer i1, i2;
-		op_type T;
+		op_type T = op_type::none;
 		bool comp = true;
 		
 		string newop = " " + op + " ";
@@ -287,7 +286,6 @@ namespace operations {
 		}
 		else {
 			cerr << "    Operator: '" << op << "' invalid" << endl;
-			T = op_type::none;
 		}
 		
 		if (T == op_type::var_var) {
