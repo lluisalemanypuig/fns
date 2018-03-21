@@ -78,8 +78,7 @@ istream& command::read_partial_command(istream& is) {
 
 istream& command::read_full_command(istream& is) {
 	is >> action;
-	read_partial_command(is);
-	return is;
+	return read_partial_command(is);
 }
 
 /// PUBLIC
