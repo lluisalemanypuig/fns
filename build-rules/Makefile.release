@@ -2,7 +2,7 @@
 ###############
 # RELEASE FLAGS
 
-REL_FLAGS = -O2 $(GEN_FLAGS) -DNDEBUG
+REL_FLAGS = -O3 $(GEN_FLAGS) -DNDEBUG
 
 #################
 # RELEASE OBJECTS
