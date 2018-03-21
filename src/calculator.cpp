@@ -3,6 +3,7 @@
 
 /// C++ includes
 #include <iostream>
+#include <fstream>
 #include <map>
 using namespace std;
 
@@ -266,9 +267,6 @@ void interactive() {
 	cout << "Type 'help' to see the available options." << endl;
 	cout << endl;
 	
-	// set cout properties
-	cout.setf(ios::unitbuf); // unbuffered
-	
 	command main_command;
 	cout << "> ";
 	bool exit_calc = false;
@@ -293,7 +291,22 @@ void interactive() {
 }
 
 void execute_program(const string& program_file) {
+	ifstream fin;
+	fin.open(program_file.c_str());
+	if (not fin.is_open()) {
+		cerr << "Error: could not program file '" << program_file << "'" << endl;
+		return;
+	}
 	
+	command main_command;
+	bool exit_calc = false;
+	
+	while (not exit_calc and fin >> main_command) {
+		exit_calc = execute_command(main_command);
+	}
+	
+	main_command.clear();
+	fin.close();
 }
 
 int main(int argc, char *argv[]) {
@@ -308,7 +321,7 @@ int main(int argc, char *argv[]) {
 	if (strcmp(argv[1], "-i") == 0) {
 		interactive();
 	}
-	else {
+	else if (strcmp(argv[1], "-l") == 0) {
 		
 		if (argc == 2) {
 			cerr << "    Error: the name of the file containing the instructions" << endl;
