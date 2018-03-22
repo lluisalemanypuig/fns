@@ -15,17 +15,18 @@ void factoradic::integer_fast_multiply(const T& i) {
 		T fc = i;
 		
 		if (fc%2 == 0) {
-			fc /= 2;
-			factoradic_fast_multiply(fc);
-			mult2();
+			fc /= 2;					// fc := fc/2
+			integer_fast_multiply(fc);	// this := this*(fc/2)
+			mult2();					// this := 2*this = 2*this*(fc)/2)
+										//      := this*fc
 		}
 		else {
-			factoradic copy = *this;		// copy := a
-			--fc;							// fc := b - 1
-			fc /= 2;						// fc := (b - 1)/2
-			factoradic_fast_multiply(fc);	// this := a*(b - 1)/2
-			mult2();						// this := 2*(a*(b - 1)/2)
-			__accumulate(copy);				// this := 2*(a*(b - 1)/2) + a = a*b
+			factoradic copy = *this;	// copy := a
+			--fc;						// fc := b - 1
+			fc /= 2;					// fc := (b - 1)/2
+			integer_fast_multiply(fc);	// this := a*(b - 1)/2
+			mult2();					// this := 2*(a*(b - 1)/2)
+			__accumulate(copy);			// this := 2*(a*(b - 1)/2) + a = a*b
 		}
 	}
 }
