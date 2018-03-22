@@ -55,7 +55,7 @@ istream& command::read_partial_command(istream& is) {
 		
 		command new_command;
 		is >> new_command;
-		sub_command.insert(sub_command.begin(), new_command );
+		sub_command.insert(sub_command.begin(), new_command);
 	}
 	else if (action == "{") {
 		
@@ -64,14 +64,16 @@ istream& command::read_partial_command(istream& is) {
 		is >> ac;
 		command new_command(ac);
 		new_command.read_partial_command(is);
-		sub_command.insert( sub_command.end(), new_command );
+		sub_command.insert(sub_command.end(), new_command);
 		
 		while (is >> ac and ac != "}") {
 			command new_command(ac);
 			new_command.read_partial_command(is);
-			sub_command.insert( sub_command.end(), new_command );
+			sub_command.insert(sub_command.end(), new_command);
 		}
-		
+	}
+	else if (action == "//") {
+		while (is >> var1 and var1 != "//") { }
 	}
 	return is;
 }

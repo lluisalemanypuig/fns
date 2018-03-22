@@ -53,6 +53,7 @@ void print_usage() {
 	cout << "            n must be a number in base 10" << endl;
 	cout << "      > { COMMAND_1 COMMAND_2 ... COMMAND_N }: allows defining a block of instructions." << endl;
 	cout << "            This can be useful to repeat a list of options in block" << endl;
+	cout << "      > // ... //: this is a comment. The contents of '...' may be arbitrarily long." << endl;
 	cout << endl;
 	cout << "      > shrink: removes all leading zeros from all variables in order to save space" << endl;
 	cout << "      > del v: delete variable with name 'v'" << endl;
@@ -90,6 +91,7 @@ void print_usage() {
 // *Some* Global variables. Only used here
 memory data;
 bool print_time;
+bool print_prompt;
 /// </GLOBAL VARIABLES>
 
 void print_variable(const string& name, const factoradic& f) {
@@ -263,6 +265,11 @@ bool execute_command(const command& c) {
 		
 		return exit_calc;
 	}
+	else if (c.action == "//") {
+		// comment -> do nothing
+		print_time = false;
+		print_prompt = false;
+	}
 	else if (c.action == "exit") {
 		print_time = false;
 		return true;
@@ -288,6 +295,7 @@ void interactive() {
 	
 	while (not exit_calc and cin >> main_command) {
 		print_time = true;
+		print_prompt = true;
 		double begin = timing::now();
 		
 		exit_calc = execute_command(main_command);
@@ -297,7 +305,7 @@ void interactive() {
 			cout << "    In " << timing::elapsed_time(begin, end) << " s" << endl;
 		}
 		
-		if (not exit_calc) {
+		if (not exit_calc and print_prompt) {
 			cout << "> ";
 		}
 	}
