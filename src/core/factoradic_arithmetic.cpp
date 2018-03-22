@@ -436,9 +436,10 @@ void factoradic::factoradic_fast_multiply(const factoradic& f) {
 		factoradic fc = f;
 		
 		if (fc.is_even()) {
-			fc.div2();
-			factoradic_fast_multiply(fc);
-			mult2();
+			fc.div2();						// fc := fc/2
+			factoradic_fast_multiply(fc);	// this := this*(fc/2)
+			mult2();						// this := 2*this = 2*this*(fc)/2)
+											//      := this*fc
 		}
 		else {
 			factoradic copy = *this;		// copy := a
