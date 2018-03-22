@@ -27,9 +27,14 @@ void print_usage() {
 	cout << "      > op s1 X s2: operates contents of s1 and s2 with operator X." << endl;
 	cout << "            The operators supported are +,-,*" << endl;
 	cout << "            s1 and s2 must be either a variable name or a number in base 10" << endl;
+	cout << "      > def varname s1 X s2: creates a variable with name 'varname'" << endl;
+	cout << "            with contents the result of operating the contents of s1" << endl;
+	cout << "            and s2 with operator X." << endl;
+	cout << "            s1 and s2 must be either a variable name or a number in base 10" << endl;
 	cout << "      > cmp s1 C s2: compares the contents of s1 and s2 with C." << endl;
 	cout << "            The comparisons supported are >,>=,==,<=,<" << endl;
 	cout << "            s1 and s2 must be either a variable name or a number in base 10" << endl;
+	cout << endl;
 	cout << "      > halve s1: apply ad-hoc algorithm to halve the contents of s1." << endl;
 	cout << "            s1 must be either a variable name or a number in base 10" << endl;
 	cout << "      > double s1: apply ad-hoc algorithm to double the contents of s1." << endl;
@@ -38,25 +43,26 @@ void print_usage() {
 	cout << "            s1 must be either a variable name or a number in base 10" << endl;
 	cout << "      > dec s1: apply ad-hoc algorithm to decrement by 1 the contents of s1." << endl;
 	cout << "            s1 must be either a variable name or a number in base 10" << endl;
-	cout << "      > ff v n: compute the factorial of n! in factorial base." << endl;
-	cout << "            n must be a number in base 10" << endl;
-	cout << "      > def varname s1 X s2: creates a variable with name 'varname'" << endl;
-	cout << "            with contents the result of operating the contents of s1" << endl;
-	cout << "            and s2 with operator X." << endl;
-	cout << "            s1 and s2 must be either a variable name or a number in base 10" << endl;
-	cout << "      > del v: delete variable with name 'v'" << endl;
 	cout << "      > even s1: checks if the contents of 's1' is even." << endl;
 	cout << "            s1 must be either a variable name or a number in base 10" << endl;
+	cout << endl;
+	cout << "      > ff v n: compute the factorial of n! in factorial base." << endl;
+	cout << "            n must be a number in base 10" << endl;
+	cout << endl;
 	cout << "      > repeat n OPTION: repeats the given COMMAND n times." << endl;
 	cout << "            n must be a number in base 10" << endl;
 	cout << "      > { COMMAND_1 COMMAND_2 ... COMMAND_N }: allows defining a block of instructions." << endl;
 	cout << "            This can be useful to repeat a list of options in block" << endl;
+	cout << endl;
 	cout << "      > shrink: removes all leading zeros from all variables in order to save space" << endl;
+	cout << "      > del v: delete variable with name 'v'" << endl;
 	cout << "      > flush: removes all all variables" << endl;
+	cout << endl;
 	cout << "      > ls: lists all variables and their content (in factorial base)" << endl;
 	cout << "      > ls-dec: lists all variables and their content (in base 10)" << endl;
 	cout << "      > print v: prints the contets of variable v (in factorial base)" << endl;
 	cout << "      > print-dec v: prints the contents of v (in base 10)" << endl;
+	cout << endl;
 	cout << "      > exit: leave the program ('CTRL + D' is also valid)" << endl;
 	cout << "      > help: print this message" << endl;
 	cout << endl;
@@ -228,6 +234,7 @@ bool execute_command(const command& c) {
 	}
 	else if (c.action == "help") {
 		print_usage();
+		print_time = false;
 	}
 	else if (c.action == "repeat") {
 		bool exit_calc = false;
