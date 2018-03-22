@@ -1,6 +1,6 @@
-ff a 1234
-ff b 1000
-def c a / b
+ff a 1234		// a = 1234! //
+ff b 1000		// b = 1000! //
+def c a / b		// c = 1234*1233*1232* ... *1002*1001 //
 
 var d 1
 var i 1001
@@ -10,7 +10,10 @@ repeat 234 {
 	inc i
 }
 
-shrink
+// d = 1001*(1001 + 1)*(1001 + 2)* ... *(1001 + 233)*(1001 + 234) =
+	 = 1001*1002*1003* ... *1233*1234 //
 
-cmp c == d
-ls-dec
+shrink		// remove leading zeros from all variables //
+
+ls-dec		// list all variables (in base 10) //
+cmp c == d	// check variables c and d are equal //
