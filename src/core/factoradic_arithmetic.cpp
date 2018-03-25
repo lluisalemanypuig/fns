@@ -11,6 +11,8 @@ void factoradic::__increment() {
 		size_t mod = sum%(l + 1);
 		
 		radixs[l] = mod;
+		
+		assert(sum >= mod);
 		carry = (sum - mod)/(l + 1);
 		
 		++l;
@@ -30,6 +32,8 @@ void factoradic::__decrement() {
 	while (l < radixs.size() and carry > 0) {
 		
 		if (radixs[l] < carry) {
+			assert(radixs[l] + l + 1 >= carry);
+			
 			radixs[l] = radixs[l] + l + 1 - carry;
 			carry = 1;
 		}
@@ -293,7 +297,7 @@ void factoradic::__substract(const factoradic& f) {
 		for (; l < radixs.size(); ++l) {
 			
 			if (radixs[l] < carry) {
-				assert(radixs[l] + l + 1 > carry);
+				assert(radixs[l] + l + 1 >= carry);
 				
 				radixs[l] = radixs[l] + l + 1 - carry;
 				carry = 1;
@@ -567,7 +571,7 @@ void factoradic::mult2() {
 	}
 	
 	factoradic tc = *this;
-	*this += tc;
+	accumulate(tc);
 }
 
 void factoradic::div2() {
