@@ -80,5 +80,5 @@ debugclean:
 
 debugdistclean:
 	make -f $(RULES_DIR)/Makefile debugclean
-	rm -f $(DEB_BIN_DIR)/factoradic
+	rm -f $(DEB_BIN_DIR)/calculator
 	rm -f $(DEB_BIN_DIR)/process_permutations

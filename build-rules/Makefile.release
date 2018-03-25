@@ -80,5 +80,5 @@ releaseclean:
 
 releasedistclean:
 	make -f $(RULES_DIR)/Makefile releaseclean
-	rm -f $(REL_BIN_DIR)/factoradic
+	rm -f $(REL_BIN_DIR)/calculator
 	rm -f $(REL_BIN_DIR)/process_permutations
