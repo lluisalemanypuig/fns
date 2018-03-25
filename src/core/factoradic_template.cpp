@@ -11,8 +11,7 @@ void factoradic::integer_multiply(const T& i) {
 	//	       = a*(b - 1) + a = a*b
 	
 	if (i != 1) {
-		// fc := b
-		T fc = i;
+		T fc = i;						// fc := b
 		
 		if (fc%2 == 0) {
 			fc /= 2;					// fc := b/2
@@ -39,8 +38,7 @@ void factoradic::integer_power(const T& i) {
 	//	       = a^(2*((b - 1)/2) + 1) = a^b
 	
 	if (i > 1) {
-		// fc := b
-		T fc = i;
+		T fc = i;						// fc := b
 		
 		if (fc%2 == 0) {
 			fc /= 2;					// fc := b/2
