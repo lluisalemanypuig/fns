@@ -65,6 +65,7 @@ class factoradic {
 		factoradic(size_t i);
 		factoradic(const integer& i);
 		factoradic(const string& i);
+		factoradic(const factoradic& f);
 		~factoradic();
 		
 		/// OPERATORS

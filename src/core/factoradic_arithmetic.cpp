@@ -90,8 +90,8 @@ void factoradic::decrement() {
 
 void factoradic::__accumulate(const factoradic& f) {
 	size_t l = 0;
-	
 	size_t carry = 0;
+	
 	while (l < radixs.size() and l < f.radixs.size()) {
 		// if the sum of the two digits is greater than the greatest
 		// radix allowed then compute the modulus of the result.
@@ -269,15 +269,19 @@ void factoradic::accumulate(const factoradic& f) {
 
 void factoradic::__substract(const factoradic& f) {
 	size_t l = 0;
-	
 	size_t carry = 0;
+	
 	while (l < radixs.size() and l < f.radixs.size()) {
 		
 		if (radixs[l] < f.radixs[l] + carry) {
+			assert(radixs[l] + l + 1 >= f.radixs[l] + carry);
+			
 			radixs[l] = radixs[l] + l + 1 - (f.radixs[l] + carry);
 			carry = 1;
 		}
 		else {
+			assert(radixs[l] >= f.radixs[l] + carry);
+			
 			radixs[l] = radixs[l] - (f.radixs[l] + carry);
 			carry = 0;
 		}
@@ -463,7 +467,7 @@ void factoradic::factoradic_power(const factoradic& f) {
 		if (fc.is_even()) {
 			fc.div2();					// fc := b/2
 			factoradic_power(fc);		// this := a^(b/2)
-			square();					// this := a^(2*(b/2)) = a^B
+			square();					// this := a^(2*(b/2)) = a^b
 		}
 		else {
 			factoradic copy = *this;	// copy := a
@@ -471,7 +475,7 @@ void factoradic::factoradic_power(const factoradic& f) {
 			fc.div2();					// fc := (b - 1)/2
 			factoradic_power(fc);		// this := a^((b - 1)/2)
 			square();					// this := (a^((b - 1)/2))^2 = a^(b - 1)
-			*this *= copy;				// this := a^(b - 1)*a = a^b
+			factoradic_multiply(copy);	// this := a^(b - 1)*a = a^b
 		}
 	}
 }
@@ -595,5 +599,7 @@ void factoradic::div2() {
 }
 
 void factoradic::square() {
+	factoradic copy = *this;
+	factoradic_multiply(copy);
 }
 

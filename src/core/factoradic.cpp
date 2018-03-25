@@ -17,6 +17,10 @@ factoradic::factoradic(const integer& i) {
 factoradic::factoradic(const string& i) {
 	from_integer(integer(i));
 }
+factoradic::factoradic(const factoradic& f) {
+	radixs = f.radixs;
+	neg = f.neg;
+}
 factoradic::~factoradic() { }
 
 /// OPERATORS

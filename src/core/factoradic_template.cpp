@@ -45,8 +45,7 @@ void factoradic::integer_power(const T& i) {
 		if (fc%2 == 0) {
 			fc /= 2;					// fc := b/2
 			integer_power(fc);			// this := a^(b/2)
-			square();					// this := a^(2*(b/2))
-										//      := a^b
+			square();					// this := a^(2*(b/2)) = a^b
 		}
 		else {
 			factoradic copy = *this;	// copy := a
@@ -54,7 +53,7 @@ void factoradic::integer_power(const T& i) {
 			fc /= 2;					// fc := (b - 1)/2
 			integer_power(fc);			// this := a^((b - 1)/2)
 			square();					// this := (a^((b - 1)/2))^2 = a^(b - 1)
-			*this *= copy;				// this := a^(b - 1)*a = a^b
+			factoradic_multiply(copy);	// this := a^(b - 1)*a = a^b
 		}
 	}
 }
