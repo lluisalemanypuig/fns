@@ -432,20 +432,20 @@ void factoradic::factoradic_multiply(const factoradic& f) {
 	//	       = a*(b - 1) + a = a*b
 	
 	if (not f.is_one()) {
-		factoradic fc = f;					// fc := b
+		factoradic fc = f;				// fc := b
 		
 		if (fc.is_even()) {
-			fc.div2();						// fc := b/2
+			fc.div2();					// fc := b/2
 			factoradic_multiply(fc);	// this := a*(b/2)
-			mult2();						// this := 2*a*(b/2) = a*b
+			mult2();					// this := 2*a*(b/2) = a*b
 		}
 		else {
-			factoradic copy = *this;		// copy := a
-			fc.decrement();					// fc := b - 1
-			fc.div2();						// fc := (b - 1)/2
+			factoradic copy = *this;	// copy := a
+			fc.decrement();				// fc := b - 1
+			fc.div2();					// fc := (b - 1)/2
 			factoradic_multiply(fc);	// this := a*(b - 1)/2
-			mult2();						// this := 2*(a*(b - 1)/2)
-			__accumulate(copy);				// this := 2*(a*(b - 1)/2) + a = a*b
+			mult2();					// this := 2*(a*(b - 1)/2)
+			__accumulate(copy);			// this := 2*(a*(b - 1)/2) + a = a*b
 		}
 	}
 }
@@ -462,14 +462,14 @@ void factoradic::factoradic_power(const factoradic& f) {
 		
 		if (fc.is_even()) {
 			fc.div2();					// fc := b/2
-			factoradic_power(fc);	// this := a^(b/2)
+			factoradic_power(fc);		// this := a^(b/2)
 			square();					// this := a^(2*(b/2)) = a^B
 		}
 		else {
 			factoradic copy = *this;	// copy := a
 			fc.decrement();				// fc := b - 1
 			fc.div2();					// fc := (b - 1)/2
-			factoradic_power(fc);	// this := a^((b - 1)/2)
+			factoradic_power(fc);		// this := a^((b - 1)/2)
 			square();					// this := (a^((b - 1)/2))^2 = a^(b - 1)
 			*this *= copy;				// this := a^(b - 1)*a = a^b
 		}
@@ -489,52 +489,29 @@ void factoradic::int_divide(size_t i) {
 		size_t radix = radixs[r];
 		size_t s = radix + carry;
 		
-		//cout << "r= " << r << endl;
-		//cout << "radixs[" << r << "]= " << radixs[r] << endl;
-		//cout << "carry= " << carry << endl;
-		//cout << "s= " << s << endl;
-		
 		// i is a divisor of s
 		if (s%i == 0) {
-			//cout << "    perfect division: s=" << s << ". i=" << i << endl;
-			
 			size_t d = s/i;
-			//cout << "    d= " << d << endl;
-			
 			radixs[r] = d%(r + 1);
 			carry = d - d%r;
 		}
 		else {
 			
 			if (s < i) {
-				//cout << "    s(" << s << ") < i(" << i << ")" << endl;
-				
 				// radix + carry < i
 				radixs[r] = 0;
 				carry = s*r;
 			}
 			else {
-				//cout << "    s(" << s << ") > i(" << i << ")" << endl;
-				
 				// radix + carry > i
 				radixs[r] = s/i;
 				carry = (s%i)*r;
 			}
 		}
 		
-		//cout << "radixs[" << r << "]= " << radixs[r] << endl;
-		//cout << "carry= " << carry << endl;
-		//cout << "---------" << endl;
-		
 		--r;
 	}
 	while (r > 0);
-	
-	if (carry > 0) {
-		// there is still some carry
-		cout << "************" << endl;
-		cout << "carry left: " << carry << endl;
-	}
 }
 
 void factoradic::integer_divide(const integer& i) {
