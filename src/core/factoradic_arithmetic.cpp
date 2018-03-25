@@ -280,8 +280,6 @@ void factoradic::__substract(const factoradic& f) {
 			carry = 1;
 		}
 		else {
-			assert(radixs[l] >= f.radixs[l] + carry);
-			
 			radixs[l] = radixs[l] - (f.radixs[l] + carry);
 			carry = 0;
 		}
@@ -295,6 +293,8 @@ void factoradic::__substract(const factoradic& f) {
 		for (; l < radixs.size(); ++l) {
 			
 			if (radixs[l] < carry) {
+				assert(radixs[l] + l + 1 > carry);
+				
 				radixs[l] = radixs[l] + l + 1 - carry;
 				carry = 1;
 			}
