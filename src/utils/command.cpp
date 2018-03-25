@@ -13,16 +13,19 @@ istream& command::read_partial_command(istream& is) {
 	else if (action == "cmp") {
 		is >> var1 >> op >> var2;
 	}
-	else if (action == "halve") {
+	else if (action == "inc") {
+		is >> var1;
+	}
+	else if (action == "dec") {
 		is >> var1;
 	}
 	else if (action == "double") {
 		is >> var1;
 	}
-	else if (action == "inc") {
+	else if (action == "halve") {
 		is >> var1;
 	}
-	else if (action == "dec") {
+	else if (action == "square") {
 		is >> var1;
 	}
 	else if (action == "ff") {

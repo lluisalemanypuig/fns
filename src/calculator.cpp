@@ -35,16 +35,18 @@ void print_usage() {
 	cout << "            The comparisons supported are >,>=,==,<=,<" << endl;
 	cout << "            s1 and s2 must be either a variable name or a number in base 10" << endl;
 	cout << endl;
-	cout << "      > halve s1: apply ad-hoc algorithm to halve the contents of s1." << endl;
-	cout << "            s1 must be either a variable name or a number in base 10" << endl;
-	cout << "      > double s1: apply ad-hoc algorithm to double the contents of s1." << endl;
-	cout << "            s1 must be either a variable name or a number in base 10" << endl;
-	cout << "      > inc s1: apply ad-hoc algorithm to increment by 1 the contents of s1." << endl;
-	cout << "            s1 must be either a variable name or a number in base 10" << endl;
-	cout << "      > dec s1: apply ad-hoc algorithm to decrement by 1 the contents of s1." << endl;
-	cout << "            s1 must be either a variable name or a number in base 10" << endl;
-	cout << "      > even s1: checks if the contents of 's1' is even." << endl;
-	cout << "            s1 must be either a variable name or a number in base 10" << endl;
+	cout << "      > inc v: apply ad-hoc algorithm to increment by 1 the contents of v." << endl;
+	cout << "            v must be a variable name" << endl;
+	cout << "      > dec v: apply ad-hoc algorithm to decrement by 1 the contents of v." << endl;
+	cout << "            v must be a variable name" << endl;
+	cout << "      > double v: apply ad-hoc algorithm to double the contents of v." << endl;
+	cout << "            v must be a variable name" << endl;
+	cout << "      > halve v: apply ad-hoc algorithm to halve the contents of v." << endl;
+	cout << "            v must be a variable name" << endl;
+	cout << "      > square v: apply ad-hoc algorithm to square of the contents of v." << endl;
+	cout << "            v must be a variable name" << endl;
+	cout << "      > even v: checks if the contents of v is even." << endl;
+	cout << "            v must be a variable name" << endl;
 	cout << endl;
 	cout << "      > ff v n: compute the factorial of n! in factorial base." << endl;
 	cout << "            n must be a number in base 10" << endl;
@@ -155,17 +157,20 @@ bool execute_command(const command& c) {
 	else if (c.action == "cmp") {
 		apply_comp(data, c.var1, c.var2, c.op);
 	}
-	else if (c.action == "halve") {
-		halve_value(data, c.var1);
-	}
-	else if (c.action == "double") {
-		double_value(data, c.var1);
-	}
 	else if (c.action == "inc") {
 		increment_value(data, c.var1);
 	}
 	else if (c.action == "dec") {
 		decrement_value(data, c.var1);
+	}
+	else if (c.action == "double") {
+		double_value(data, c.var1);
+	}
+	else if (c.action == "halve") {
+		halve_value(data, c.var1);
+	}
+	else if (c.action == "square") {
+		square_value(data, c.var1);
 	}
 	else if (c.action == "ff") {
 		factoradic F;
