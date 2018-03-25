@@ -1,0 +1,38 @@
+var times 120
+
+var a 1
+
+repeat times {
+	inc a
+	print-dec a
+}
+double a
+def a a + 3
+print-dec a
+
+repeat times {
+	dec a
+	print-dec a
+}
+print a
+shrink-var a
+print a
+
+repeat times {
+	double a
+	print-dec a
+}
+def a a - 2
+print-dec a
+
+repeat times {
+	halve a
+	print-dec a
+}
+print a
+shrink-var a
+print a
+
+repeat times {
+	square a
+}

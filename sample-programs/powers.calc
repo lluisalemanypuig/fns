@@ -1,0 +1,33 @@
+// compute 50*(50!)^20 in two different ways //
+
+ff a 50
+var b 20
+
+// ####### //
+// way # 1 //
+// ####### //
+
+def c a ^ b		// c := (50!)^20 //
+print-dec c
+
+var d 50
+def d c * d		// d := 50*((50!)^20) //
+print-dec d
+
+
+
+// ####### //
+// way # 2 //
+// ####### //
+
+def e a ^ b			// e := c = (50!)^20 //
+cmp e == c
+
+def f a ^ b			// f := c = (50!)^20 //
+cmp f == c
+
+repeat 49 {
+	def f f + e		// f := f + e //
+}
+print-dec f			// f := 50*e //
+cmp f == d

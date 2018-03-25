@@ -13,7 +13,9 @@ repeat 234 {
 // d = 1001*(1001 + 1)*(1001 + 2)* ... *(1001 + 233)*(1001 + 234) =
 	 = 1001*1002*1003* ... *1233*1234 //
 
+ls
 shrink		// remove leading zeros from all variables //
+ls
 
 ls-dec		// list all variables (in base 10) //
 cmp c == d	// check variables c and d are equal //
