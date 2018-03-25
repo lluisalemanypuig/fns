@@ -160,21 +160,18 @@ void factoradic::__accumulate(const factoradic& f) {
 	
 	// the two numbers may have different lengths, or not. In any case
 	// there is still more carry
-	if (carry != 0) {
-		
-		while (carry > 0) {
-			size_t new_digit;
-			if (carry > l) {
-				new_digit = carry/l;
-				carry = carry/l;
-			}
-			else {
-				new_digit = carry;
-				carry = 0;
-			}
-			radixs.push_back(new_digit);
-			++l;
+	while (carry > 0) {
+		size_t new_digit;
+		if (carry > l) {
+			new_digit = carry/l;
+			carry = carry/l;
 		}
+		else {
+			new_digit = carry;
+			carry = 0;
+		}
+		radixs.push_back(new_digit);
+		++l;
 	}
 }
 
