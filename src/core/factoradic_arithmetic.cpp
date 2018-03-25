@@ -21,6 +21,8 @@ void factoradic::__increment() {
 	while (carry > 0) {
 		size_t mod = carry%(l + 1);
 		radixs.push_back(mod);
+		
+		assert(l + 1 >= mod);
 		carry = (l + 1 - mod)/(l + 1);
 	}
 }
@@ -33,8 +35,8 @@ void factoradic::__decrement() {
 		
 		if (radixs[l] < carry) {
 			assert(radixs[l] + l + 1 >= carry);
-			
 			radixs[l] = radixs[l] + l + 1 - carry;
+			
 			carry = 1;
 		}
 		else {
@@ -108,7 +110,11 @@ void factoradic::__accumulate(const factoradic& f) {
 		size_t mod = sum_dig%(l + 1);
 		radixs[l] = mod;
 		
-		// value of carry
+		// value of carry.
+		// by construction:
+		//     S := sum_dig
+		//     mod := S%(l + 1)
+		//     sum_dig > mod    <=>    S > S%(l + 1)
 		carry = (sum_dig - mod)/(l + 1);
 		
 		++l;
@@ -127,6 +133,10 @@ void factoradic::__accumulate(const factoradic& f) {
 			radixs.push_back(mod);
 			
 			// value of carry
+			// by construction:
+			//     S := sum_dig
+			//     mod := S%(l + 1)
+			//     sum_dig > mod    <=>    S > S%(l + 1)
 			carry = (sum_dig - mod)/(it + 1);
 		}
 	}
@@ -140,6 +150,10 @@ void factoradic::__accumulate(const factoradic& f) {
 			radixs[it] = mod;
 			
 			// value of carry
+			// by construction:
+			//     S := sum_dig
+			//     mod := S%(l + 1)
+			//     sum_dig > mod    <=>    S > S%(l + 1)
 			carry = (sum_dig - mod)/(it + 1);
 		}
 	}
@@ -266,7 +280,7 @@ void factoradic::accumulate(const factoradic& f) {
 		
 		neg = false;		// *this = a = -(*this)
 		factoradic pf = -f;	// pf = b = -f
-		*this += pf;		// *this = a + b
+		__accumulate(pf);	// *this = a + b
 		neg = true;			// *this = -(a + b)
 	}
 }
@@ -382,9 +396,9 @@ void factoradic::substract(const factoradic& f) {
 	else if (is_negative() and not f.is_negative()) {
 		// (-a) - b = -a - b = -(a + b)
 		
-		neg = false;	// a = positive *this
-		*this += f;		// *this = a + b
-		neg = true;		// *this = -(a + b)
+		neg = false;		// a = positive *this
+		__accumulate(f);	// *this = a + b
+		neg = true;			// *this = -(a + b)
 	}
 	else {
 		// (-a) - (-b) = -a + b = b - a
@@ -570,8 +584,46 @@ void factoradic::mult2() {
 		return;
 	}
 	
-	factoradic tc = *this;
-	accumulate(tc);
+	// double every radix of this number and then
+	// propagate the carry from the lowest-weight radix
+	// to the highest-weight radix direction (similar
+	// to the procedure used in __accumulate)
+	
+	size_t l = 0;
+	size_t carry = 0;
+	while (l < radixs.size()) {
+		
+		// sum of the currently pointed radix and the carry
+		size_t sum_rad = (radixs[l] << 1) + carry;
+		
+		// new radix
+		size_t mod = sum_rad%(l + 1);
+		radixs[l] = mod;
+		
+		// value of carry.
+		// by construction:
+		//     S := sum_rad
+		//     mod := S%(l + 1)
+		//     sum_rad > mod    <=>    S > S%(l + 1)
+		carry = (sum_rad - mod)/(l + 1);
+		
+		++l;
+	}
+	
+	while (carry > 0) {
+		size_t new_digit;
+		if (carry > l) {
+			new_digit = carry/l;
+			carry = carry/l;
+		}
+		else {
+			new_digit = carry;
+			carry = 0;
+		}
+		radixs.push_back(new_digit);
+		++l;
+	}
+	
 }
 
 void factoradic::div2() {
@@ -587,7 +639,7 @@ void factoradic::div2() {
 		size_t radix = radixs[r];
 		
 		// calculate new r-th radix
-		radixs[r] = (carry + radix)/2;
+		radixs[r] = ((carry + radix) >> 1);
 		
 		// calculate carry
 		if (((carry + radix) & 0x1) == 1) {
