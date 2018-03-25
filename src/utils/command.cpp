@@ -35,14 +35,17 @@ istream& command::read_partial_command(istream& is) {
 	else if (action == "def") {
 		is >> new_var >> var1 >> op >> var2;
 	}
-	else if (action == "del") {
-		is >> var1;
-	}
 	else if (action == "even") {
 		is >> var1;
 	}
-	else if (action == "flush") { }
+	else if (action == "shrink-var") {
+		is >> var1;
+	}
 	else if (action == "shrink") { }
+	else if (action == "del-var") {
+		is >> var1;
+	}
+	else if (action == "del") { }
 	else if (action == "ls") { }
 	else if (action == "ls-dec") { }
 	else if (action == "print" or action == "print-dec") {

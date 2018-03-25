@@ -58,8 +58,9 @@ void print_usage() {
 	cout << "      > // ... //: this is a comment. The contents of '...' may be arbitrarily long." << endl;
 	cout << endl;
 	cout << "      > shrink: removes all leading zeros from all variables in order to save space" << endl;
-	cout << "      > del v: delete variable with name 'v'" << endl;
-	cout << "      > flush: removes all all variables" << endl;
+	cout << "      > shrink-var: removes all leading zeros from all variables in order to save space" << endl;
+	cout << "      > del-var v: delete variable with name 'v'" << endl;
+	cout << "      > del: removes all all variables" << endl;
 	cout << endl;
 	cout << "      > ls: lists all variables and their content (in factorial base)" << endl;
 	cout << "      > ls-dec: lists all variables and their content (in base 10)" << endl;
@@ -183,26 +184,6 @@ bool execute_command(const command& c) {
 			data[c.new_var] = F;
 		}
 	}
-	else if (c.action == "def") {
-		apply_op(data, c.var1, c.var2, c.op, R, false);
-		
-		if (data.find(c.new_var) == data.end()) {
-			data.insert( make_pair(c.new_var, R) );
-		}
-		else {
-			data[c.new_var] = R;
-		}
-	}
-	else if (c.action == "del") {
-		memory::iterator it;
-		if ((it = data.find(c.var1)) != data.end()) {
-			data.erase(it);
-		}
-		else {
-			cout << "    Error: variable '" << c.var1 << "' does not exist" << endl;
-			print_time = false;
-		}
-	}
 	else if (c.action == "even") {
 		memory::iterator it;
 		if ((it = data.find(c.var1)) != data.end()) {
@@ -215,8 +196,38 @@ bool execute_command(const command& c) {
 			print_time = false;
 		}
 	}
-	else if (c.action == "flush") {
+	else if (c.action == "def") {
+		apply_op(data, c.var1, c.var2, c.op, R, false);
+		
+		if (data.find(c.new_var) == data.end()) {
+			data.insert( make_pair(c.new_var, R) );
+		}
+		else {
+			data[c.new_var] = R;
+		}
+	}
+	else if (c.action == "del-var") {
+		memory::iterator it;
+		if ((it = data.find(c.var1)) != data.end()) {
+			data.erase(it);
+		}
+		else {
+			cout << "    Error: variable '" << c.var1 << "' does not exist" << endl;
+			print_time = false;
+		}
+	}
+	else if (c.action == "del") {
 		data.clear();
+	}
+	else if (c.action == "shrink-var") {
+		memory::iterator it;
+		if ((it = data.find(c.var1)) != data.end()) {
+			it->second.shrink();
+		}
+		else {
+			cout << "    Error: variable '" << c.var1 << "' does not exist" << endl;
+			print_time = false;
+		}
 	}
 	else if (c.action == "shrink") {
 		for (address it = data.begin(); it != data.end(); ++it) {
