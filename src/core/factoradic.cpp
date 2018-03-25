@@ -4,6 +4,7 @@
 
 factoradic::factoradic() {
 	neg = false;
+	from_int(0);
 }
 factoradic::factoradic(int i) {
 	from_int(i);
