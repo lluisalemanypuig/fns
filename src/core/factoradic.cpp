@@ -131,7 +131,7 @@ factoradic factoradic::operator* (const factoradic& f) const {
 factoradic& factoradic::operator*= (int i) {
 	bool res_neg = (neg and i >= 0) or (not neg and i < 0);
 	
-	integer_fast_multiply(i);
+	integer_multiply(i);
 	
 	neg = res_neg;
 	return *this;
@@ -140,7 +140,7 @@ factoradic& factoradic::operator*= (int i) {
 factoradic& factoradic::operator*= (const integer& i) {
 	bool res_neg = (neg and not i.is_negative()) or (not neg and i.is_negative());
 	
-	integer_fast_multiply(i);
+	integer_multiply(i);
 	
 	neg = res_neg;
 	return *this;
@@ -149,7 +149,7 @@ factoradic& factoradic::operator*= (const integer& i) {
 factoradic& factoradic::operator*= (const factoradic& f) {
 	bool res_neg = (neg and not f.neg) or (not neg and f.neg);
 	
-	factoradic_fast_multiply(f);
+	factoradic_multiply(f);
 	
 	neg = res_neg;
 	return *this;
@@ -202,6 +202,42 @@ factoradic& factoradic::operator/= (const factoradic& f) {
 	integer_divide(i);
 	
 	neg = res_neg;
+	return *this;
+}
+
+factoradic factoradic::operator^ (uint i) const {
+	factoradic copy = *this;
+	copy ^= i;
+	return copy;
+}
+
+factoradic factoradic::operator^ (const integer& i) const {
+	factoradic copy = *this;
+	copy ^= i;
+	return copy;
+}
+
+factoradic factoradic::operator^ (const factoradic& f) const {
+	factoradic copy = *this;
+	copy ^= f;
+	return copy;
+}
+
+factoradic& factoradic::operator^= (uint i) {
+	neg = neg and (i%2 == 1);
+	integer_power(i);
+	return *this;
+}
+
+factoradic& factoradic::operator^= (const integer& i) {
+	neg = neg and (i%2 == 1);
+	integer_power(i);
+	return *this;
+}
+
+factoradic& factoradic::operator^= (const factoradic& f) {
+	neg = neg and (not f.is_even());
+	factoradic_power(f);
 	return *this;
 }
 

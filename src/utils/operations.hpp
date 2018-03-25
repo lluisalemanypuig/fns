@@ -28,10 +28,11 @@ namespace operations {
 	void apply_op(const memory& data, const string& var1, const string& var2, const string& op, factoradic& R, bool print = true);
 	void apply_comp(const memory& data, const string& var1, const string& var2, const string& op);
 	
-	void halve_value(memory& data, const string& var1);
-	void double_value(memory& data, const string& var1);
 	void increment_value(memory& data, const string& var1);
 	void decrement_value(memory& data, const string& var1);
+	void double_value(memory& data, const string& var1);
+	void halve_value(memory& data, const string& var1);
+	void square_value(memory& data, const string& var1);
 	
 }
 

@@ -424,7 +424,7 @@ void factoradic::substract(const factoradic& f) {
 	}
 }
 
-void factoradic::factoradic_fast_multiply(const factoradic& f) {
+void factoradic::factoradic_multiply(const factoradic& f) {
 	// if b is even:
 	//     a*b = a*(b/2) + a*(b/2) = 2*(a*(b/2))
 	// if b is odd:
@@ -432,22 +432,46 @@ void factoradic::factoradic_fast_multiply(const factoradic& f) {
 	//	       = a*(b - 1) + a = a*b
 	
 	if (not f.is_one()) {
-		// fc := b
-		factoradic fc = f;
+		factoradic fc = f;					// fc := b
 		
 		if (fc.is_even()) {
-			fc.div2();						// fc := fc/2
-			factoradic_fast_multiply(fc);	// this := this*(fc/2)
-			mult2();						// this := 2*this = 2*this*(fc)/2)
-											//      := this*fc
+			fc.div2();						// fc := b/2
+			factoradic_multiply(fc);	// this := a*(b/2)
+			mult2();						// this := 2*a*(b/2) = a*b
 		}
 		else {
 			factoradic copy = *this;		// copy := a
 			fc.decrement();					// fc := b - 1
 			fc.div2();						// fc := (b - 1)/2
-			factoradic_fast_multiply(fc);	// this := a*(b - 1)/2
+			factoradic_multiply(fc);	// this := a*(b - 1)/2
 			mult2();						// this := 2*(a*(b - 1)/2)
 			__accumulate(copy);				// this := 2*(a*(b - 1)/2) + a = a*b
+		}
+	}
+}
+
+void factoradic::factoradic_power(const factoradic& f) {
+	// if b is even:
+	//     a^b = (a^(b/2))^2 = a^(2*(b/2)) = a^b
+	// if b is odd:
+	//     a^b = (a^((b - 1)/2))^2 * a = 
+	//	       = a^(2*((b - 1)/2) + 1) = a^b
+	
+	if (not f.is_one()) {
+		factoradic fc = f;				// fc := b
+		
+		if (fc.is_even()) {
+			fc.div2();					// fc := b/2
+			factoradic_power(fc);	// this := a^(b/2)
+			square();					// this := a^(2*(b/2)) = a^B
+		}
+		else {
+			factoradic copy = *this;	// copy := a
+			fc.decrement();				// fc := b - 1
+			fc.div2();					// fc := (b - 1)/2
+			factoradic_power(fc);	// this := a^((b - 1)/2)
+			square();					// this := (a^((b - 1)/2))^2 = a^(b - 1)
+			*this *= copy;				// this := a^(b - 1)*a = a^b
 		}
 	}
 }
@@ -591,5 +615,8 @@ void factoradic::div2() {
 		--r;
 	}
 	while (r > 0);
+}
+
+void factoradic::square() {
 }
 

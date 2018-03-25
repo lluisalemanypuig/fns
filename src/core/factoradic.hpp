@@ -40,13 +40,18 @@ class factoradic {
 		
 		/// MULTIPLY
 		// fast multiplication algorithm
-		template<class T> void integer_fast_multiply(const T& i); // i: decimal
-		void factoradic_fast_multiply(const factoradic& f);
+		template<class T> void integer_multiply(const T& i); // i: decimal
+		void factoradic_multiply(const factoradic& f);
 		
 		/// DIVIDE
 		// divides this number by 'i' (decimal number)
 		void int_divide(size_t i);
 		void integer_divide(const integer& i);
+		
+		/// POWER
+		// fast exponentiation algorithm
+		template<class T> void integer_power(const T& i); // i: decimal
+		void factoradic_power(const factoradic& f);
 		
 		/// FROM/TO BASE-10 CONVERSIONS
 		// converts this factoradic number to base 10
@@ -102,6 +107,13 @@ class factoradic {
 		factoradic& operator/= (const integer& i);
 		factoradic& operator/= (const factoradic& f);
 		
+		factoradic operator^ (uint i) const;
+		factoradic operator^ (const integer& i) const;
+		factoradic operator^ (const factoradic& f) const;
+		factoradic& operator^= (uint i);
+		factoradic& operator^= (const integer& i);
+		factoradic& operator^= (const factoradic& f);
+		
 		bool operator== (int i) const;
 		bool operator== (const integer& i) const;
 		bool operator== (const factoradic& f) const;
@@ -132,6 +144,7 @@ class factoradic {
 		
 		void mult2();	// ad-hoc algorithm for multiplying by 2
 		void div2();	// ad-hoc algorithm for dividing by 2
+		void square();	// ad-hoc algorithm for raising to the power 2
 		
 		/// GETTERS
 		

@@ -3,7 +3,7 @@
 /// PRIVATE
 
 template<class T>
-void factoradic::integer_fast_multiply(const T& i) {
+void factoradic::integer_multiply(const T& i) {
 	// if b is even:
 	//     a*b = a*(b/2) + a*(b/2) = 2*(a*(b/2))
 	// if b is odd:
@@ -15,18 +15,46 @@ void factoradic::integer_fast_multiply(const T& i) {
 		T fc = i;
 		
 		if (fc%2 == 0) {
-			fc /= 2;					// fc := fc/2
-			integer_fast_multiply(fc);	// this := this*(fc/2)
-			mult2();					// this := 2*this = 2*this*(fc)/2)
-										//      := this*fc
+			fc /= 2;					// fc := b/2
+			integer_multiply(fc);	// this := a*(b/2)
+			mult2();					// this := 2*a*(b/2) = a*b
 		}
 		else {
 			factoradic copy = *this;	// copy := a
 			--fc;						// fc := b - 1
 			fc /= 2;					// fc := (b - 1)/2
-			integer_fast_multiply(fc);	// this := a*(b - 1)/2
+			integer_multiply(fc);	// this := a*(b - 1)/2
 			mult2();					// this := 2*(a*(b - 1)/2)
 			__accumulate(copy);			// this := 2*(a*(b - 1)/2) + a = a*b
+		}
+	}
+}
+
+template<class T>
+void factoradic::integer_power(const T& i) {
+	// if b is even:
+	//     a^b = (a^(b/2))^2 = a^(2*(b/2)) = a^b
+	// if b is odd:
+	//     a^b = (a^((b - 1)/2))^2 * a = 
+	//	       = a^(2*((b - 1)/2) + 1) = a^b
+	
+	if (i > 1) {
+		// fc := b
+		T fc = i;
+		
+		if (fc%2 == 0) {
+			fc /= 2;					// fc := b/2
+			integer_power(fc);		// this := a^(b/2)
+			square();					// this := a^(2*(b/2))
+										//      := a^b
+		}
+		else {
+			factoradic copy = *this;	// copy := a
+			--fc;						// fc := b - 1
+			fc /= 2;					// fc := (b - 1)/2
+			integer_power(fc);		// this := a^((b - 1)/2)
+			square();					// this := (a^((b - 1)/2))^2 = a^(b - 1)
+			*this *= copy;				// this := a^(b - 1)*a = a^b
 		}
 	}
 }

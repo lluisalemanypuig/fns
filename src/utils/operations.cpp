@@ -126,6 +126,23 @@ namespace operations {
 		return T;
 	}
 	
+	op_type power(const memory& data, const string& var1, const string& var2, factoradic& f1, integer& i1, factoradic& f2, integer& i2, factoradic& p) {
+		op_type T = read(data, var1, var2, f1, i1, f2, i2);
+		if (T == var_var) {
+			p = f1 ^ f2;
+		}
+		else if (T == var_num) {
+			p = f1 ^ i2;
+		}
+		else if (T == num_var) {
+			p = f2 ^ i1;
+		}
+		else if (T == num_num) {
+			p = i1 ^ i2;
+		}
+		return T;
+	}
+	
 	op_type comp_gt(const memory& data, const string& var1, const string& var2, factoradic& f1, integer& i1, factoradic& f2, integer& i2, bool& comp) {
 		op_type T = read(data, var1, var2, f1, i1, f2, i2);
 		if (T == var_var) {
@@ -233,6 +250,9 @@ namespace operations {
 		else if (newop == "/") {
 			T = div(data, var1, var2, f1, i1, f2, i2, R);
 		}
+		else if (newop == "^") {
+			T = power(data, var1, var2, f1, i1, f2, i2, R);
+		}
 		else {
 			cerr << "    Operator: '" << op << "' invalid" << endl;
 		}
@@ -306,52 +326,6 @@ namespace operations {
 		}
 	}
 	
-	void halve_value(memory& data, const string& var1) {
-		factoradic f1, R;
-		
-		// check whether first string is a variable or not.
-		// If not, convert the string into a number
-		bool is_var = false;
-		caddress avar1 = data.find(var1);
-		if (avar1 == data.end()) {
-			f1 = factoradic(var1);
-		}
-		else {
-			f1 = avar1->second;
-			is_var = true;
-		}
-		
-		R = f1;
-		R.div2();
-		
-		if (is_var) {
-			data.find(var1)->second = R;
-		}
-	}
-	
-	void double_value(memory& data, const string& var1) {
-		factoradic f1, R;
-		
-		// check whether first string is a variable or not.
-		// If not, convert the string into a number
-		bool is_var = false;
-		caddress avar1 = data.find(var1);
-		if (avar1 == data.end()) {
-			f1 = factoradic(var1);
-		}
-		else {
-			f1 = avar1->second;
-			is_var = true;
-		}
-		
-		R = f1;
-		R.mult2();
-		
-		if (is_var) {
-			data.find(var1)->second = R;
-		}
-	}
-	
 	void increment_value(memory& data, const string& var1) {
 		factoradic f1, R;
 		
@@ -392,6 +366,75 @@ namespace operations {
 		
 		R = f1;
 		--R;
+		
+		if (is_var) {
+			data.find(var1)->second = R;
+		}
+	}
+	
+	void double_value(memory& data, const string& var1) {
+		factoradic f1, R;
+		
+		// check whether first string is a variable or not.
+		// If not, convert the string into a number
+		bool is_var = false;
+		caddress avar1 = data.find(var1);
+		if (avar1 == data.end()) {
+			f1 = factoradic(var1);
+		}
+		else {
+			f1 = avar1->second;
+			is_var = true;
+		}
+		
+		R = f1;
+		R.mult2();
+		
+		if (is_var) {
+			data.find(var1)->second = R;
+		}
+	}
+	
+	void halve_value(memory& data, const string& var1) {
+		factoradic f1, R;
+		
+		// check whether first string is a variable or not.
+		// If not, convert the string into a number
+		bool is_var = false;
+		caddress avar1 = data.find(var1);
+		if (avar1 == data.end()) {
+			f1 = factoradic(var1);
+		}
+		else {
+			f1 = avar1->second;
+			is_var = true;
+		}
+		
+		R = f1;
+		R.div2();
+		
+		if (is_var) {
+			data.find(var1)->second = R;
+		}
+	}
+	
+	void square_value(memory& data, const string& var1) {
+		factoradic f1, R;
+		
+		// check whether first string is a variable or not.
+		// If not, convert the string into a number
+		bool is_var = false;
+		caddress avar1 = data.find(var1);
+		if (avar1 == data.end()) {
+			f1 = factoradic(var1);
+		}
+		else {
+			f1 = avar1->second;
+			is_var = true;
+		}
+		
+		R = f1;
+		R.square();
 		
 		if (is_var) {
 			data.find(var1)->second = R;
