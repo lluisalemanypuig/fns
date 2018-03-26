@@ -10,6 +10,7 @@ using namespace std;
 /// Custom includes
 #include "core/factoradic.hpp"
 #include "core/integer.hpp"
+#include "utils/make_perms.hpp"
 #include "utils/operations.hpp"
 #include "utils/command.hpp"
 #include "utils/time.hpp"
@@ -183,6 +184,27 @@ bool execute_command(const command& c) {
 		else {
 			data[c.new_var] = F;
 		}
+	}
+	else if (c.action == "make-permutation") {
+		
+		// permutation index
+		factoradic Fx;
+		integer Ix;
+		
+		bool is_var_x = read_var(data, c.var1, Fx, Ix);
+		
+		vector<string> kth_perm;
+		if (is_var_x) {
+			make_perms::kth_permutation(Fx, c.list_elems, kth_perm);
+		}
+		else {
+			make_perms::kth_permutation(Ix, c.list_elems, kth_perm);
+		}
+		
+		for (const string& e : kth_perm) {
+			cout << e << " ";
+		}
+		cout << endl;
 	}
 	else if (c.action == "even") {
 		memory::iterator it;

@@ -11,6 +11,7 @@ using namespace std;
 
 /// Custom includes
 #include "core/factoradic.hpp"
+#include "utils/make_perms.hpp"
 
 template<typename T, typename U = size_t>
 void print(const vector<T>& v, const U& idx) {
@@ -19,25 +20,6 @@ void print(const vector<T>& v, const U& idx) {
 		cout << " " << u;
 	}
 	cout << endl;
-}
-
-// v contains the sorted list of elements!
-template<class T, class U = size_t>
-void kth_permutation(const vector<T>& v, vector<T>& kth_perm, const U& k) {
-	// k in factoradic system number
-	factoradic K(k);
-	
-	vector<size_t> rs;
-	K.get_radixs(rs, v.size());
-	reverse(rs.begin(), rs.end());
-	
-	vector<T> list_copy = v;
-	kth_perm = vector<T>(v.size());
-	
-	for (size_t i = 0; i < rs.size(); ++i) {
-		kth_perm[i] = list_copy[ rs[i] ];
-		list_copy.erase( list_copy.begin() + rs[i] );
-	}
 }
 
 void small_N(int N, int n_threads) {
@@ -61,7 +43,7 @@ void small_N(int N, int n_threads) {
 		
 		// compute k-th permutation
 		vector<int> ith_perm;
-		kth_permutation(v, ith_perm, idx);
+		make_perms::kth_permutation(idx, v, ith_perm);
 		
 		// process all permutations with index [k, k + n_perms_thread]
 		for (size_t p = 0; p < n_perms_thread; ++p) {
@@ -104,7 +86,7 @@ void large_N(int N, int n_threads) {
 		
 		// compute k-th permutation
 		vector<int> ith_perm;
-		kth_permutation(v, ith_perm, idx);
+		make_perms::kth_permutation(idx, v, ith_perm);
 		
 		// process all permutations with index [k, k + n_perms_thread]
 		for (integer p = 0; p < n_perms_thread; ++p) {

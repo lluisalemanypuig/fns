@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <vector>
 #include <list>
 #include <map>
 using namespace std;
@@ -31,6 +32,7 @@ class command {
 		size_t small_value;
 		
 		list<command> sub_command;
+		vector<string> list_elems;
 		
 	public:
 		command();

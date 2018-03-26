@@ -32,6 +32,14 @@ istream& command::read_partial_command(istream& is) {
 		is >> new_var;
 		is >> small_value;
 	}
+	else if (action == "make-permutation") {
+		is >> var1;			// permutation index
+		is >> small_value;	// num elems
+		list_elems = vector<string>(small_value);
+		for (string& elem : list_elems) {
+			is >> elem;
+		}
+	}
 	else if (action == "def") {
 		is >> new_var >> var1 >> op >> var2;
 	}

@@ -36,7 +36,7 @@ $(DEB_BIN_DIR)/process_permutations: $(PROC_PERM_OBJECTS_DEB)
 	g++ $(DEB_FLAGS) -o $(DEB_BIN_DIR)/process_permutations $(PROC_PERM_OBJECTS_DEB) $(LIBS)
 
 $(DEB_BIN_DIR)/permutations.o: $(SRC_DIR)/permutations.cpp $(PROC_PERM_DPS)
-	g++ $(DEB_FLAGS) -c $< -o $@
+	g++ $(DEB_FLAGS) -c $< -o $@ -I$(INCLUDE)
 
 ############
 # CALCULATOR
