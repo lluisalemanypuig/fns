@@ -51,6 +51,10 @@ void print_usage() {
 	cout << endl;
 	cout << "      > ff v n: compute the factorial of n! in factorial base." << endl;
 	cout << "            n must be a number in base 10" << endl;
+	cout << "      > make-permutation idx n s_1 s_2 ... s_n: computes the idx-th permutation of" << endl;
+	cout << "            the list of 'n' elements (s_1,s_2,...,s_n)." << endl;
+	cout << "            idx must be either a variable name or a number in base 10" << endl;
+	cout << "            n must be a number in decimal 10 that fits in a 64-bit number" << endl;
 	cout << endl;
 	cout << "      > repeat n OPTION: repeats the given COMMAND n times." << endl;
 	cout << "            n must be a number in base 10" << endl;
