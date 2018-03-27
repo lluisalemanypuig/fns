@@ -7,6 +7,11 @@ namespace make_perms {
 		// k in factoradic system number
 		factoradic K(k);
 		
+		factoradic MAX;
+		MAX.from_factorial(sorted_list.size());
+		
+		assert(K < MAX);
+		
 		vector<size_t> rs;
 		K.get_radixs(rs, sorted_list.size());
 		reverse(rs.begin(), rs.end());
