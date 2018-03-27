@@ -1,6 +1,6 @@
 // compute 50*(50!)^20 in two different ways //
 
-ff a 50
+factorial a 50
 var b 20
 
 // ####### //
