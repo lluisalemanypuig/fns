@@ -28,7 +28,7 @@ istream& command::read_partial_command(istream& is) {
 	else if (action == "square") {
 		is >> var1;
 	}
-	else if (action == "ff") {
+	else if (action == "factorial") {
 		is >> new_var;
 		is >> small_value;
 	}

@@ -49,12 +49,13 @@ void print_usage() {
 	cout << "      > even v: checks if the contents of v is even." << endl;
 	cout << "            v must be a variable name" << endl;
 	cout << endl;
-	cout << "      > ff v n: compute the factorial of n! in factorial base." << endl;
+	cout << "      > factorial v n: compute the factorial of n and store in v." << endl;
+	cout << "            v must be a variable name" << endl;
 	cout << "            n must be a number in base 10" << endl;
-	cout << "      > make-permutation idx n s_1 s_2 ... s_n: computes the idx-th permutation of" << endl;
+	cout << "      > make-permutation i n s_1 s_2 ... s_n: computes the i-th permutation of" << endl;
 	cout << "            the list of 'n' elements (s_1,s_2,...,s_n)." << endl;
-	cout << "            idx must be either a variable name or a number in base 10" << endl;
-	cout << "            n must be a number in decimal 10 that fits in a 64-bit number" << endl;
+	cout << "            i must be either a variable name or a number in base 10" << endl;
+	cout << "            n must be a number in base 10 that fits in a 64-bit number" << endl;
 	cout << endl;
 	cout << "      > repeat n OPTION: repeats the given COMMAND n times." << endl;
 	cout << "            n must be a number in base 10" << endl;
@@ -178,7 +179,7 @@ bool execute_command(const command& c) {
 	else if (c.action == "square") {
 		square_value(data, c.var1);
 	}
-	else if (c.action == "ff") {
+	else if (c.action == "factorial") {
 		factoradic F;
 		F.from_factorial(c.small_value);
 		
@@ -205,10 +206,12 @@ bool execute_command(const command& c) {
 			make_perms::kth_permutation(Ix, c.list_elems, kth_perm);
 		}
 		
+		cout << endl;
+		cout << "    ";
 		for (const string& e : kth_perm) {
 			cout << e << " ";
 		}
-		cout << endl;
+		cout << endl << endl;
 	}
 	else if (c.action == "even") {
 		memory::iterator it;
