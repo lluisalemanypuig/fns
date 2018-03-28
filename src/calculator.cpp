@@ -53,8 +53,12 @@ void print_usage() {
 	cout << "            v must be a variable name" << endl;
 	cout << "            n must be a number in base 10" << endl;
 	cout << "      > make-permutation i n s_1 s_2 ... s_n: computes the i-th permutation of" << endl;
-	cout << "            the list of 'n' elements (s_1,s_2,...,s_n)." << endl;
+	cout << "            the list of 'n' elements (s_1,...,s_n)." << endl;
 	cout << "            i must be either a variable name or a number in base 10" << endl;
+	cout << "            n must be a number in base 10 that fits in a 64-bit number" << endl;
+	cout << "      > permutation-index n s_1 s_2 ... s_n a_1 a_2 ... a_n: computes the index of" << endl;
+	cout << "            the permutation (s_1,...,s_n) of the list (a_1,...,a_n)." << endl;
+	cout << "            The index is given as a number in base 10." << endl;
 	cout << "            n must be a number in base 10 that fits in a 64-bit number" << endl;
 	cout << endl;
 	cout << "      > repeat n OPTION: repeats the given COMMAND n times." << endl;
@@ -200,10 +204,10 @@ bool execute_command(const command& c) {
 		
 		vector<string> kth_perm;
 		if (is_var_x) {
-			make_perms::kth_permutation(Fx, c.list_elems, kth_perm);
+			make_perms::kth_permutation(Fx, c.sorted_list, kth_perm);
 		}
 		else {
-			make_perms::kth_permutation(Ix, c.list_elems, kth_perm);
+			make_perms::kth_permutation(Ix, c.sorted_list, kth_perm);
 		}
 		
 		cout << endl;
@@ -212,6 +216,15 @@ bool execute_command(const command& c) {
 			cout << e << " ";
 		}
 		cout << endl << endl;
+	}
+	else if (c.action == "permutation-index") {
+		
+		integer index;
+		make_perms::permutation_index(c.permutation, c.sorted_list, index);
+		
+		cout << endl;
+		cout << "    " << index << endl;
+		cout << endl;
 	}
 	else if (c.action == "even") {
 		memory::iterator it;

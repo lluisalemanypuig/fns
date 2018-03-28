@@ -32,7 +32,8 @@ class command {
 		size_t small_value;
 		
 		list<command> sub_command;
-		vector<string> list_elems;
+		vector<string> sorted_list;
+		vector<string> permutation;
 		
 	public:
 		command();

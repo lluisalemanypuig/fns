@@ -35,8 +35,19 @@ istream& command::read_partial_command(istream& is) {
 	else if (action == "make-permutation") {
 		is >> var1;			// permutation index
 		is >> small_value;	// num elems
-		list_elems = vector<string>(small_value);
-		for (string& elem : list_elems) {
+		sorted_list = vector<string>(small_value);
+		for (string& elem : sorted_list) {
+			is >> elem;
+		}
+	}
+	else if (action == "permutation-index") {
+		is >> small_value;	// num elems
+		permutation = vector<string>(small_value);
+		for (string& elem : permutation) {
+			is >> elem;
+		}
+		sorted_list = vector<string>(small_value);
+		for (string& elem : sorted_list) {
 			is >> elem;
 		}
 	}
