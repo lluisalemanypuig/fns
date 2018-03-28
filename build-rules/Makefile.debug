@@ -25,7 +25,7 @@ PROC_PERM_OBJECTS_DEB = $(DEB_BIN_DIR)/permutations.o \
 ###########
 # DIRECTORY
 
-debdirectory: $(DEB_BIN_DIR)
+debugdirectory: $(DEB_BIN_DIR)
 $(DEB_BIN_DIR):
 	mkdir -p $(DEB_BIN_DIR)
 

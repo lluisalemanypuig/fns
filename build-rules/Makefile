@@ -34,9 +34,9 @@ PROC_PERM_DPS = $(FACTORADIC_DPS) $(MAKE_PERMS_DPS)
 
 # RULES
 
-.PHONY: debdirectory reldirectory
-debug: debdirectory $(DEB_BIN_DIR)/calculator $(DEB_BIN_DIR)/process_permutations
-release: reldirectory $(REL_BIN_DIR)/calculator $(REL_BIN_DIR)/process_permutations
+.PHONY: debugdirectory releasedirectory
+debug: debugdirectory $(DEB_BIN_DIR)/calculator $(DEB_BIN_DIR)/process_permutations
+release: releasedirectory $(REL_BIN_DIR)/calculator $(REL_BIN_DIR)/process_permutations
 
 include $(RULES_DIR)/Makefile.debug
 include $(RULES_DIR)/Makefile.release

@@ -2,7 +2,7 @@
 ###############
 # RELEASE FLAGS
 
-REL_FLAGS = -O3 $(GEN_FLAGS) -DNDEBUG
+REL_FLAGS = -O3 -DNDEBUG $(GEN_FLAGS)
 
 #################
 # RELEASE OBJECTS
@@ -25,7 +25,7 @@ PROC_PERM_OBJECTS_REL = $(REL_BIN_DIR)/permutations.o \
 ###########
 # DIRECTORY
 
-reldirectory: $(REL_BIN_DIR)
+releasedirectory: $(REL_BIN_DIR)
 $(REL_BIN_DIR):
 	mkdir -p $(REL_BIN_DIR)
 
@@ -36,7 +36,7 @@ $(REL_BIN_DIR)/process_permutations: $(PROC_PERM_OBJECTS_REL)
 	g++ $(REL_FLAGS) -o $(REL_BIN_DIR)/process_permutations $(PROC_PERM_OBJECTS_REL) $(LIBS)
 
 $(REL_BIN_DIR)/permutations.o: $(SRC_DIR)/permutations.cpp $(PROC_PERM_DPS)
-	g++ $(REL_FLAGS) -c $< -o $@
+	g++ $(REL_FLAGS) -c $< -o $@ -I$(INCLUDE)
 
 ############
 # CALCULATOR
