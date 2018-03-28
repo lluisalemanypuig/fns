@@ -22,6 +22,15 @@ factoradic::factoradic(const factoradic& f) {
 	radixs = f.radixs;
 	neg = f.neg;
 }
+factoradic::factoradic(const vector<size_t>& Rs, bool _neg, bool le) {
+	radixs = Rs;
+	neg = _neg;
+	
+	// format of input: big-endian -> reverse the radixs
+	if (not le) {
+		reverse(radixs.begin(), radixs.end());
+	}
+}
 factoradic::~factoradic() { }
 
 /// OPERATORS
@@ -29,6 +38,19 @@ factoradic::~factoradic() { }
 factoradic& factoradic::operator= (const factoradic& f) {
 	radixs = f.radixs;
 	neg = f.neg;
+	return *this;
+}
+
+// NEGATION
+
+factoradic factoradic::operator-() const {
+	factoradic f = *this;
+	f.neg = not f.neg;
+	return f;
+}
+
+factoradic& factoradic::operator-() {
+	neg = not neg;
 	return *this;
 }
 
@@ -68,17 +90,6 @@ factoradic& factoradic::operator+= (const factoradic& f) {
 }
 
 // SUBSTRACTION
-
-factoradic factoradic::operator-() const {
-	factoradic f = *this;
-	f.neg = not f.neg;
-	return f;
-}
-
-factoradic& factoradic::operator-() {
-	neg = not neg;
-	return *this;
-}
 
 factoradic factoradic::operator- (int i) const {
 	factoradic fc = *this;

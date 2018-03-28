@@ -16,7 +16,9 @@ using namespace std;
 
 class factoradic {
 	private:
+		// radixs of this number: little-endian format
 		vector<size_t> radixs;
+		
 		// neg = true -> this number is negative
 		// neg = false -> this number is positive
 		bool neg;
@@ -66,6 +68,10 @@ class factoradic {
 		factoradic(const integer& i);
 		factoradic(const string& i);
 		factoradic(const factoradic& f);
+		
+		// Rs is the radixs of a number in factorial
+		// base in little endian format
+		factoradic(const vector<size_t>& Rs, bool neg = false, bool little_endian = true);
 		~factoradic();
 		
 		/// OPERATORS
@@ -78,6 +84,9 @@ class factoradic {
 		
 		factoradic& operator= (const factoradic& f);
 		
+		factoradic operator-() const;
+		factoradic& operator-();
+		
 		factoradic operator+ (int i) const;
 		factoradic operator+ (const integer& i) const;
 		factoradic operator+ (const factoradic& f) const;
@@ -85,8 +94,6 @@ class factoradic {
 		factoradic& operator+= (const integer& i);
 		factoradic& operator+= (const factoradic& f);
 		
-		factoradic operator-() const;
-		factoradic& operator-();
 		factoradic operator- (int i) const;
 		factoradic operator- (const integer& i) const;
 		factoradic operator- (const factoradic& f) const;
