@@ -3,9 +3,9 @@
 factorial a 50
 var b 20
 
-// ####### //
+// ------- //
 // way # 1 //
-// ####### //
+// ------- //
 
 def c a ^ b		// c := (50!)^20 //
 print-dec c
@@ -16,15 +16,12 @@ print-dec d
 
 
 
-// ####### //
+// ------- //
 // way # 2 //
-// ####### //
+// ------- //
 
-def e a ^ b			// e := c = (50!)^20 //
-cmp e == c
-
-def f a ^ b			// f := c = (50!)^20 //
-cmp f == c
+def e a ^ b			// e := f := c = (50!)^20 //
+def f a ^ b
 
 repeat 49 {
 	def f f + e		// f := f + e //

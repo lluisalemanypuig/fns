@@ -1,4 +1,4 @@
-var times 120
+factorial times 6
 
 var a 1
 
@@ -33,6 +33,7 @@ print a
 shrink-var a
 print a
 
+// slowest part //
 repeat times {
 	square a
 }
