@@ -70,6 +70,8 @@ istream& command::read_partial_command(istream& is) {
 	else if (action == "print" or action == "print-dec") {
 		is >> var1;
 	}
+	else if (action == "verbose") { }
+	else if (action == "trailing") { }
 	else if (action == "help") { }
 	else if (action == "repeat") {
 		is >> var1;
