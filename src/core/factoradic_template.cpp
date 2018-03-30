@@ -59,11 +59,11 @@ void factoradic::integer_power(const T& i) {
 template<class T>
 void factoradic::__to_integer(T& i) const {
 	T pos_dec = 0;
-	const size_t L = radixs.size();
+	const size_t R = radixs.size();
 	
-	for (size_t l = L - 1; l > 0; --l) {
-		size_t di = radixs[l];
-		pos_dec = (pos_dec + di)*l;
+	for (size_t r = R - 1; r > 0; --r) {
+		size_t di = radixs[r];
+		pos_dec = (pos_dec + di)*r;
 	}
 	
 	i = pos_dec;

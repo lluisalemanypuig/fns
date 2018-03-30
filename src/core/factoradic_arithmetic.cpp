@@ -4,47 +4,51 @@
 
 void factoradic::__increment() {
 	size_t carry = 1;
-	size_t l = 1;
+	size_t r = 1;
 	
-	while (l < radixs.size() and carry > 0) {
-		size_t sum = size_t(radixs[l]) + carry;
-		size_t mod = sum%(l + 1);
+	while (r < radixs.size() and carry > 0) {
+		size_t sum = radixs[r] + carry;
+		size_t mod = sum%(r + 1);
 		
-		radixs[l] = mod;
+		radixs[r] = mod;
 		
 		assert(sum >= mod);
-		carry = (sum - mod)/(l + 1);
+		carry = (sum - mod)/(r + 1);
 		
-		++l;
+		++r;
 	}
 	
 	while (carry > 0) {
-		size_t mod = carry%(l + 1);
+		size_t mod = carry%(r + 1);
 		radixs.push_back(mod);
 		
-		assert(l + 1 >= mod);
-		carry = (l + 1 - mod)/(l + 1);
+		assert(r + 1 >= mod);
+		carry = ((r + 1) - mod)/(r + 1);
+		
+		// the radix also has to be incremented
+		// albeit always out of bounds
+		++r;
 	}
 }
 
 void factoradic::__decrement() {
-	size_t l = 0;
+	size_t r = 0;
 	
 	size_t carry = 1;
-	while (l < radixs.size() and carry > 0) {
+	while (r < radixs.size() and carry > 0) {
 		
-		if (radixs[l] < carry) {
-			assert(radixs[l] + l + 1 >= carry);
-			radixs[l] = radixs[l] + l + 1 - carry;
+		if (radixs[r] < carry) {
+			assert(radixs[r] + r + 1 >= carry);
 			
+			radixs[r] = (radixs[r] + r + 1) - carry;
 			carry = 1;
 		}
 		else {
-			radixs[l] = radixs[l] - carry;
+			radixs[r] = radixs[r] - carry;
 			carry = 0;
 		}
 		
-		++l;
+		++r;
 	}
 	
 	// the algorithm ensures that carry is 0 at the end of the while loop.
@@ -95,66 +99,66 @@ void factoradic::decrement() {
 }
 
 void factoradic::__accumulate(const factoradic& f) {
-	size_t l = 0;
+	size_t r = 0;
 	size_t carry = 0;
 	
-	while (l < radixs.size() and l < f.radixs.size()) {
+	while (r < radixs.size() and r < f.radixs.size()) {
 		// if the sum of the two digits is greater than the greatest
 		// radix allowed then compute the modulus of the result.
 		// The greatest radix allowed is equal to the index
 		
 		// sum of the two currently pointed radixs plus the carry
-		size_t sum_dig = size_t(radixs[l]) + size_t(f.radixs[l]) + carry;
+		size_t sum_dig = radixs[r] + f.radixs[r] + carry;
 		
 		// new digit
-		size_t mod = sum_dig%(l + 1);
-		radixs[l] = mod;
+		size_t mod = sum_dig%(r + 1);
+		radixs[r] = mod;
 		
 		// value of carry.
 		// by construction:
 		//     S := sum_dig
-		//     mod := S%(l + 1)
-		//     sum_dig > mod    <=>    S > S%(l + 1)
-		carry = (sum_dig - mod)/(l + 1);
+		//     mod := S%(r + 1)
+		//     sum_dig > mod    <=>    S > S%(r + 1)
+		carry = (sum_dig - mod)/(r + 1);
 		
-		++l;
+		++r;
 	}
 	
 	// if this number and f do not have the same length then keed adding
 	// the carry until the full length of the longest number has been
 	// iterated over
 	if (radixs.size() < f.radixs.size()) {
-		for (size_t it = l; it < f.radixs.size(); ++it) {
+		for (; r < f.radixs.size(); ++r) {
 			// sum of the currently pointed radix plus the carry
-			size_t sum_dig = size_t(f.radixs[it]) + carry;
+			size_t sum_dig = f.radixs[r] + carry;
 			
 			// new digit
-			size_t mod = sum_dig%(it + 1);
+			size_t mod = sum_dig%(r + 1);
 			radixs.push_back(mod);
 			
 			// value of carry
 			// by construction:
 			//     S := sum_dig
-			//     mod := S%(l + 1)
-			//     sum_dig > mod    <=>    S > S%(l + 1)
-			carry = (sum_dig - mod)/(it + 1);
+			//     mod := S%(r + 1)
+			//     sum_dig > mod    <=>    S > S%(r + 1)
+			carry = (sum_dig - mod)/(r + 1);
 		}
 	}
 	else if (radixs.size() > f.radixs.size()) {
-		for (size_t it = l; it < radixs.size(); ++it) {
+		for (; r < radixs.size(); ++r) {
 			// sum of the currently pointed radix plus the carry
-			size_t sum_dig = size_t(radixs[it]) + carry;
+			size_t sum_dig = radixs[r] + carry;
 			
 			// new digit
-			size_t mod = sum_dig%(it + 1);
-			radixs[it] = mod;
+			size_t mod = sum_dig%(r + 1);
+			radixs[r] = mod;
 			
 			// value of carry
 			// by construction:
 			//     S := sum_dig
-			//     mod := S%(l + 1)
-			//     sum_dig > mod    <=>    S > S%(l + 1)
-			carry = (sum_dig - mod)/(it + 1);
+			//     mod := S%(r + 1)
+			//     sum_dig > mod    <=>    S > S%(r + 1)
+			carry = (sum_dig - mod)/(r + 1);
 		}
 	}
 	
@@ -162,16 +166,16 @@ void factoradic::__accumulate(const factoradic& f) {
 	// there is still more carry
 	while (carry > 0) {
 		size_t new_digit;
-		if (carry > l) {
-			new_digit = carry/l;
-			carry = carry/l;
+		if (carry > r) {
+			new_digit = carry/r;
+			carry = carry/r;
 		}
 		else {
 			new_digit = carry;
 			carry = 0;
 		}
 		radixs.push_back(new_digit);
-		++l;
+		++r;
 	}
 }
 
@@ -283,38 +287,38 @@ void factoradic::accumulate(const factoradic& f) {
 }
 
 void factoradic::__substract(const factoradic& f) {
-	size_t l = 0;
+	size_t r = 0;
 	size_t carry = 0;
 	
-	while (l < radixs.size() and l < f.radixs.size()) {
+	while (r < radixs.size() and r < f.radixs.size()) {
 		
-		if (radixs[l] < f.radixs[l] + carry) {
-			assert(radixs[l] + l + 1 >= f.radixs[l] + carry);
+		if (radixs[r] < f.radixs[r] + carry) {
+			assert(radixs[r] + r + 1 >= f.radixs[r] + carry);
 			
-			radixs[l] = radixs[l] + l + 1 - (f.radixs[l] + carry);
+			radixs[r] = (radixs[r] + r + 1) - (f.radixs[r] + carry);
 			carry = 1;
 		}
 		else {
-			radixs[l] = radixs[l] - (f.radixs[l] + carry);
+			radixs[r] = radixs[r] - (f.radixs[r] + carry);
 			carry = 0;
 		}
 		
-		++l;
+		++r;
 	}
 	
 	// likewise in the accumulate algorithm, there are still
 	// more radixs to deal with
 	if (radixs.size() > f.radixs.size()) {
-		for (; l < radixs.size(); ++l) {
+		for (; r < radixs.size(); ++r) {
 			
-			if (radixs[l] < carry) {
-				assert(radixs[l] + l + 1 >= carry);
+			if (radixs[r] < carry) {
+				assert(radixs[r] + r + 1 >= carry);
 				
-				radixs[l] = radixs[l] + l + 1 - carry;
+				radixs[r] = (radixs[r] + r + 1) - carry;
 				carry = 1;
 			}
 			else {
-				radixs[l] = radixs[l] - carry;
+				radixs[r] = radixs[r] - carry;
 				carry = 0;
 			}
 			
@@ -586,39 +590,39 @@ void factoradic::mult2() {
 	// to the highest-weight radix direction (similar
 	// to the procedure used in __accumulate)
 	
-	size_t l = 0;
+	size_t r = 0;
 	size_t carry = 0;
-	while (l < radixs.size()) {
+	while (r < radixs.size()) {
 		
 		// sum of the currently pointed radix and the carry
-		size_t sum_rad = (radixs[l] << 1) + carry;
+		size_t sum = (radixs[r] << 1) + carry;
 		
 		// new radix
-		size_t mod = sum_rad%(l + 1);
-		radixs[l] = mod;
+		size_t mod = sum%(r + 1);
+		radixs[r] = mod;
 		
 		// value of carry.
 		// by construction:
 		//     S := sum_rad
-		//     mod := S%(l + 1)
-		//     sum_rad > mod    <=>    S > S%(l + 1)
-		carry = (sum_rad - mod)/(l + 1);
+		//     mod := S%(r + 1)
+		//     sum_rad > mod    <=>    S > S%(r + 1)
+		carry = (sum - mod)/(r + 1);
 		
-		++l;
+		++r;
 	}
 	
 	while (carry > 0) {
 		size_t new_digit;
-		if (carry > l) {
-			new_digit = carry/l;
-			carry = carry/l;
+		if (carry > r) {
+			new_digit = carry/r;
+			carry = carry/r;
 		}
 		else {
 			new_digit = carry;
 			carry = 0;
 		}
 		radixs.push_back(new_digit);
-		++l;
+		++r;
 	}
 	
 }

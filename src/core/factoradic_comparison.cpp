@@ -21,8 +21,8 @@ bool factoradic::operator== (const factoradic& f) const {
 		return false;
 	}
 	
-	size_t L = radixs.size();
-	size_t kL = f.radixs.size();
+	size_t R = radixs.size();
+	size_t kR = f.radixs.size();
 	
 	// compare the "common radixs". If any is different then
 	// so are the numbers
@@ -32,7 +32,7 @@ bool factoradic::operator== (const factoradic& f) const {
 	
 	bool equal = true;
 	size_t r = 0;
-	while (equal and r < L and r < kL) {
+	while (equal and r < R and r < kR) {
 		if (radixs[r] != f.radixs[r]) {
 			equal = false;
 		}
@@ -43,9 +43,9 @@ bool factoradic::operator== (const factoradic& f) const {
 	// in order for the two of them to be equal, what is left of the
 	// number with more radixs must be all 0's
 	
-	if (L != kL and equal) {
+	if (R != kR and equal) {
 		// longest radix vector
-		const vector<size_t>& rest = (L < kL ? f.radixs : radixs);
+		const vector<size_t>& rest = (R < kR ? f.radixs : radixs);
 		while (r < rest.size() and rest[r] == 0) {
 			++r;
 		}
