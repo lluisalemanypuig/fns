@@ -361,7 +361,7 @@ bool execute_command(const command& c) {
 	}
 	else {
 		cout << endl;
-		cout << "    Error: option '" << c.action << "' not recognised" << endl;
+		cout << "    Error: command '" << c.action << "' not recognised" << endl;
 		cout << endl;
 		print_time = false;
 	}
@@ -413,12 +413,16 @@ void execute_program(const string& program_file) {
 	bool exit_calc = false;
 	
 	while (not exit_calc and fin >> main_command) {
-		exit_calc = execute_command(main_command);
+		if (main_command.action == "") {
+			exit_calc = true;
+		}
+		else {
+			exit_calc = execute_command(main_command);
+		}
 	}
 	
 	double end = timing::now();
 	
-	main_command.clear();
 	fin.close();
 	
 	cout << "    In " << timing::elapsed_time(begin, end) << " s" << endl;

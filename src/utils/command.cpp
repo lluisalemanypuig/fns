@@ -70,8 +70,9 @@ istream& command::read_partial_command(istream& is) {
 	else if (action == "print" or action == "print-dec") {
 		is >> var1;
 	}
-	else if (action == "verbose") { }
+	else if (action == "endlines") { }
 	else if (action == "trailing") { }
+	else if (action == "exit") { }
 	else if (action == "help") { }
 	else if (action == "repeat") {
 		is >> var1;
@@ -99,15 +100,26 @@ istream& command::read_partial_command(istream& is) {
 			sub_command.insert(sub_command.end(), new_command);
 		}
 	}
-	else if (action == "//") {
-		while (is >> var1 and var1 != "//") { }
+	else if (action == "//" or action.substr(0,2) == "//") {
+		action = "//";
+		while
+		(
+			is >> var1 and
+			var1 != "//" and var1.substr(var1.length() - 2, 2) != "//"
+		)
+		{ }
+	}
+	else {
+		cerr << "Error: action '" << action << "' not recognised" << endl;
 	}
 	return is;
 }
 
 istream& command::read_full_command(istream& is) {
-	is >> action;
-	return read_partial_command(is);
+	if (is >> action) {
+		return read_partial_command(is);
+	}
+	return is;
 }
 
 /// PUBLIC
