@@ -143,10 +143,10 @@ class factoradic {
 		bool operator<= (const factoradic& f) const;
 		
 		factoradic& operator++ ();		// prefix:	++a
-        factoradic operator++ (int);	// postfix:	a++
+		factoradic operator++ (int);	// postfix:	a++
         
-        factoradic& operator-- ();		// prefix:	++a
-        factoradic operator-- (int);	// postfix:	a++
+		factoradic& operator-- ();		// prefix:	++a
+		factoradic operator-- (int);	// postfix:	a++
 		
 		/// MODIFIERS
 		
