@@ -29,7 +29,7 @@ class command {
 		string op;
 		
 		integer big_value;
-		size_t small_value;
+		uint32_t small_value;
 		
 		list<command> sub_command;
 		vector<string> sorted_list;

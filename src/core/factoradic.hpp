@@ -12,12 +12,13 @@
 using namespace std;
 
 /// Custom includes
+#include "type_defs.hpp"
 #include "integer.hpp"
 
 class factoradic {
 	private:
 		// radixs of this number: little-endian format
-		vector<size_t> radixs;
+		vector<radix_t> radixs;
 		
 		// neg = true -> this number is negative
 		// neg = false -> this number is positive
@@ -47,7 +48,7 @@ class factoradic {
 		
 		/// DIVIDE
 		// divides this number by 'i' (decimal number)
-		void int_divide(size_t i);
+		void int_divide(unsigned int i);
 		void integer_divide(const integer& i);
 		
 		/// POWER
@@ -63,15 +64,14 @@ class factoradic {
 		
 	public:
 		factoradic();
-		factoradic(int i);
-		factoradic(size_t i);
+		factoradic(int64_t i);
 		factoradic(const integer& i);
 		factoradic(const string& i);
 		factoradic(const factoradic& f);
 		
 		// Rs is the radixs of a number in factorial
 		// base in little endian format
-		factoradic(const vector<size_t>& Rs, bool neg = false, bool little_endian = true);
+		factoradic(const vector<radix_t>& Rs, bool neg = false, bool little_endian = true);
 		~factoradic();
 		
 		/// OPERATORS
@@ -87,66 +87,66 @@ class factoradic {
 		factoradic operator-() const;
 		factoradic& operator-();
 		
-		factoradic operator+ (int i) const;
+		factoradic operator+ (int32_t i) const;
 		factoradic operator+ (const integer& i) const;
 		factoradic operator+ (const factoradic& f) const;
-		factoradic& operator+= (int i);
+		factoradic& operator+= (int32_t i);
 		factoradic& operator+= (const integer& i);
 		factoradic& operator+= (const factoradic& f);
 		
-		factoradic operator- (int i) const;
+		factoradic operator- (int32_t i) const;
 		factoradic operator- (const integer& i) const;
 		factoradic operator- (const factoradic& f) const;
-		factoradic& operator-= (int i);
+		factoradic& operator-= (int32_t i);
 		factoradic& operator-= (const integer& i);
 		factoradic& operator-= (const factoradic& f);
 		
-		factoradic operator* (int i) const;
+		factoradic operator* (int32_t i) const;
 		factoradic operator* (const integer& i) const;
 		factoradic operator* (const factoradic& f) const;
-		factoradic& operator*= (int i);
+		factoradic& operator*= (int32_t i);
 		factoradic& operator*= (const integer& i);
 		factoradic& operator*= (const factoradic& f);
 		
-		factoradic operator/ (int i) const;
+		factoradic operator/ (int32_t i) const;
 		factoradic operator/ (const integer& i) const;
 		factoradic operator/ (const factoradic& f) const;
 		factoradic& operator/= (int i);
 		factoradic& operator/= (const integer& i);
 		factoradic& operator/= (const factoradic& f);
 		
-		factoradic operator^ (uint i) const;
+		factoradic operator^ (uint32_t i) const;
 		factoradic operator^ (const integer& i) const;
 		factoradic operator^ (const factoradic& f) const;
-		factoradic& operator^= (uint i);
+		factoradic& operator^= (uint32_t i);
 		factoradic& operator^= (const integer& i);
 		factoradic& operator^= (const factoradic& f);
 		
-		bool operator== (int i) const;
+		bool operator== (int32_t i) const;
 		bool operator== (const integer& i) const;
 		bool operator== (const factoradic& f) const;
 		
-		bool operator> (int i) const;
+		bool operator> (int32_t i) const;
 		bool operator> (const integer& i) const;
 		bool operator> (const factoradic& f) const;
 		
-		bool operator>= (int i) const;
+		bool operator>= (int32_t i) const;
 		bool operator>= (const integer& i) const;
 		bool operator>= (const factoradic& f) const;
 		
-		bool operator< (int i) const;
+		bool operator< (int32_t i) const;
 		bool operator< (const integer& i) const;
 		bool operator< (const factoradic& f) const;
 		
-		bool operator<= (int i) const;
+		bool operator<= (int32_t i) const;
 		bool operator<= (const integer& i) const;
 		bool operator<= (const factoradic& f) const;
 		
-		factoradic& operator++ ();		// prefix:	++a
-		factoradic operator++ (int);	// postfix:	a++
+		factoradic& operator++ ();			// prefix:	++a
+		factoradic operator++ (int32_t);	// postfix:	a++
         
-		factoradic& operator-- ();		// prefix:	++a
-		factoradic operator-- (int);	// postfix:	a++
+		factoradic& operator-- ();			// prefix:	++a
+		factoradic operator-- (int32_t);	// postfix:	a++
 		
 		/// MODIFIERS
 		
@@ -161,23 +161,25 @@ class factoradic {
 		bool is_negative() const;	// returns true if this number is negative (<0)
 		bool is_even() const;		// returns true if there exists some integer k such that 2*k = *this
 		
-		void get_radixs(vector<size_t>& rs, size_t n_digits = 0) const;
+		void get_radixs(vector<radix_t>& rs, size_t n_digits = 0) const;
 		
 		/// CONVERSIONS
 		
 		// convert a base-10 number into factoradic number system
-		void from_int(int i);
-		void from_uint(size_t i);
+		void from_int(int32_t i);
+		void from_uint(uint32_t i);
+		void from_long_int(int64_t i);
+		void from_long_uint(uint64_t i);
 		void from_integer(const integer& i);
 		
 		// build the number in factoradic system for the value n!
-		void from_factorial(size_t n);
+		void from_factorial(uint32_t n);
 		
 		// convert to a base-10 integer
 		integer to_integer() const;
 		void to_integer(integer& i) const;
-		int to_int() const;
-		size_t to_uint() const;
+		int32_t to_int() const;
+		uint32_t to_uint() const;
 		
 		// use, at least, n_digits to represent this number
 		// n_digits = 0 is interpreted as using the minimum amount of

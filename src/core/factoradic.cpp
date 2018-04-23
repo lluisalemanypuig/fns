@@ -6,11 +6,8 @@ factoradic::factoradic() {
 	neg = false;
 	from_int(0);
 }
-factoradic::factoradic(int i) {
-	from_int(i);
-}
-factoradic::factoradic(size_t i) {
-	from_uint(i);
+factoradic::factoradic(int64_t i) {
+	from_long_int(i);
 }
 factoradic::factoradic(const integer& i) {
 	from_integer(i);
@@ -22,7 +19,7 @@ factoradic::factoradic(const factoradic& f) {
 	radixs = f.radixs;
 	neg = f.neg;
 }
-factoradic::factoradic(const vector<size_t>& Rs, bool _neg, bool le) {
+factoradic::factoradic(const vector<radix_t>& Rs, bool _neg, bool le) {
 	radixs = Rs;
 	neg = _neg;
 	
@@ -221,7 +218,7 @@ factoradic& factoradic::operator/= (const factoradic& f) {
 	return *this;
 }
 
-factoradic factoradic::operator^ (uint i) const {
+factoradic factoradic::operator^ (uint32_t i) const {
 	factoradic copy = *this;
 	copy ^= i;
 	return copy;
@@ -239,7 +236,7 @@ factoradic factoradic::operator^ (const factoradic& f) const {
 	return copy;
 }
 
-factoradic& factoradic::operator^= (uint i) {
+factoradic& factoradic::operator^= (uint32_t i) {
 	neg = neg and (i%2 == 1);
 	integer_power(i);
 	return *this;
@@ -295,7 +292,7 @@ bool factoradic::is_one() const {
 	
 	// the radix corresponding to 1! is 1. The rest must be zero
 	
-	size_t r = 2;
+	index_t r = 2;
 	while (r < radixs.size() and radixs[r] == 0) {
 		++r;
 	}
@@ -312,7 +309,7 @@ bool factoradic::is_zero() const {
 	
 	// by construction radixs[0] = 0
 	
-	size_t r = 1;
+	index_t r = 1;
 	while (r < radixs.size() and radixs[r] == 0) {
 		++r;
 	}
@@ -338,7 +335,7 @@ bool factoradic::is_even() const {
 	return radixs[1] != 1;
 }
 
-void factoradic::get_radixs(vector<size_t>& rs, size_t n_digits) const {
+void factoradic::get_radixs(vector<radix_t>& rs, size_t n_digits) const {
 	rs = radixs;
 	if (n_digits > 0) {
 		while (rs.size() < n_digits) {
@@ -349,8 +346,8 @@ void factoradic::get_radixs(vector<size_t>& rs, size_t n_digits) const {
 
 /// CONVERSIONS
 
-void factoradic::from_int(int i) {
-	size_t copy_i;
+void factoradic::from_int(int32_t i) {
+	uint32_t copy_i;
 	if (i < 0) {
 		copy_i = -i;
 		neg = true;
@@ -362,7 +359,24 @@ void factoradic::from_int(int i) {
 	__from_decimal(copy_i);
 }
 
-void factoradic::from_uint(size_t i) {
+void factoradic::from_uint(uint32_t i) {
+	__from_decimal(i);
+}
+
+void factoradic::from_long_int(int64_t i) {
+	uint64_t copy_i;
+	if (i < 0) {
+		copy_i = -i;
+		neg = true;
+	}
+	else {
+		neg = false;
+		copy_i = i;
+	}
+	__from_decimal(copy_i);
+}
+
+void factoradic::from_long_uint(uint64_t i) {
 	__from_decimal(i);
 }
 
@@ -379,8 +393,8 @@ void factoradic::from_integer(const integer& i) {
 	__from_decimal(copy_i);
 }
 
-void factoradic::from_factorial(size_t i) {
-	radixs = vector<size_t>(i, 0);
+void factoradic::from_factorial(uint32_t i) {
+	radixs = vector<radix_t>(i, 0);
 	radixs.push_back(1);
 }
 
@@ -394,15 +408,15 @@ void factoradic::to_integer(integer& i) const {
 	__to_integer(i);
 }
 
-int factoradic::to_int() const {
-	size_t i;
+int32_t factoradic::to_int() const {
+	uint32_t i;
 	__to_integer(i);
 	
 	// although this gives a warning:
 	// "conversion to ‘int’ from ‘size_t {aka long unsigned int}’ may alter its value"
 	// take this into account: this is only called when the value in
 	// base 10 fits in an 'int' value
-	int r = i;
+	int32_t r = i;
 	if (neg) {
 		r = -r;
 	}
@@ -410,8 +424,8 @@ int factoradic::to_int() const {
 	return r;
 }
 
-size_t factoradic::to_uint() const {
-	size_t i;
+uint32_t factoradic::to_uint() const {
+	uint32_t i;
 	__to_integer(i);
 	return i;
 }
@@ -427,7 +441,7 @@ void factoradic::to_string(string& s, size_t n_digits) const {
 		s = "";
 	}
 	else {
-		vector<size_t> radixs_copy = radixs;
+		vector<radix_t> radixs_copy = radixs;
 		reverse(radixs_copy.begin(), radixs_copy.end());
 		
 		if (neg) {
@@ -435,12 +449,12 @@ void factoradic::to_string(string& s, size_t n_digits) const {
 		}
 		
 		s += std::to_string(radixs_copy[0]);
-		for (size_t i = 1; i < radixs_copy.size(); ++i) {
+		for (index_t i = 1; i < radixs_copy.size(); ++i) {
 			s += "," + std::to_string(radixs_copy[i]);
 		}
 		
 		if (n_digits > 0) {
-			size_t actual_length = radixs_copy.size() - 1;
+			index_t actual_length = radixs_copy.size() - 1;
 			while (actual_length < n_digits) {
 				s += ",0";
 				++actual_length;
@@ -450,7 +464,7 @@ void factoradic::to_string(string& s, size_t n_digits) const {
 }
 
 void factoradic::shrink() {
-	size_t r = radixs.size() - 1;
+	index_t r = radixs.size() - 1;
 	while (radixs[r] == 0) {
 		--r;
 	}

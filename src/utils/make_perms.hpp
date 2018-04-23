@@ -11,6 +11,7 @@ using namespace std;
 
 /// Custom includes
 #include "core/factoradic.hpp"
+#include "core/type_defs.hpp"
 #include "core/integer.hpp"
 
 namespace make_perms {

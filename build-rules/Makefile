@@ -19,10 +19,13 @@ LIBS = -lgmp -fopenmp -lpthread
 
 TIME_DPS = $(UTILS_DIR)/time.hpp
 DEFS_DPS = $(UTILS_DIR)/defs.hpp
+TYPE_DEFS = $(CORE_DIR)/type_defs.hpp
 GMPUTILS_DPS = $(CORE_DIR)/gmp_utils.hpp
 INTEGER_DPS = $(CORE_DIR)/integer.hpp $(GMPUTILS_DPS)
 COMMAND_DPS = $(UTILS_DIR)/command.hpp $(INTEGER_DPS)
-FACTORADIC_DPS = $(CORE_DIR)/factoradic.hpp $(CORE_DIR)/factoradic_template.cpp $(INTEGER_DPS)
+FACTORADIC_DPS = $(CORE_DIR)/factoradic.hpp $(CORE_DIR)/factoradic_template.cpp \
+				 $(INTEGER_DPS) $(TYPE_DEFS)
+	
 OPERATIONS_DPS = $(UTILS_DIR)/operations.hpp $(FACTORADIC_DPS) $(INTEGER_DPS)
 MAKE_PERMS_DPS = $(UTILS_DIR)/make_perms.hpp $(UTILS_DIR)/make_perms.cpp \
 				 $(FACTORADIC_DPS) $(INTEGER_DPS)

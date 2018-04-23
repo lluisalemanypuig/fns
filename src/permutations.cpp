@@ -22,27 +22,27 @@ void print(const vector<T>& v, const U& idx) {
 	cout << endl;
 }
 
-void small_N(int N, int n_threads) {
+void small_N(unsigned int N, unsigned int n_threads) {
 	static const size_t factorials[15] = {1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880, 3628800, 39916800, 479001600, 6227020800, 87178291200};
 	
 	// # permutations per thread
 	const size_t n_perms_thread = factorials[N]/n_threads;
 	
-	vector<int> v(N);
-	for (int i = 0; i < N; ++i) {
+	vector<unsigned int> v(N);
+	for (unsigned int i = 0; i < N; ++i) {
 		v[i] = i + 1;
 	}
 	
 	size_t n_perms_processed = 0;
 	
 	#pragma omp parallel for num_threads(n_threads)
-	for (int t = 0; t < n_threads; ++t) {
+	for (unsigned int t = 0; t < n_threads; ++t) {
 		
 		// get the index of the k-th permutation
 		size_t idx = t*n_perms_thread;
 		
 		// compute k-th permutation
-		vector<int> ith_perm;
+		vector<unsigned int> ith_perm;
 		make_perms::kth_permutation(idx, v, ith_perm);
 		
 		// process all permutations with index [k, k + n_perms_thread]
@@ -63,7 +63,7 @@ void small_N(int N, int n_threads) {
 	cout << "Total amount of permutations processed= " << n_perms_processed << endl;
 }
 
-void large_N(int N, int n_threads) {
+void large_N(unsigned int N, unsigned int n_threads) {
 	factoradic N_F;
 	N_F.from_factorial(N);
 	integer fact = N_F.to_integer();
@@ -71,21 +71,21 @@ void large_N(int N, int n_threads) {
 	// # permutations per thread
 	const integer n_perms_thread = fact/n_threads;
 	
-	vector<int> v(N);
-	for (int i = 0; i < N; ++i) {
+	vector<unsigned int> v(N);
+	for (unsigned int i = 0; i < N; ++i) {
 		v[i] = i + 1;
 	}
 	
 	integer n_perms_processed = 0;
 	
 	#pragma omp parallel for num_threads(n_threads)
-	for (int t = 0; t < n_threads; ++t) {
+	for (unsigned int t = 0; t < n_threads; ++t) {
 		
 		// get the index of the k-th permutation
 		integer idx = n_perms_thread*t;
 		
 		// compute k-th permutation
-		vector<int> ith_perm;
+		vector<unsigned int> ith_perm;
 		make_perms::kth_permutation(idx, v, ith_perm);
 		
 		// process all permutations with index [k, k + n_perms_thread]
@@ -114,8 +114,8 @@ int main(int argc, char *argv[]) {
 		return 1;
 	}
 	
-	const int N = atoi(argv[1]);
-	const int n_threads = atoi(argv[2]);
+	const unsigned int N = atoi(argv[1]);
+	const unsigned int n_threads = atoi(argv[2]);
 	
 	if (N <= 14) {
 		small_N(N, n_threads);

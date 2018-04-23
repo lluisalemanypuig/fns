@@ -21,8 +21,8 @@ bool factoradic::operator== (const factoradic& f) const {
 		return false;
 	}
 	
-	size_t R = radixs.size();
-	size_t kR = f.radixs.size();
+	index_t R = radixs.size();
+	index_t kR = f.radixs.size();
 	
 	// compare the "common radixs". If any is different then
 	// so are the numbers
@@ -31,7 +31,7 @@ bool factoradic::operator== (const factoradic& f) const {
 	//     k:  0 1 2 3 4
 	
 	bool equal = true;
-	size_t r = 0;
+	index_t r = 0;
 	while (equal and r < R and r < kR) {
 		if (radixs[r] != f.radixs[r]) {
 			equal = false;
@@ -45,7 +45,7 @@ bool factoradic::operator== (const factoradic& f) const {
 	
 	if (R != kR and equal) {
 		// longest radix vector
-		const vector<size_t>& rest = (R < kR ? f.radixs : radixs);
+		const vector<radix_t>& rest = (R < kR ? f.radixs : radixs);
 		while (r < rest.size() and rest[r] == 0) {
 			++r;
 		}
@@ -87,11 +87,11 @@ bool factoradic::operator> (const factoradic& f) const {
 	// radix in *this is greater than the corresponding radix in k
 	
 	// positions of the first non-zero radix for *this and k
-	size_t pnZ_t = radixs.size() - 1;
+	index_t pnZ_t = radixs.size() - 1;
 	while (pnZ_t > 0 and radixs[pnZ_t] == 0) {
 		--pnZ_t;
 	}
-	size_t pnZ_k = f.radixs.size() - 1;
+	index_t pnZ_k = f.radixs.size() - 1;
 	while (pnZ_k > 0 and f.radixs[pnZ_k] == 0) {
 		--pnZ_k;
 	}

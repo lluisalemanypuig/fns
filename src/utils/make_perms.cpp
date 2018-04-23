@@ -8,11 +8,11 @@ namespace make_perms {
 		factoradic K(k);
 		
 		factoradic MAX;
-		MAX.from_factorial(L.size());
+		MAX.from_factorial(uint32_t(L.size()));
 		
 		assert(K < MAX);
 		
-		vector<size_t> rs;
+		vector<radix_t> rs;
 		K.get_radixs(rs, L.size());
 		reverse(rs.begin(), rs.end());
 		
@@ -43,7 +43,7 @@ namespace make_perms {
 		const size_t N = L.size();
 		
 		// radixs of the new number in big-endian
-		vector<size_t> radixs(N);
+		vector<radix_t> radixs(N);
 		
 		// copy the list used as reference to be
 		// able to remove values from it
@@ -56,7 +56,7 @@ namespace make_perms {
 			size_t pos = find_pos_element(copy_list, elem);
 			assert(pos != copy_list.size() + 1);
 			
-			radixs[P_it] = pos;
+			radixs[P_it] = radix_t(pos);
 			copy_list.erase(copy_list.begin() + pos);
 			
 			++P_it;
