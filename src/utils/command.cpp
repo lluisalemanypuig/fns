@@ -2,6 +2,22 @@
 
 /// PRIVATE
 
+inline bool is_comment(const string& str) {
+	if (str.length() <= 1) {
+		return false;
+	}
+	if (str == "//") {
+		return true;
+	}
+	if (str.substr(0,2) == "//") {
+		return true;
+	}
+	if (str.substr(str.length() - 2, 2) == "//") {
+		return true;
+	}
+	return false;
+}
+
 istream& command::read_partial_command(istream& is) {
 	if (action == "var") {
 		is >> new_var;
@@ -100,13 +116,9 @@ istream& command::read_partial_command(istream& is) {
 			sub_command.insert(sub_command.end(), new_command);
 		}
 	}
-	else if (action == "//" or action.substr(0,2) == "//") {
+	else if (is_comment(action)) {
 		action = "//";
-		while
-		(
-			is >> var1 and
-			var1 != "//" and var1.substr(var1.length() - 2, 2) != "//"
-		)
+		while (is >> var1 and not is_comment(var1))
 		{ }
 	}
 	else {
