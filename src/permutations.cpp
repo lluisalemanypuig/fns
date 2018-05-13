@@ -109,6 +109,7 @@ void large_N(unsigned int N, unsigned int n_threads) {
 int main(int argc, char *argv[]) {
 	if (argc != 3) {
 		cout << "Incorrect number of parameters:" << endl;
+		cout << "Usage: ./process_permutations N t" << endl;
 		cout << "    N: to calculate all permutations of a list of N elements" << endl;
 		cout << "    t: number of threads. Must be a divisor of N!" << endl;
 		return 1;
