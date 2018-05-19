@@ -6,8 +6,8 @@ SRC_DIR = $(PROJ_DIR)/src
 CORE_DIR = $(SRC_DIR)/core
 UTILS_DIR = $(SRC_DIR)/utils
 RULES_DIR = $(PROJ_DIR)/build-rules
-DEB_BIN_DIR = $(PROJ_DIR)/bin-debug
-REL_BIN_DIR = $(PROJ_DIR)/bin-release
+DEB_BIN_DIR = $(PROJ_DIR)/build-debug
+REL_BIN_DIR = $(PROJ_DIR)/build-release
 
 GEN_FLAGS = -std=c++11 -fopenmp -Wunused -Wall -Wconversion
 
