@@ -24,15 +24,16 @@ Unix-like system.
 
 ### Compilation
 
-There are two modes of compilation: debug and release. Issue the following commands for each mode:
+There are two modes of compilation: debug and release. These two modes will create, respectively, a bin-debug/
+and a bin-release/ directories. Issue the following commands for each mode:
 
 #### Debug
 
-$ make -f build-rules/Makefile debug
+$ make -f build/Makefile debug
 
 #### Release
 
-$ make -f build-rules/Makefile release
+$ make -f build/Makefile release
 
 ### Execution
 
