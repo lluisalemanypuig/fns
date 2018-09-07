@@ -382,13 +382,13 @@ void interactive() {
 		print_time = true;
 		print_prompt = true;
 		
-		double begin = timing::now();
+		timing::time_point begin = timing::now();
 		
 		exit_calc = execute_command(main_command);
 		
-		double end = timing::now();
+		timing::time_point end = timing::now();
 		if (print_time and verbose) {
-			cout << "    In " << timing::elapsed_time(begin, end) << " s" << endl;
+			cout << "    In " << timing::elapsed_seconds(begin, end) << " s" << endl;
 		}
 		
 		if (not exit_calc and print_prompt) {
@@ -407,7 +407,7 @@ void execute_program(const string& program_file) {
 		return;
 	}
 	
-	double begin = timing::now();
+	timing::time_point begin = timing::now();
 	
 	command main_command;
 	bool exit_calc = false;
@@ -421,11 +421,11 @@ void execute_program(const string& program_file) {
 		}
 	}
 	
-	double end = timing::now();
+	timing::time_point end = timing::now();
 	
 	fin.close();
 	
-	cout << "    In " << timing::elapsed_time(begin, end) << " s" << endl;
+	cout << "    In " << timing::elapsed_seconds(begin, end) << " s" << endl;
 }
 
 int main(int argc, char *argv[]) {
