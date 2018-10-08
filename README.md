@@ -16,9 +16,14 @@ Although it is not likely to be needed, this software also allows arbitrarily la
 
 ## Dependencies
 
-The [GMP](https://gmplib.org/) library is needed to compile this project. Also, the [OpenMP](http://www.openmp.org/)
-library is needed for parallelisation (when processing the permutations in parallel). Also, the Makefiles assume a
-Unix-like system.
+### Libraries
+
+The [GMP](https://gmplib.org/) and the [OpenMP](http://www.openmp.org/) libraries are needed to compile this project.
+OpenMp library is only needed to generate the executable that processes permutations in parallel.
+
+### Tools
+
+Compiling requires the 'make' tool, and a compiler (g++) that supports the flag -std=c++11.
 
 ## Compilation and execution
 
