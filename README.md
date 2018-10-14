@@ -29,16 +29,16 @@ Compiling requires the 'make' tool, and a compiler (g++) that supports the flag 
 
 ### Compilation
 
-There are two modes of compilation: debug and release. These two modes will create, respectively, a bin-debug/
-and a bin-release/ directories. Issue the following commands for each mode:
+There are two modes of compilation: debug and release. These two modes will create, respectively, a _bin-debug/_
+and a _bin-release/_ directories. From within the _build/_ directory, issue the following commands for each mode:
 
 #### Debug
 
-$ make -f build/Makefile debug
+    make -f Makefile debug
 
 #### Release
 
-$ make -f build/Makefile release
+    make -f Makefile release
 
 ### Execution
 
@@ -47,25 +47,25 @@ another that allows the loading and execution of a program.
 
 In order to use the interactive mode, issue the command:
 
-$ ./calculator -i
+    ./calculator -i
 
 The list of all the commands supported can be obtained by entering the "help" command (without the quotes in the
 interactive mode of the calculator).
 
 If the other mode is preferred then issue the following command:
 
-$ ./calculator -l /path/to/dir/file_name
+    ./calculator -l /path/to/dir/file_name
 
 where /path/to/dir/file_name contains the path (absolute or relative) and the name to the file that is to be executed.
 
 If one wants to run the demo to process the permutations of a list in parallel issue the following command:
 
-$ ./process_permutations N t
+    ./process_permutations N t
 
 where N is the length of the list of elements to be permuted, and t is the number threads. For example, in order to
 process all permutations of a list of N=10 elements with t=8 threads issue the following command:
 
-$ ./process_permutations 10 8
+    ./process_permutations 10 8
 
 #### Commands available for the calculator
 
