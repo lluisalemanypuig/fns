@@ -14,7 +14,8 @@ on the number system:
 As it has been mentioned, the radix each digit is mulitplied with depends on its position in the numeral: if a digit
 occupies position _i_ it is mulitplied by _i!_. Also, while in fixed-base number systems all digits have the same
 maximum value (_one_ in base 2, _nine_ in base 10), the maximum value of a digit in the _i_-th position of a numeral
-in the factoradic systemis is _i-1_.
+in the factoradic system is _i-1_. Notice that any numeral representing a factorial value (_f!_, for any natural number
+_f_) is the number _100..00_ (a _1_ followed by _f_ zeroes).
 
 ## Contents of the repository
 
