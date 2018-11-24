@@ -16,16 +16,16 @@ factoradic::factoradic(const string& i) {
 	from_integer(integer(i));
 }
 factoradic::factoradic(const factoradic& f) {
-	radixs = f.radixs;
+	digits = f.digits;
 	neg = f.neg;
 }
-factoradic::factoradic(const vector<radix_t>& Rs, bool _neg, bool le) {
-	radixs = Rs;
+factoradic::factoradic(const vector<digit_t>& Rs, bool _neg, bool le) {
+	digits = Rs;
 	neg = _neg;
 	
-	// format of input: big-endian -> reverse the radixs
+	// format of input: big-endian -> reverse the digits
 	if (not le) {
-		reverse(radixs.begin(), radixs.end());
+		reverse(digits.begin(), digits.end());
 	}
 }
 factoradic::~factoradic() { }
@@ -33,7 +33,7 @@ factoradic::~factoradic() { }
 /// OPERATORS
 
 factoradic& factoradic::operator= (const factoradic& f) {
-	radixs = f.radixs;
+	digits = f.digits;
 	neg = f.neg;
 	return *this;
 }
@@ -279,43 +279,43 @@ factoradic factoradic::operator-- (int) {
 /// GETTERS
 
 bool factoradic::is_one() const {
-	if (radixs.size() == 1) {
+	if (digits.size() == 1) {
 		return false;
 	}
 	
-	// by construction radixs[0] = 0
+	// by construction digits[0] = 0
 	
-	// radixs.size() >= 2
-	if (radixs[1] == 0) {
+	// digits.size() >= 2
+	if (digits[1] == 0) {
 		return false;
 	}
 	
 	// the radix corresponding to 1! is 1. The rest must be zero
 	
 	index_t r = 2;
-	while (r < radixs.size() and radixs[r] == 0) {
+	while (r < digits.size() and digits[r] == 0) {
 		++r;
 	}
 	
 	// if 'r' reached the end then all values were 0
-	return r == radixs.size();
+	return r == digits.size();
 }
 
 bool factoradic::is_zero() const {
-	if (radixs.size() == 1) {
+	if (digits.size() == 1) {
 		// if this number has only one radix, then for sure it is zero
 		return true;
 	}
 	
-	// by construction radixs[0] = 0
+	// by construction digits[0] = 0
 	
 	index_t r = 1;
-	while (r < radixs.size() and radixs[r] == 0) {
+	while (r < digits.size() and digits[r] == 0) {
 		++r;
 	}
 	
 	// if 'r' reached the end then all values were 0
-	return r == radixs.size();
+	return r == digits.size();
 }
 
 bool factoradic::is_negative() const {
@@ -323,7 +323,7 @@ bool factoradic::is_negative() const {
 }
 
 bool factoradic::is_even() const {
-	if (radixs.size() == 1) {
+	if (digits.size() == 1) {
 		// this number is 0
 		return true;
 	}
@@ -332,11 +332,11 @@ bool factoradic::is_even() const {
 	// the only way we can have an odd number is to have
 	// 1*(1!) + sum_{n=2}^{C} n*(n!) for some C integer, C >= 2
 	
-	return radixs[1] != 1;
+	return digits[1] != 1;
 }
 
-void factoradic::get_radixs(vector<radix_t>& rs, size_t n_digits) const {
-	rs = radixs;
+void factoradic::get_digits(vector<digit_t>& rs, size_t n_digits) const {
+	rs = digits;
 	if (n_digits > 0) {
 		while (rs.size() < n_digits) {
 			rs.push_back(0);
@@ -394,8 +394,8 @@ void factoradic::from_integer(const integer& i) {
 }
 
 void factoradic::from_factorial(uint32_t i) {
-	radixs = vector<radix_t>(i, 0);
-	radixs.push_back(1);
+	digits = vector<digit_t>(i, 0);
+	digits.push_back(1);
 }
 
 integer factoradic::to_integer() const {
@@ -437,24 +437,24 @@ string factoradic::to_string(size_t n_digits) const {
 }
 
 void factoradic::to_string(string& s, size_t n_digits) const {
-	if (radixs.size() == 0) {
+	if (digits.size() == 0) {
 		s = "";
 	}
 	else {
-		vector<radix_t> radixs_copy = radixs;
-		reverse(radixs_copy.begin(), radixs_copy.end());
+		vector<digit_t> digits_copy = digits;
+		reverse(digits_copy.begin(), digits_copy.end());
 		
 		if (neg) {
 			s = "-,";
 		}
 		
-		s += std::to_string(radixs_copy[0]);
-		for (index_t i = 1; i < radixs_copy.size(); ++i) {
-			s += "," + std::to_string(radixs_copy[i]);
+		s += std::to_string(digits_copy[0]);
+		for (index_t i = 1; i < digits_copy.size(); ++i) {
+			s += "," + std::to_string(digits_copy[i]);
 		}
 		
 		if (n_digits > 0) {
-			index_t actual_length = radixs_copy.size() - 1;
+			index_t actual_length = digits_copy.size() - 1;
 			while (actual_length < n_digits) {
 				s += ",0";
 				++actual_length;
@@ -464,13 +464,13 @@ void factoradic::to_string(string& s, size_t n_digits) const {
 }
 
 void factoradic::shrink() {
-	index_t r = radixs.size() - 1;
-	while (radixs[r] == 0) {
+	index_t r = digits.size() - 1;
+	while (digits[r] == 0) {
 		--r;
 	}
 	
-	if (r < radixs.size() - 1) {
-		radixs.resize(r + 1);
+	if (r < digits.size() - 1) {
+		digits.resize(r + 1);
 	}
 }
 

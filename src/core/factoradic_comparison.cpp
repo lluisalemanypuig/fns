@@ -21,10 +21,10 @@ bool factoradic::operator== (const factoradic& f) const {
 		return false;
 	}
 	
-	index_t R = radixs.size();
-	index_t kR = f.radixs.size();
+	index_t R = digits.size();
+	index_t kR = f.digits.size();
 	
-	// compare the "common radixs". If any is different then
+	// compare the "common digits". If any is different then
 	// so are the numbers
 	
 	// *this:  0 1 2 3 4 0 0 0 0 ....
@@ -33,7 +33,7 @@ bool factoradic::operator== (const factoradic& f) const {
 	bool equal = true;
 	index_t r = 0;
 	while (equal and r < R and r < kR) {
-		if (radixs[r] != f.radixs[r]) {
+		if (digits[r] != f.digits[r]) {
 			equal = false;
 		}
 		++r;
@@ -41,11 +41,11 @@ bool factoradic::operator== (const factoradic& f) const {
 	
 	// if 'r' reached the end of one number but not of the other then,
 	// in order for the two of them to be equal, what is left of the
-	// number with more radixs must be all 0's
+	// number with more digits must be all 0's
 	
 	if (R != kR and equal) {
 		// longest radix vector
-		const vector<radix_t>& rest = (R < kR ? f.radixs : radixs);
+		const vector<digit_t>& rest = (R < kR ? f.digits : digits);
 		while (r < rest.size() and rest[r] == 0) {
 			++r;
 		}
@@ -87,12 +87,12 @@ bool factoradic::operator> (const factoradic& f) const {
 	// radix in *this is greater than the corresponding radix in k
 	
 	// positions of the first non-zero radix for *this and k
-	index_t pnZ_t = radixs.size() - 1;
-	while (pnZ_t > 0 and radixs[pnZ_t] == 0) {
+	index_t pnZ_t = digits.size() - 1;
+	while (pnZ_t > 0 and digits[pnZ_t] == 0) {
 		--pnZ_t;
 	}
-	index_t pnZ_k = f.radixs.size() - 1;
-	while (pnZ_k > 0 and f.radixs[pnZ_k] == 0) {
+	index_t pnZ_k = f.digits.size() - 1;
+	while (pnZ_k > 0 and f.digits[pnZ_k] == 0) {
 		--pnZ_k;
 	}
 	
@@ -109,19 +109,19 @@ bool factoradic::operator> (const factoradic& f) const {
 	}
 	
 	// when in the same position, move the pointers to the first 
-	// pair of different radixs
+	// pair of different digits
 	
-	while (pnZ_t > 0 and radixs[pnZ_t] == f.radixs[pnZ_t]) {
+	while (pnZ_t > 0 and digits[pnZ_t] == f.digits[pnZ_t]) {
 		--pnZ_t;
 	}
 	
 	// if both are positive:
 	if (not neg and not f.neg) {
-		return radixs[pnZ_t] > f.radixs[pnZ_t];
+		return digits[pnZ_t] > f.digits[pnZ_t];
 	}
 	
 	// if both are negative:
-	return radixs[pnZ_t] < f.radixs[pnZ_t];
+	return digits[pnZ_t] < f.digits[pnZ_t];
 }
 
 bool factoradic::operator>= (int i) const				{ return *this > i or *this == i; }

@@ -3,14 +3,14 @@
 /// PRIVATE
 
 void factoradic::__increment() {
-	radix_t carry = 1;
+	digit_t carry = 1;
 	index_t r = 1;
 	
-	while (r < radixs.size() and carry > 0) {
-		radix_t sum = radixs[r] + carry;
-		radix_t mod = sum%(r + 1);
+	while (r < digits.size() and carry > 0) {
+		digit_t sum = digits[r] + carry;
+		digit_t mod = sum%(r + 1);
 		
-		radixs[r] = mod;
+		digits[r] = mod;
 		
 		assert(sum >= mod);
 		carry = (sum - mod)/(r + 1);
@@ -19,8 +19,8 @@ void factoradic::__increment() {
 	}
 	
 	while (carry > 0) {
-		radix_t mod = carry%(r + 1);
-		radixs.push_back(mod);
+		digit_t mod = carry%(r + 1);
+		digits.push_back(mod);
 		
 		assert(r + 1 >= mod);
 		carry = ((r + 1) - mod)/(r + 1);
@@ -34,17 +34,17 @@ void factoradic::__increment() {
 void factoradic::__decrement() {
 	index_t r = 0;
 	
-	radix_t carry = 1;
-	while (r < radixs.size() and carry > 0) {
+	digit_t carry = 1;
+	while (r < digits.size() and carry > 0) {
 		
-		if (radixs[r] < carry) {
-			assert(radixs[r] + r + 1 >= carry);
+		if (digits[r] < carry) {
+			assert(digits[r] + r + 1 >= carry);
 			
-			radixs[r] = (radixs[r] + r + 1) - carry;
+			digits[r] = (digits[r] + r + 1) - carry;
 			carry = 1;
 		}
 		else {
-			radixs[r] = radixs[r] - carry;
+			digits[r] = digits[r] - carry;
 			carry = 0;
 		}
 		
@@ -100,19 +100,19 @@ void factoradic::decrement() {
 
 void factoradic::__accumulate(const factoradic& f) {
 	index_t r = 0;
-	radix_t carry = 0;
+	digit_t carry = 0;
 	
-	while (r < radixs.size() and r < f.radixs.size()) {
+	while (r < digits.size() and r < f.digits.size()) {
 		// if the sum of the two digits is greater than the greatest
 		// radix allowed then compute the modulus of the result.
 		// The greatest radix allowed is equal to the index
 		
-		// sum of the two currently pointed radixs plus the carry
-		radix_t sum_dig = radixs[r] + f.radixs[r] + carry;
+		// sum of the two currently pointed digits plus the carry
+		digit_t sum_dig = digits[r] + f.digits[r] + carry;
 		
 		// new digit
-		radix_t mod = sum_dig%(r + 1);
-		radixs[r] = mod;
+		digit_t mod = sum_dig%(r + 1);
+		digits[r] = mod;
 		
 		// value of carry.
 		// by construction:
@@ -127,14 +127,14 @@ void factoradic::__accumulate(const factoradic& f) {
 	// if this number and f do not have the same length then keed adding
 	// the carry until the full length of the longest number has been
 	// iterated over
-	if (radixs.size() < f.radixs.size()) {
-		for (; r < f.radixs.size(); ++r) {
+	if (digits.size() < f.digits.size()) {
+		for (; r < f.digits.size(); ++r) {
 			// sum of the currently pointed radix plus the carry
-			radix_t sum_dig = f.radixs[r] + carry;
+			digit_t sum_dig = f.digits[r] + carry;
 			
 			// new digit
-			radix_t mod = sum_dig%(r + 1);
-			radixs.push_back(mod);
+			digit_t mod = sum_dig%(r + 1);
+			digits.push_back(mod);
 			
 			// value of carry
 			// by construction:
@@ -144,14 +144,14 @@ void factoradic::__accumulate(const factoradic& f) {
 			carry = (sum_dig - mod)/(r + 1);
 		}
 	}
-	else if (radixs.size() > f.radixs.size()) {
-		for (; r < radixs.size(); ++r) {
+	else if (digits.size() > f.digits.size()) {
+		for (; r < digits.size(); ++r) {
 			// sum of the currently pointed radix plus the carry
-			radix_t sum_dig = radixs[r] + carry;
+			digit_t sum_dig = digits[r] + carry;
 			
 			// new digit
-			radix_t mod = sum_dig%(r + 1);
-			radixs[r] = mod;
+			digit_t mod = sum_dig%(r + 1);
+			digits[r] = mod;
 			
 			// value of carry
 			// by construction:
@@ -165,7 +165,7 @@ void factoradic::__accumulate(const factoradic& f) {
 	// the two numbers may have different lengths, or not. In any case
 	// there is still more carry
 	while (carry > 0) {
-		radix_t new_digit;
+		digit_t new_digit;
 		if (carry > r) {
 			new_digit = carry/r;
 			carry = carry/r;
@@ -174,7 +174,7 @@ void factoradic::__accumulate(const factoradic& f) {
 			new_digit = carry;
 			carry = 0;
 		}
-		radixs.push_back(new_digit);
+		digits.push_back(new_digit);
 		++r;
 	}
 }
@@ -288,18 +288,18 @@ void factoradic::accumulate(const factoradic& f) {
 
 void factoradic::__substract(const factoradic& f) {
 	index_t r = 0;
-	radix_t carry = 0;
+	digit_t carry = 0;
 	
-	while (r < radixs.size() and r < f.radixs.size()) {
+	while (r < digits.size() and r < f.digits.size()) {
 		
-		if (radixs[r] < f.radixs[r] + carry) {
-			assert(radixs[r] + r + 1 >= f.radixs[r] + carry);
+		if (digits[r] < f.digits[r] + carry) {
+			assert(digits[r] + r + 1 >= f.digits[r] + carry);
 			
-			radixs[r] = (radixs[r] + r + 1) - (f.radixs[r] + carry);
+			digits[r] = (digits[r] + r + 1) - (f.digits[r] + carry);
 			carry = 1;
 		}
 		else {
-			radixs[r] = radixs[r] - (f.radixs[r] + carry);
+			digits[r] = digits[r] - (f.digits[r] + carry);
 			carry = 0;
 		}
 		
@@ -307,28 +307,28 @@ void factoradic::__substract(const factoradic& f) {
 	}
 	
 	// likewise in the accumulate algorithm, there are still
-	// more radixs to deal with
-	if (radixs.size() > f.radixs.size()) {
-		for (; r < radixs.size(); ++r) {
+	// more digits to deal with
+	if (digits.size() > f.digits.size()) {
+		for (; r < digits.size(); ++r) {
 			
-			if (radixs[r] < carry) {
-				assert(radixs[r] + r + 1 >= carry);
+			if (digits[r] < carry) {
+				assert(digits[r] + r + 1 >= carry);
 				
-				radixs[r] = (radixs[r] + r + 1) - carry;
+				digits[r] = (digits[r] + r + 1) - carry;
 				carry = 1;
 			}
 			else {
-				radixs[r] = radixs[r] - carry;
+				digits[r] = digits[r] - carry;
 				carry = 0;
 			}
 			
 		}
 	}
-	else if (radixs.size() < f.radixs.size()) {
+	else if (digits.size() < f.digits.size()) {
 		
 		// even if this was true, since we are calling this function
 		// assuming that (*this > f) this implies that the extra
-		// radixs in f are all 0s
+		// digits in f are all 0s
 		// -->
 		// if I'm wrong then this assertion will make the program
 		// terminate its execution
@@ -500,34 +500,34 @@ void factoradic::factoradic_power(const factoradic& f) {
 }
 
 void factoradic::int_divide(unsigned int i) {
-	if (radixs.size() == 1) {
+	if (digits.size() == 1) {
 		// this number is 0 -> no work to do
 		return;
 	}
 	
-	radix_t carry = 0;
-	index_t r = radixs.size() - 1;
+	digit_t carry = 0;
+	index_t r = digits.size() - 1;
 	
 	do {
-		radix_t radix = radixs[r];
-		radix_t s = radix + carry;
+		digit_t radix = digits[r];
+		digit_t s = radix + carry;
 		
 		// i is a divisor of s
 		if (s%i == 0) {
-			radix_t d = s/i;
-			radixs[r] = d%(r + 1);
+			digit_t d = s/i;
+			digits[r] = d%(r + 1);
 			carry = d - d%r;
 		}
 		else {
 			
 			if (s < i) {
 				// radix + carry < i
-				radixs[r] = 0;
+				digits[r] = 0;
 				carry = s*r;
 			}
 			else {
 				// radix + carry > i
-				radixs[r] = s/i;
+				digits[r] = s/i;
 				carry = (s%i)*r;
 			}
 		}
@@ -538,18 +538,18 @@ void factoradic::int_divide(unsigned int i) {
 }
 
 void factoradic::integer_divide(const integer& i) {
-	if (radixs.size() == 1) {
+	if (digits.size() == 1) {
 		// this number is 0 -> no work to do
 		return;
 	}
 	
-	index_t r = radixs.size() - 1;
+	index_t r = digits.size() - 1;
 	
 	integer carry = 0;
 	integer radix;
 	
 	do {
-		radix.init_ui(radixs[r]);
+		radix.init_ui(digits[r]);
 		integer s = radix + carry;
 		
 		// i is a divisor of s
@@ -558,19 +558,19 @@ void factoradic::integer_divide(const integer& i) {
 			
 			integer d = s;
 			d /= i;
-			radixs[r] = radix_t(d%(r + 1));
-			carry = d - radix_t(d%r);
+			digits[r] = digit_t(d%(r + 1));
+			carry = d - digit_t(d%r);
 		}
 		else {
 			
 			if (s < i) {
 				// radix + carry < i
-				radixs[r] = 0;
+				digits[r] = 0;
 				carry = s*r;
 			}
 			else {
 				// radix + carry > i
-				radixs[r] = (s/i).to_uint();
+				digits[r] = (s/i).to_uint();
 				carry = (s%i)*r;
 			}
 		}
@@ -581,7 +581,7 @@ void factoradic::integer_divide(const integer& i) {
 }
 
 void factoradic::mult2() {
-	if (radixs.size() == 1) {
+	if (digits.size() == 1) {
 		// this number is 0 -> no work to do
 		return;
 	}
@@ -592,15 +592,15 @@ void factoradic::mult2() {
 	// to the procedure used in __accumulate)
 	
 	index_t r = 0;
-	radix_t carry = 0;
-	while (r < radixs.size()) {
+	digit_t carry = 0;
+	while (r < digits.size()) {
 		
 		// sum of the currently pointed radix and the carry
-		radix_t sum = (radixs[r] << 1) + carry;
+		digit_t sum = (digits[r] << 1) + carry;
 		
 		// new radix
-		radix_t mod = sum%(r + 1);
-		radixs[r] = mod;
+		digit_t mod = sum%(r + 1);
+		digits[r] = mod;
 		
 		// value of carry.
 		// by construction:
@@ -613,7 +613,7 @@ void factoradic::mult2() {
 	}
 	
 	while (carry > 0) {
-		radix_t new_digit;
+		digit_t new_digit;
 		if (carry > r) {
 			new_digit = carry/r;
 			carry = carry/r;
@@ -622,25 +622,25 @@ void factoradic::mult2() {
 			new_digit = carry;
 			carry = 0;
 		}
-		radixs.push_back(new_digit);
+		digits.push_back(new_digit);
 		++r;
 	}
 	
 }
 
 void factoradic::div2() {
-	if (radixs.size() == 1) {
+	if (digits.size() == 1) {
 		// this number is 0 -> no work to do
 		return;
 	}
 	
-	index_t r = radixs.size() - 1;
-	radix_t carry = 0;
+	index_t r = digits.size() - 1;
+	digit_t carry = 0;
 	do {
-		radix_t radix = radixs[r];
+		digit_t radix = digits[r];
 		
 		// calculate new r-th radix
-		radixs[r] = ((carry + radix) >> 1);
+		digits[r] = ((carry + radix) >> 1);
 		
 		// calculate carry
 		if (((carry + radix) & 0x1) == 1) {

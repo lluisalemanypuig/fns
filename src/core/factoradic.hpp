@@ -18,8 +18,8 @@ using namespace std;
 
 class factoradic {
 	private:
-		// radixs of this number: little-endian format
-		vector<radix_t> radixs;
+		// digits of this number: little-endian format
+		vector<digit_t> digits;
 		
 		// neg = true -> this number is negative
 		// neg = false -> this number is positive
@@ -70,9 +70,9 @@ class factoradic {
 		factoradic(const string& i);
 		factoradic(const factoradic& f);
 		
-		// Rs is the radixs of a number in factorial
+		// Rs is the digits of a number in factorial
 		// base in little endian format
-		factoradic(const vector<radix_t>& Rs, bool neg = false, bool little_endian = true);
+		factoradic(const vector<digit_t>& Rs, bool neg = false, bool little_endian = true);
 		~factoradic();
 		
 		/// OPERATORS
@@ -162,7 +162,7 @@ class factoradic {
 		bool is_negative() const;	// returns true if this number is negative (<0)
 		bool is_even() const;		// returns true if there exists some integer k such that 2*k = *this
 		
-		void get_radixs(vector<radix_t>& rs, size_t n_digits = 0) const;
+		void get_digits(vector<digit_t>& rs, size_t n_digits = 0) const;
 		
 		/// CONVERSIONS
 		

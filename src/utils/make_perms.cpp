@@ -12,16 +12,16 @@ namespace make_perms {
 		
 		assert(K < MAX);
 		
-		vector<radix_t> rs;
-		K.get_radixs(rs, L.size());
-		reverse(rs.begin(), rs.end());
+		vector<digit_t> ds;
+		K.get_digits(ds, L.size());
+		reverse(ds.begin(), ds.end());
 		
 		vector<T> list_copy = L;
 		kth_perm = vector<T>(L.size());
 		
-		for (size_t i = 0; i < rs.size(); ++i) {
-			kth_perm[i] = list_copy[ rs[i] ];
-			list_copy.erase( list_copy.begin() + rs[i] );
+		for (size_t i = 0; i < ds.size(); ++i) {
+			kth_perm[i] = list_copy[ ds[i] ];
+			list_copy.erase( list_copy.begin() + ds[i] );
 		}
 	}
 	
@@ -43,7 +43,7 @@ namespace make_perms {
 		const size_t N = L.size();
 		
 		// radixs of the new number in big-endian
-		vector<radix_t> radixs(N);
+		vector<digit_t> radixs(N);
 		
 		// copy the list used as reference to be
 		// able to remove values from it
@@ -56,7 +56,7 @@ namespace make_perms {
 			size_t pos = find_pos_element(copy_list, elem);
 			assert(pos != copy_list.size() + 1);
 			
-			radixs[P_it] = radix_t(pos);
+			radixs[P_it] = digit_t(pos);
 			copy_list.erase(copy_list.begin() + pos);
 			
 			++P_it;
