@@ -36,10 +36,10 @@ an easy parallel processing of the permutations of a list since, since it does n
 of a list. This is where the factoradic number system comes into play: in very few words, this system allows an easy
 generation of such _j_-th permutation of an arbitrary long list of elements.
 
-In [this file](https://github.com/lluisalemanypuig/fns/blob/master/src/permutations.cpp), one will find a simple piece of
+In [this file](https://github.com/lluisalemanypuig/fns/blob/master/src/permutations_minimal.cpp), you will find a minimal piece of
 code to process all permutations of a list of _N_ elements in parallel (using OpenMP). The code processes all permutations
 of a list of N numbers and performs a very simple operation on it. Although it is not likely to be needed, this software
-allows arbitrarily large values of _N_.
+allows arbitrarily large values of _N_. (An older version of the minimal code is [this file](https://github.com/lluisalemanypuig/fns/blob/master/src/permutations.cpp)).
 
 ## Dependencies
 
